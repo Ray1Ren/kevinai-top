@@ -82,3 +82,33 @@ body[data-motion-paused] *::after {
 .prose-invert ul {
   @apply list-disc pl-5 space-y-2 text-graphite-200;
 }
+
+@layer components {
+  .article-body > section + section {
+    @apply mt-16 border-t border-white/10 pt-12 md:mt-24 md:pt-16;
+  }
+
+  .article-body h2 {
+    @apply mb-6 text-3xl font-semibold tracking-tight text-white md:text-4xl;
+  }
+
+  .article-body h3 {
+    @apply mb-3 mt-10 text-xl font-semibold tracking-tight text-white md:text-2xl;
+  }
+
+  .article-body p {
+    @apply max-w-[65ch] text-base leading-[1.85] text-graphite-200 md:text-lg;
+  }
+
+  .article-body p + p {
+    @apply mt-5;
+  }
+
+  .article-body .article-note {
+    @apply my-6 border-l-2 border-pitch-500/60 pl-4 text-sm leading-relaxed text-graphite-400 md:text-base;
+  }
+
+  .article-body .article-note a {
+    @apply text-pitch-400 underline decoration-pitch-500/30 underline-offset-4 hover:text-pitch-300;
+  }
+}
