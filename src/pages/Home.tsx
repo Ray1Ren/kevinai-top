@@ -66,9 +66,6 @@ export default function Home() {
                   alt={isEnglish ? 'Portrait of Kevin' : 'Kevin 头像'}
                   className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-graphite-800 object-cover shadow-2xl md:h-40 md:w-40 lg:h-48 lg:w-48"
                 />
-                <div className="absolute bottom-6 right-6 rounded-full border border-white/10 bg-graphite-900/90 px-3 py-1.5 text-xs text-graphite-200 backdrop-blur-sm md:bottom-10 md:right-10">
-                  {isEnglish ? 'I make the final call' : '最后由我拍板'}
-                </div>
               </div>
             </div>
           </div>

@@ -174,9 +174,6 @@ export default function ScrollNarrative() {
                 alt={isEnglish ? 'Portrait of Kevin' : 'Kevin 头像'}
                 className="relative w-48 h-48 rounded-full border-4 border-graphite-800 shadow-2xl object-cover"
               />
-              <span className="absolute bottom-20 right-14 px-3 py-1.5 rounded-full border border-white/10 bg-graphite-900/90 text-xs text-graphite-200">
-                {isEnglish ? 'My call' : '由我拍板'}
-              </span>
             </div>
 
             <div className="narrative-proof absolute inset-8 will-change-transform">
