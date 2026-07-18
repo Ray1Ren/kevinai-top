@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useLocale } from './useLocale'
 
+const BENCHMARK_DATA_VERSION = '20260719-public-account'
+
 export interface BenchmarkData {
   metadata: {
     title: string
@@ -40,7 +42,8 @@ export function useBenchmarks(): { data: BenchmarkData | null; loading: boolean;
     setData(null)
     setLoading(true)
     setError(null)
-    fetch(isEnglish ? '/data/benchmarks.en.json' : '/data/benchmarks.json')
+    const dataPath = isEnglish ? '/data/benchmarks.en.json' : '/data/benchmarks.json'
+    fetch(`${dataPath}?v=${BENCHMARK_DATA_VERSION}`)
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`)
         return res.json()
