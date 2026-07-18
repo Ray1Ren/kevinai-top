@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
 import { useLocale } from '../hooks/useLocale'
+import VisionReviewGrid from '../components/VisionReviewGrid'
 
 export default function LabVision() {
   const { data, loading, error } = useBenchmarks()
   const task = data?.tasks['vision']
-  const { isEnglish, path } = useLocale()
+  const { isEnglish } = useLocale()
 
   return (
     <>
@@ -103,22 +103,11 @@ export default function LabVision() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              to={path('/lab/vision/review')}
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-pitch-600 text-white font-medium hover:bg-pitch-500 transition-colors active:scale-[0.98]"
-            >
-              {isEnglish ? 'Open the 50-item public review' : '打开 50 题公开审阅页'}
-            </Link>
-            <a
-              href="/data/vision-cases.json"
-              className="inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/10 text-white font-medium hover:border-white/25 transition-colors active:scale-[0.98]"
-            >
-              {isEnglish ? 'View public JSON data' : '查看公开数据 JSON'}
-            </a>
+          <div className="mt-14 border-t border-white/10 pt-12">
+            <VisionReviewGrid />
           </div>
 
-          {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading public data…' : '数据加载中…'}</p>}
+          {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading evaluation results…' : '评测结果加载中…'}</p>}
           {error && <p className="mt-8 text-red-400 text-sm" role="alert">{isEnglish ? 'Unable to load data' : '数据加载失败'}：{error}</p>}
         </div>
       </section>

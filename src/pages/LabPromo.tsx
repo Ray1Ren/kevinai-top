@@ -149,14 +149,7 @@ export default function LabPromo() {
             </div>
           </div>
 
-          <a
-            href={isEnglish ? '/data/benchmarks.en.json' : '/data/benchmarks.json'}
-            className="mt-8 inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/10 text-white font-medium hover:border-white/25 transition-colors"
-          >
-            {isEnglish ? 'View public JSON data' : '查看公开数据 JSON'}
-          </a>
-
-          {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading public data…' : '数据加载中…'}</p>}
+          {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading evaluation results…' : '评测结果加载中…'}</p>}
           {error && <p className="mt-8 text-red-400 text-sm" role="alert">{isEnglish ? 'Unable to load data' : '数据加载失败'}：{error}</p>}
         </div>
       </section>

@@ -1189,7 +1189,12 @@ canvas.addEventListener('click', () => {
     if (!Input.pointerLocked) requestPointerLock();
   }
 });
-canvas.addEventListener('mousedown', () => { Audio.resume(); });
+canvas.addEventListener('mousedown', e => {
+  Audio.resume();
+  if (e.button === 0 && Game.phase === 'playing' && !Game.paused) {
+    Input.fire = true;
+  }
+});
 window.addEventListener('blur', () => {
   Input.moveFB = 0; Input.moveLR = 0;
   Input.fire = false; Input.reload = false; Input.interact = false;

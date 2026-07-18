@@ -52,7 +52,7 @@ export default function Lab() {
     <>
       <SEOHead
         title={isEnglish ? 'Evaluation Lab' : '四类评测总控实验室'}
-        description={isEnglish ? 'Reproducible AI coding evaluations with final scores, original interactive outputs, public data, and filtered evidence.' : '可复核的 AI 编码评测：最终分数、原始可交互产物、公开数据与筛选后的证据。'}
+        description={isEnglish ? 'Reproducible AI coding evaluations with directly playable builds, final scores, and filterable visual evidence.' : '可复核的 AI 编码评测：直接试玩原作、查看最终分数与可筛选视觉证据。'}
       />
       <section className="pt-24 pb-20 md:pb-28">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
@@ -68,7 +68,7 @@ export default function Lab() {
             </p>
           </div>
 
-          {loading && <p className="text-graphite-400" role="status" aria-live="polite">{isEnglish ? 'Loading public data…' : '数据加载中…'}</p>}
+          {loading && <p className="text-graphite-400" role="status" aria-live="polite">{isEnglish ? 'Loading evaluation results…' : '评测结果加载中…'}</p>}
           {error && <p className="text-red-400" role="alert">{isEnglish ? 'Unable to load data' : '数据加载失败'}：{error}</p>}
 
           {data && (

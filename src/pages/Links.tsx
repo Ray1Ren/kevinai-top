@@ -10,7 +10,7 @@ export default function Links() {
   const links = [
     { label: isEnglish ? 'Home' : '个人主页', to: path('/'), desc: 'Kevin AI局' },
     { label: isEnglish ? 'Notes & updates' : '文章与动态', to: path('/notes'), desc: isEnglish ? 'Archive in progress' : '归档整理中' },
-    { label: isEnglish ? 'Evaluation lab' : '评测实验室', to: path('/lab'), desc: isEnglish ? 'Interactive outputs and public data' : '原始网页、结果与公开数据' },
+    { label: isEnglish ? 'Evaluation lab' : '评测实验室', to: path('/lab'), desc: isEnglish ? 'Playable builds and visual review' : '在线试玩与视觉审阅' },
     { label: 'GitHub', href: 'https://github.com/Ray1Ren', desc: '@Ray1Ren' },
   ]
 

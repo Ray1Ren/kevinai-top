@@ -226,6 +226,35 @@ async function test3DInteraction(browser, base) {
   log('3D operation passed: start, move, pause')
 }
 
+async function testM3DesktopShooting(browser, base) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'MiniMax M3 desktop shooting')
+  await page.goto(`${base}/bundles/3d/minimax-m3/`, { waitUntil: 'networkidle' })
+  await page.locator('#btn-start').click()
+  await page.waitForFunction(() => window.__BREACH_TEST__?.snapshot?.().phase === 'playing')
+
+  const before = await page.evaluate(() => window.__BREACH_TEST__.snapshot())
+  const canvas = page.locator('#gl')
+  const canvasBox = await canvas.boundingBox()
+  assert(canvasBox, 'MiniMax M3 canvas must have a bounding box')
+  await canvas.click({ position: { x: canvasBox.width / 2, y: canvasBox.height / 2 } })
+  await page.waitForFunction(
+    ({ ammo, shots }) => {
+      const snapshot = window.__BREACH_TEST__.snapshot()
+      return snapshot.player.ammo < ammo && snapshot.stats.shots > shots
+    },
+    { ammo: before.player.ammo, shots: before.stats.shots },
+  )
+  const after = await page.evaluate(() => window.__BREACH_TEST__.snapshot())
+  assert.equal(after.player.ammo, before.player.ammo - 1, 'desktop mouse click must consume one round')
+  assert.equal(after.stats.shots, before.stats.shots + 1, 'desktop mouse click must register one shot')
+  await page.screenshot({ path: join(SCREENSHOTS, '3d-m3-desktop-shot.png') })
+  finishMonitoring()
+  await context.close()
+  log('MiniMax M3 desktop shooting passed: real mouse click consumed one round')
+}
+
 async function testPromoInteraction(browser, base) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
@@ -254,6 +283,7 @@ async function testVisionReview(browser, base) {
   assert.equal(vision.cases.length, 50)
   const category = '日常物体'
   const difficulty = 'easy'
+  const k3Misses = vision.cases.filter((item) => !item.results.kimi.correct).length
   const expectedIntersection = vision.cases.filter(
     (item) => item.category === category && item.difficulty === difficulty,
   ).length
@@ -261,9 +291,14 @@ async function testVisionReview(browser, base) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
   const page = await context.newPage()
   const finishMonitoring = monitorPage(page, 'vision review interaction', { allowDocument404: true })
-  await page.goto(`${base}/lab/vision/review`, { waitUntil: 'networkidle' })
-  const cards = page.locator('button[data-case-id]')
+  await page.goto(`${base}/lab/vision`, { waitUntil: 'networkidle' })
+  const cards = page.locator('article[data-case-id]')
   await cards.first().waitFor({ state: 'visible' })
+  assert.equal(await cards.count(), 50)
+
+  await page.locator('button[data-result-filter="wrong:kimi"]').click()
+  assert.equal(await cards.count(), k3Misses)
+  await page.locator('button[data-result-filter="all"]').click()
   assert.equal(await cards.count(), 50)
 
   await page.locator('#category').selectOption(category)
@@ -271,9 +306,10 @@ async function testVisionReview(browser, base) {
   await page.locator('#difficulty').selectOption(difficulty)
   assert.equal(await cards.count(), expectedIntersection)
   assert(expectedIntersection > 0, 'chosen category/difficulty intersection must not be empty')
-  await cards.first().click()
-  assert.equal(await cards.first().getAttribute('aria-expanded'), 'true')
   assert.match(await page.locator('body').innerText(), /Kimi K3/)
+  assert.match(await cards.first().innerText(), /K3/)
+  assert.match(await cards.first().innerText(), /Codex/)
+  assert.match(await cards.first().innerText(), /M3/)
   const body = await page.locator('body').innerText()
   const localHomePathMarker = ['/', 'Users', '/'].join('')
   assert(!body.includes(localHomePathMarker))
@@ -285,11 +321,33 @@ async function testVisionReview(browser, base) {
 
   await page.goto(`${base}/en/lab/vision/review`, { waitUntil: 'networkidle' })
   assert.equal(await page.locator('html').getAttribute('lang'), 'en')
-  assert.equal(await page.locator('button[data-case-id]').count(), 50)
+  assert.equal(await page.locator('article[data-case-id]').count(), 50)
   assert.match(await page.locator('body').innerText(), /original Chinese/)
   finishMonitoring()
   await context.close()
-  log(`vision review passed: 50 items, filters, expansion, English source-language notice`)
+  log(`vision review passed: 50 direct results, result/category/difficulty filters, English source-language notice`)
+}
+
+async function testEmbeddedPlayableBuilds(browser, base) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'embedded playable builds', { allowDocument404: true })
+
+  await page.goto(`${base}/lab/2d`, { waitUntil: 'networkidle' })
+  const frame = page.locator('iframe[data-playable-frame]')
+  await frame.waitFor({ state: 'visible' })
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/codex/')
+  await page.locator('button[data-playable-id="kimi"]').click()
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/kimi/')
+
+  await page.goto(`${base}/lab/3d`, { waitUntil: 'networkidle' })
+  await frame.waitFor({ state: 'visible' })
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/kimi/')
+  await page.locator('button[data-playable-id="minimax"]').click()
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/minimax-m3/')
+  finishMonitoring()
+  await context.close()
+  log('embedded playable builds passed: 2D and 3D model switching')
 }
 
 async function testMotionModes(browser, base) {
@@ -397,8 +455,10 @@ async function main() {
     await testBundleMimeAndLoad(browser, base)
     await test2DInteraction(browser, base)
     await test3DInteraction(browser, base)
+    await testM3DesktopShooting(browser, base)
     await testPromoInteraction(browser, base)
     await testVisionReview(browser, base)
+    await testEmbeddedPlayableBuilds(browser, base)
     await testMotionModes(browser, base)
     await testQrKeyboardAndLocale(browser, base)
     log('all interactive acceptance checks passed')

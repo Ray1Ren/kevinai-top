@@ -198,7 +198,7 @@ export default function Home() {
                 <div>
                   <h3 className="font-medium text-white">{isEnglish ? 'Reproducible evaluations' : '能复核的工具评测'}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'Original interactive outputs, final score tables, public JSON, and filtered evidence.' : '保留原始可交互网页、最终评分表、公开 JSON 与筛选后的证据。'}
+                    {isEnglish ? 'Play the original 2D and 3D builds directly, then inspect final scores and all 50 vision results.' : '直接试玩 2D、3D 原作，并查看最终评分与全部 50 题视觉识别结果。'}
                   </p>
                   <Link to={path('/lab')} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
                     {isEnglish ? 'Enter the evaluation lab' : '进入评测实验室'} <span className="ml-1">→</span>

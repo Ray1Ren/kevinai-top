@@ -3,6 +3,7 @@ import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
 import SpeedAuditTable from '../components/SpeedAuditTable'
 import { useLocale } from '../hooks/useLocale'
+import PlayableComparison from '../components/PlayableComparison'
 
 export default function Lab2D() {
   const { data, loading, error } = useBenchmarks()
@@ -28,6 +29,17 @@ export default function Lab2D() {
               {task?.prompt ?? (isEnglish ? 'Build an original browser game with an immediately understandable slingshot interaction.' : '做一款让普通玩家一眼能理解拖弹弓、放手发射、撞塌建筑的原创网页小游戏。')}
             </blockquote>
           </div>
+
+          <PlayableComparison
+            title={isEnglish ? 'Play all three original 2D builds' : '三套 2D 原作直接试玩'}
+            description={isEnglish ? 'Switch between the submitted builds without leaving the evaluation. Codex opens first because it led the final quality score.' : '无需离开评测页即可切换三家提交的 HTML 成品；默认打开最终质量分第一的 Codex 版本。'}
+            defaultId="codex"
+            entries={[
+              { id: 'kimi', label: 'Kimi K3', src: '/bundles/2d/kimi/', score: 79.4 },
+              { id: 'codex', label: 'Codex', src: '/bundles/2d/codex/', score: 95.0 },
+              { id: 'minimax', label: 'MiniMax M3', src: '/bundles/2d/minimax-m3/', score: 68.1 },
+            ]}
+          />
 
           {data && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-12">
@@ -118,14 +130,7 @@ export default function Lab2D() {
             />
           </div>
 
-          <a
-            href={isEnglish ? '/data/benchmarks.en.json' : '/data/benchmarks.json'}
-            className="mt-8 inline-flex items-center justify-center px-6 py-3 rounded-full border border-white/10 text-white font-medium hover:border-white/25 transition-colors"
-          >
-            {isEnglish ? 'View public JSON data' : '查看公开数据 JSON'}
-          </a>
-
-          {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading public data…' : '数据加载中…'}</p>}
+          {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading evaluation results…' : '评测结果加载中…'}</p>}
           {error && <p className="mt-8 text-red-400 text-sm" role="alert">{isEnglish ? 'Unable to load data' : '数据加载失败'}：{error}</p>}
         </div>
       </section>
