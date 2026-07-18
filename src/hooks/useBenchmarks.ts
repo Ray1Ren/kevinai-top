@@ -24,7 +24,6 @@ export interface BenchmarkData {
       prompt?: string
       models: Record<string, Record<string, string | number | boolean>>
       conclusion: string
-      speedNote?: string
       playHref?: string
       dataHref?: string
     }

@@ -1,7 +1,6 @@
 import SEOHead from '../components/SEOHead'
 import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
-import SpeedAuditTable from '../components/SpeedAuditTable'
 import { useLocale } from '../hooks/useLocale'
 import PlayableComparison from '../components/PlayableComparison'
 
@@ -21,9 +20,8 @@ export default function Lab3D() {
               {isEnglish ? '3D web game evaluation' : '3D 小游戏评测'}
             </h1>
             <p className="text-graphite-200 leading-relaxed mb-4">
-              {task?.conclusion ?? (isEnglish ? 'K3 led on quality alone, while Codex led under the earlier speed-inclusive format.' : '纯质量分 K3 88.8 第一；若按原赛制含速度分，则 Codex 第一。MiniMax M3 最终版也通过了全部 19 项 QA。')}
+              {task?.conclusion ?? (isEnglish ? 'K3 ranked first at 91.0, followed by Codex at 89.2 and MiniMax M3 at 83.6.' : '公众号最终质量分：K3 91.0 第一，Codex 89.2，MiniMax M3 83.6。')}
             </p>
-            {task?.speedNote && <p className="text-sm text-graphite-400 mb-6">{task.speedNote}</p>}
             <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
               {task?.prompt ?? (isEnglish ? 'Build an original 3D browser game with a complete tactical training flow.' : '做一款让普通玩家一眼能理解进入 3D 战术训练场、移动瞄准、与敌人交火、清场后拆除装置的原创网页小游戏。')}
             </blockquote>
@@ -34,9 +32,9 @@ export default function Lab3D() {
             description={isEnglish ? 'Switch between the submitted builds directly. Kimi K3 opens first because it led the final quality score.' : '三家提交的 HTML 3D 游戏都已部署在这里，可直接切换试玩；默认打开最终质量分第一的 Kimi K3 版本。'}
             defaultId="kimi"
             entries={[
-              { id: 'kimi', label: 'Kimi K3', src: '/bundles/3d/kimi/', score: 88.8 },
-              { id: 'codex', label: 'Codex', src: '/bundles/3d/codex/', score: 86.5 },
-              { id: 'minimax', label: 'MiniMax M3', src: '/bundles/3d/minimax-m3/', score: 79.5 },
+              { id: 'kimi', label: 'Kimi K3', src: '/bundles/3d/kimi/', score: 91.0 },
+              { id: 'codex', label: 'Codex', src: '/bundles/3d/codex/', score: 89.2 },
+              { id: 'minimax', label: 'MiniMax M3', src: '/bundles/3d/minimax-m3/', score: 83.6 },
             ]}
           />
 
@@ -90,43 +88,23 @@ export default function Lab3D() {
                 <tbody className="text-graphite-200">
                   <tr className="border-b border-white/5">
                     <td className="px-4 py-3">Kimi Code + K3 max</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">88.8</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">91.0</td>
                     <td className="px-4 py-3 text-right tabular-nums">1:16:55.95</td>
                   </tr>
                   <tr className="border-b border-white/5">
                     <td className="px-4 py-3">Codex + gpt-5.6-sol xhigh</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">86.5</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">89.2</td>
                     <td className="px-4 py-3 text-right tabular-nums">22:57.51</td>
                   </tr>
                   <tr>
                     <td className="px-4 py-3">MiniMax M3</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">79.5</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">83.6</td>
                     <td className="px-4 py-3 text-right tabular-nums">44:05.49</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <p className="mt-4 text-xs text-graphite-500">{data?.metadata.scoringNote}</p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-8">
-            <h2 className="text-lg font-semibold text-white mb-2">{isEnglish ? 'Earlier speed-inclusive format (audit only)' : '原赛制含速度分（仅供过程审计）'}</h2>
-            <p className="text-sm text-graphite-400 mb-4">{isEnglish ? 'Codex moves into first when speed becomes points. This is retained only for audit and remains separate from final quality.' : '含速度后 Codex 总分反超；此处仅保留作审计参考，不与上方最终质量分混淆。'}</p>
-            <SpeedAuditTable
-              rows={(isEnglish ? [
-                { task: 'Speed 20', kimi: '6', codex: '20', minimax: '13.31' },
-                { task: '3D / UI 30', kimi: '25', codex: '23.7', minimax: '10.5' },
-                { task: 'Feel 30', kimi: '26', codex: '25.5', minimax: '6' },
-                { task: 'Bugs 20', kimi: '20', codex: '20', minimax: '0' },
-                { task: 'Total', kimi: '77', codex: '89.20', minimax: '29.81' },
-              ] : [
-                { task: '速度 20', kimi: '6', codex: '20', minimax: '13.31' },
-                { task: '3D/UI 30', kimi: '25', codex: '23.7', minimax: '10.5' },
-                { task: '体感 30', kimi: '26', codex: '25.5', minimax: '6' },
-                { task: 'Bug 20', kimi: '20', codex: '20', minimax: '0' },
-                { task: '总分', kimi: '77', codex: '89.20', minimax: '29.81' },
-              ])}
-            />
           </div>
 
           {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading evaluation results…' : '评测结果加载中…'}</p>}

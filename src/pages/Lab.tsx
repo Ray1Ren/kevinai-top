@@ -11,36 +11,36 @@ const taskCardsZh = [
     title: '2D 小游戏',
     project: '弹弓攻城',
     date: '2026-07-17',
-    summary: 'Codex 95.0 最稳；K3 79.4 完成度高但二三关漂移；MiniMax M3 68.1 纵向瞄准约束反了，高处目标难命中。',
+    summary: 'Codex 96.0 第一；K3 80.5 完成度高但二三关漂移；MiniMax M3 54.5，正常操作无法打通第一关。',
   },
   {
     slug: '3d',
     title: '3D 小游戏',
     project: '破门点',
     date: '2026-07-18',
-    summary: '纯质量分 K3 88.8 第一，画面与体感盲评第一；Codex 86.5 最均衡；MiniMax M3 79.5 完整通过 QA。',
+    summary: 'K3 91.0 第一，画面与体感最好；Codex 89.2 整套流程最顺；MiniMax M3 83.6，可完整玩下来但质感稍弱。',
   },
   {
     slug: 'promo',
     title: '宣传页 HTML',
     project: '一脚晋级宣传页',
     date: '2026-07-18',
-    summary: 'Codex 94.4 成品质感第一；MiniMax M3 93.3 信息层级最均衡；K3 90.0 完整但首屏密度可优化。',
+    summary: 'Codex 95.0 第一，品牌视觉最完整；K3 91.0 功能齐但首屏偏密；MiniMax M3 85.0，速度最快但视觉与动效第三。',
   },
   {
     slug: 'vision',
     title: '图片识别',
     project: '50 图视觉识别',
     date: '2026-07-18',
-    summary: 'K3 97.5 领先，49/50；Codex 92.6；MiniMax M3 90.8。速度不计入本榜。',
+    summary: 'K3 96.7 领先，49/50；Codex 90.0；MiniMax M3 88.0。速度不计入本榜。',
   },
 ]
 
 const taskCardsEn = [
-  { slug: '2d', title: '2D Web Game', project: 'Sling Siege', date: '2026-07-17', summary: 'Codex led at 95.0 for stability. K3 reached 79.4 with strong completion but physics drift. MiniMax M3 scored 68.1 after a reversed vertical aiming constraint made high targets difficult.' },
-  { slug: '3d', title: '3D Web Game', project: 'Breach Point', date: '2026-07-18', summary: 'K3 ranked first on pure quality at 88.8. Codex was the most balanced at 86.5. MiniMax M3 scored 79.5 and passed the complete QA route.' },
-  { slug: 'promo', title: 'Promotion Page', project: 'One Kick', date: '2026-07-18', summary: 'Codex led on finished quality at 94.4. MiniMax M3 reached 93.3 with the clearest hierarchy. K3 scored 90.0 with a complete but denser opening.' },
-  { slug: 'vision', title: 'Image Recognition', project: '50 frozen images', date: '2026-07-18', summary: 'K3 led this local tool-chain test at 97.5 and 49/50. Codex scored 92.6 and MiniMax M3 90.8. Speed did not affect the ranking.' },
+  { slug: '2d', title: '2D Web Game', project: 'Sling Siege', date: '2026-07-17', summary: 'Codex led at 96.0. K3 reached 80.5 with strong completion but physics drift. MiniMax M3 scored 54.5 because normal play could not clear level one.' },
+  { slug: '3d', title: '3D Web Game', project: 'Breach Point', date: '2026-07-18', summary: 'K3 ranked first at 91.0. Codex reached 89.2 with the smoothest complete flow. MiniMax M3 scored 83.6 and remained fully playable but less polished.' },
+  { slug: 'promo', title: 'Promotion Page', project: 'One Kick', date: '2026-07-18', summary: 'Codex led at 95.0 for brand presentation. K3 scored 91.0 with complete features but a denser opening. MiniMax M3 scored 85.0: fastest, but third on visual and motion quality.' },
+  { slug: 'vision', title: 'Image Recognition', project: '50 frozen images', date: '2026-07-18', summary: 'K3 led this local tool-chain test at 96.7 and 49/50. Codex scored 90.0 and MiniMax M3 88.0. Speed did not affect the ranking.' },
 ]
 
 export default function Lab() {

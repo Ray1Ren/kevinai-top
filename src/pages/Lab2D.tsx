@@ -1,7 +1,6 @@
 import SEOHead from '../components/SEOHead'
 import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
-import SpeedAuditTable from '../components/SpeedAuditTable'
 import { useLocale } from '../hooks/useLocale'
 import PlayableComparison from '../components/PlayableComparison'
 
@@ -35,9 +34,9 @@ export default function Lab2D() {
             description={isEnglish ? 'Switch between the submitted builds without leaving the evaluation. Codex opens first because it led the final quality score.' : '无需离开评测页即可切换三家提交的 HTML 成品；默认打开最终质量分第一的 Codex 版本。'}
             defaultId="codex"
             entries={[
-              { id: 'kimi', label: 'Kimi K3', src: '/bundles/2d/kimi/', score: 79.4 },
-              { id: 'codex', label: 'Codex', src: '/bundles/2d/codex/', score: 95.0 },
-              { id: 'minimax', label: 'MiniMax M3', src: '/bundles/2d/minimax-m3/', score: 68.1 },
+              { id: 'kimi', label: 'Kimi K3', src: '/bundles/2d/kimi/', score: 80.5 },
+              { id: 'codex', label: 'Codex', src: '/bundles/2d/codex/', score: 96.0 },
+              { id: 'minimax', label: 'MiniMax M3', src: '/bundles/2d/minimax-m3/', score: 54.5 },
             ]}
           />
 
@@ -91,43 +90,23 @@ export default function Lab2D() {
                 <tbody className="text-graphite-200">
                   <tr className="border-b border-white/5">
                     <td className="px-4 py-3">Codex + gpt-5.6-sol xhigh</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">95.0</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">96.0</td>
                     <td className="px-4 py-3 text-right tabular-nums">14:44.97</td>
                   </tr>
                   <tr className="border-b border-white/5">
                     <td className="px-4 py-3">Kimi Code + K3 max</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">79.4</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">80.5</td>
                     <td className="px-4 py-3 text-right tabular-nums">40:00.09</td>
                   </tr>
                   <tr>
                     <td className="px-4 py-3">MiniMax M3</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">68.1</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">54.5</td>
                     <td className="px-4 py-3 text-right tabular-nums">36:56.44</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <p className="mt-4 text-xs text-graphite-500">{data?.metadata.scoringNote}</p>
-          </div>
-
-          <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-8">
-            <h2 className="text-lg font-semibold text-white mb-2">{isEnglish ? 'Earlier speed-inclusive format (audit only)' : '原赛制含速度分（仅供过程审计）'}</h2>
-            <p className="text-sm text-graphite-400 mb-4">{isEnglish ? 'This earlier trial converted speed into points. It is separate from the final quality score above.' : '早期试跑口径含速度项，与上方最终质量分是两套独立评分。'}</p>
-            <SpeedAuditTable
-              rows={isEnglish ? [
-                { task: 'Speed 20', kimi: '6', codex: '16.25', minimax: '20' },
-                { task: 'UI 30', kimi: '25.5', codex: '28.5', minimax: '11' },
-                { task: 'Feel 30', kimi: '23', codex: '27.5', minimax: '5' },
-                { task: 'Bugs 20', kimi: '15', codex: '20', minimax: '1' },
-                { task: 'Total', kimi: '69.5', codex: '92.25', minimax: '37' },
-              ] : [
-                { task: '速度 20', kimi: '6', codex: '16.25', minimax: '20' },
-                { task: 'UI 30', kimi: '25.5', codex: '28.5', minimax: '11' },
-                { task: '体感 30', kimi: '23', codex: '27.5', minimax: '5' },
-                { task: 'Bug 20', kimi: '15', codex: '20', minimax: '1' },
-                { task: '总分', kimi: '69.5', codex: '92.25', minimax: '37' },
-              ]}
-            />
           </div>
 
           {loading && <p className="mt-8 text-graphite-400 text-sm" role="status" aria-live="polite">{isEnglish ? 'Loading evaluation results…' : '评测结果加载中…'}</p>}

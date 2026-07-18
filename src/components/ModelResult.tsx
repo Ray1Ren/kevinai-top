@@ -19,10 +19,14 @@ export default function ModelResult({ data, taskKey, model, playHref }: ModelRes
   const note = m.note as string
 
   return (
-    <div className="rounded-xl border border-white/5 bg-graphite-900/30 p-5">
+    <div
+      className="rounded-xl border border-white/5 bg-graphite-900/30 p-5"
+      data-model-result={model}
+      data-score-key="score"
+    >
       <div className="flex items-baseline justify-between mb-2">
         <span className="text-sm font-medium text-graphite-200">{label}</span>
-        <span className="text-2xl font-semibold tabular-nums" style={{ color }}>
+        <span className="text-2xl font-semibold tabular-nums" style={{ color }} data-model-score>
           {typeof score === 'number' ? score.toFixed(1) : score}
         </span>
       </div>

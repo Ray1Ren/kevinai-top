@@ -79,27 +79,27 @@ export default function LabVision() {
                     <td className="px-4 py-3 text-right tabular-nums">49/50</td>
                     <td className="px-4 py-3 text-right tabular-nums">14/15</td>
                     <td className="px-4 py-3 text-right tabular-nums">28.93 {isEnglish ? 's' : '秒'}</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">97.5</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">96.7</td>
                   </tr>
                   <tr className="border-b border-white/5">
                     <td className="px-4 py-3">Codex CLI + gpt-5.6-sol xhigh</td>
                     <td className="px-4 py-3 text-right tabular-nums">47/50</td>
                     <td className="px-4 py-3 text-right tabular-nums">12/15</td>
                     <td className="px-4 py-3 text-right tabular-nums">8.84 {isEnglish ? 's' : '秒'}</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">92.6</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">90.0</td>
                   </tr>
                   <tr>
                     <td className="px-4 py-3">OpenCode + MiniMax M3 thinking</td>
                     <td className="px-4 py-3 text-right tabular-nums">46/50</td>
                     <td className="px-4 py-3 text-right tabular-nums">12/15</td>
                     <td className="px-4 py-3 text-right tabular-nums">8.61 {isEnglish ? 's' : '秒'}</td>
-                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">90.8</td>
+                    <td className="px-4 py-3 text-right tabular-nums font-medium text-white">88.0</td>
                   </tr>
                 </tbody>
               </table>
             </div>
             <p className="mt-4 text-xs text-graphite-500">
-              {isEnglish ? '100 points = 90 for recognition accuracy + 10 for three-run hard-item stability. Speed, formatting, and confidence are diagnostic only.' : '100 分 = 识别准确率 90 分 + hard 三次稳定性 10 分。速度、格式、置信度仅作诊断，不计分。'}
+              {isEnglish ? '100 points = 30 for everyday/text/document items + 20 for counting/spatial items + 30 for charts/professional diagrams/UI + 20 for three-run hard-item stability. Speed is reported separately.' : '100 分 = 日常、文字与文档 30 分 + 计数与空间关系 20 分 + 图表、专业图与界面 30 分 + hard 三次稳定性 20 分。速度单列。'}
             </p>
           </div>
 

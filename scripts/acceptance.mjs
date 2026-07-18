@@ -325,6 +325,38 @@ async function testPromoInteraction(browser, base) {
   log('promotion page operation passed: right, up, right, victory')
 }
 
+async function testPublishedBenchmarkScores(browser, base) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'published benchmark scores', { allowDocument404: true })
+  const expectedByPage = {
+    '/lab/2d': { kimi: '80.5', codex: '96.0', minimax: '54.5' },
+    '/lab/3d': { kimi: '91.0', codex: '89.2', minimax: '83.6' },
+    '/lab/promo': { kimi: '91.0', codex: '95.0', minimax: '85.0' },
+    '/lab/vision': { kimi: '96.7', codex: '90.0', minimax: '88.0' },
+  }
+
+  for (const [path, expected] of Object.entries(expectedByPage)) {
+    await page.goto(`${base}${path}`, { waitUntil: 'networkidle' })
+    for (const [model, score] of Object.entries(expected)) {
+      const card = page.locator(`[data-model-result="${model}"]`)
+      assert.equal(await card.getAttribute('data-score-key'), 'score')
+      assert.equal(await card.locator('[data-model-score]').innerText(), score)
+    }
+    const pageText = await page.locator('main').innerText()
+    assert(!/含速度综合分|speed-inclusive composite/i.test(pageText), `${path} must not show a speed-inclusive score`)
+  }
+
+  await page.goto(`${base}/lab`, { waitUntil: 'networkidle' })
+  const totalRow = page.locator('tr').filter({ hasText: /四项等权总分/ })
+  assert.match(await totalRow.innerText(), /89\.8/)
+  assert.match(await totalRow.innerText(), /92\.6/)
+  assert.match(await totalRow.innerText(), /77\.8/)
+  finishMonitoring()
+  await context.close()
+  log('published benchmark scores passed: four detail pages and equal-weight total match the public-account article')
+}
+
 async function testVisionReview(browser, base) {
   const vision = await fetch(`${base}/data/vision-cases.json`).then((response) => response.json())
   assert.equal(vision.cases.length, 50)
@@ -505,6 +537,7 @@ async function main() {
     await testM3DesktopShooting(browser, base)
     await testM3MobileShooting(browser, base)
     await testPromoInteraction(browser, base)
+    await testPublishedBenchmarkScores(browser, base)
     await testVisionReview(browser, base)
     await testEmbeddedPlayableBuilds(browser, base)
     await testMotionModes(browser, base)
