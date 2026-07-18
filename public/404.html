@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting…</title>
+  <script>
+    (function () {
+      const path = window.location.pathname + window.location.search + window.location.hash;
+      window.location.replace('/?redirect=' + encodeURIComponent(path));
+    })();
+  </script>
+</head>
+<body>
+  <p>正在跳转…</p>
+</body>
+</html>

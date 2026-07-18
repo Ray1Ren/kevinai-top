@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#091219">
+  <title>Breach Point / 破门点</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="game-shell" aria-label="Breach Point 3D game">
+    <div id="viewport"></div>
+
+    <section id="intro" class="overlay intro-panel">
+      <div class="intro-copy">
+        <div class="eyebrow">HARBOR RESPONSE UNIT · TRAINING 07</div>
+        <h1><span>BREACH POINT</span><strong>破门点</strong></h1>
+        <p class="brief">进入暮色海港训练场，穿过双通道仓区，清除守卫并拆除脉冲装置。</p>
+        <div class="mission-strip">
+          <span><b>01</b> 移动瞄准</span>
+          <span><b>02</b> 清除威胁</span>
+          <span><b>03</b> 长按拆除</span>
+        </div>
+        <button id="start-btn" class="primary-btn" type="button">开始任务 <span>ENTER SITE</span></button>
+        <p class="best-line">最佳记录 <span id="best-time">--:--</span> · 最高得分 <span id="best-score">0</span></p>
+      </div>
+      <div class="control-card">
+        <div class="radar-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h2>行动简报</h2>
+        <dl>
+          <div><dt>移动</dt><dd>W A S D</dd></div>
+          <div><dt>观察</dt><dd>鼠标 / 拖拽</dd></div>
+          <div><dt>射击</dt><dd>左键</dd></div>
+          <div><dt>换弹</dt><dd>R</dd></div>
+          <div><dt>拆除</dt><dd>靠近后长按 E</dd></div>
+        </dl>
+        <p>移动端提供双区触控与独立行动按钮。</p>
+      </div>
+    </section>
+
+    <section id="hud" class="hidden" aria-live="polite">
+      <div class="hud-top">
+        <div class="hud-block vitality"><span>生命</span><strong id="hp-value">100</strong><div class="bar"><i id="hp-bar"></i></div></div>
+        <div class="objective-copy"><span id="phase-label">清除区域威胁</span><strong id="objective-label">沿黄色引导进入仓区</strong></div>
+        <div class="hud-block timer"><span>剩余时间</span><strong id="time-value">01:15</strong></div>
+      </div>
+      <div class="hud-bottom">
+        <div class="enemy-count"><span>威胁</span><strong id="enemy-value">5</strong></div>
+        <div class="ammo"><span id="reload-label">VX-12</span><strong id="ammo-value">12</strong><em>/</em><b id="reserve-value">36</b></div>
+      </div>
+      <div id="crosshair" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+      <div id="hit-marker" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div id="damage-vignette" aria-hidden="true"></div>
+      <div id="direction-hit" aria-hidden="true"></div>
+      <div id="prompt" class="prompt hidden"><span id="prompt-text">长按 E 拆除装置</span><div class="progress"><i id="defuse-bar"></i></div></div>
+      <div id="toast" class="toast">沿信标前进 · 清除全部红色目标</div>
+      <div class="hud-actions">
+        <button id="pause-btn" type="button" aria-label="暂停">Ⅱ</button>
+        <button id="restart-btn" type="button" aria-label="重开">↻</button>
+        <button id="mute-btn" type="button" aria-label="静音">音</button>
+      </div>
+    </section>
+
+    <section id="pause-panel" class="overlay modal hidden">
+      <div><span class="eyebrow">TACTICAL HOLD</span><h2>任务暂停</h2><p>计时、敌人行动与拆除进度已冻结。</p><button id="resume-btn" class="primary-btn" type="button">继续任务</button></div>
+    </section>
+
+    <section id="result-panel" class="overlay modal hidden">
+      <div><span id="result-kicker" class="eyebrow">MISSION COMPLETE</span><h2 id="result-title">装置已解除</h2><p id="result-copy">海港训练区恢复安全。</p><div class="result-stats"><span>用时 <b id="result-time">00:00</b></span><span>命中率 <b id="result-accuracy">0%</b></span><span>得分 <b id="result-score">0</b></span></div><button id="result-restart" class="primary-btn" type="button">重新部署</button></div>
+    </section>
+
+    <section id="touch-controls" class="hidden" aria-label="触摸控制">
+      <div id="move-zone" class="touch-zone move-zone"><div id="move-stick" class="stick"></div><span>移动</span></div>
+      <div id="look-zone" class="touch-zone look-zone"><span>拖拽观察</span></div>
+      <button id="touch-fire" class="touch-action fire" type="button">射击</button>
+      <button id="touch-reload" class="touch-action reload" type="button">换弹</button>
+      <button id="touch-interact" class="touch-action interact" type="button">拆除</button>
+    </section>
+
+    <div id="rotate-note" class="hidden">横屏可获得更宽视野，竖屏同样可玩</div>
+  </main>
+  <script src="vendor/three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

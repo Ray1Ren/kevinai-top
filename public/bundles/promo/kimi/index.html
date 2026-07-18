@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>一脚晋级 · 微信小游戏 | 先看路线，再出这一脚</title>
+<meta name="description" content="《一脚晋级》微信小游戏：6×6 球场路线解谜，一滑到底，500 关逐层加入足球规则，每关程序验证有解。本页可直接试玩三步破门挑战。">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#demo-board">跳到三步破门挑战</a>
+
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a class="header-brand" href="#play" aria-label="回到顶部：一脚晋级">
+      <span class="header-ball" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22"><circle cx="12" cy="12" r="10" fill="#fff" stroke="#1C3A24" stroke-width="1.6"/><path d="M12 7.2l3.1 2.25-1.18 3.65h-3.84L8.9 9.45 12 7.2z" fill="#1C3A24"/><path d="M12 2.4v4.8M18.9 5.6l-3.9 3.85M20.4 14.6l-4.48-1.5M14.6 21.4l-1.5-4.3M6.6 18.9l3.42-3.8M3.6 10.1l4.8 1.35" stroke="#1C3A24" stroke-width="1.4" fill="none"/></svg>
+      </span>
+      <span class="header-title">一脚晋级</span>
+    </a>
+    <nav class="header-nav" aria-label="页面导航">
+      <a href="#play" data-nav="play" class="is-active">开玩挑战</a>
+      <a href="#journey" data-nav="journey">500 关旅程</a>
+      <a href="#proof" data-nav="proof">真实截图</a>
+      <a href="#play-now" data-nav="play-now">立即开玩</a>
+    </nav>
+    <button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="false" aria-label="暂停装饰动效">
+      <svg class="icon-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1.2" fill="currentColor"/></svg>
+      <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+      <span class="motion-toggle-text">动效</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ #play 首屏 · 三步破门挑战 ============ -->
+  <section id="play" class="hero" aria-label="首屏：三步破门挑战">
+    <div class="hero-stadium" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="img-box brand-box reveal" data-reveal="0">
+          <img src="assets/brand-lockup.png" alt="《一脚晋级》游戏标志：奖杯、足球与金色徽章" width="720" height="240" class="brand-logo">
+        </div>
+        <p class="eyebrow reveal" data-reveal="1">微信小游戏 · 足球路线解谜</p>
+        <h1 class="reveal" data-reveal="2">先看路线，<br>再出这一脚</h1>
+        <p class="hero-sub reveal" data-reveal="3">《一脚晋级》把整片球场收进 6×6 格子：一脚滑出，足球沿直线冲到底，停在哪，全看你的判断。右边这块小球场就是真实玩法的缩小版——不用下载，现在就能踢。</p>
+      </div>
+
+      <div class="hero-after">
+        <ul class="hero-points reveal" data-reveal="4">
+          <li>
+            <span class="point-marker" aria-hidden="true"></span>
+            <div><strong>一滑到底</strong><span>足球滑到障碍、边界或球门才停，先看路线再动手。</span></div>
+          </li>
+          <li>
+            <span class="point-marker" aria-hidden="true"></span>
+            <div><strong>500 关逐层加规则</strong><span>泥地、转向、越位、队友/对手、对手门将、黄牌、传送门陆续登场，每关程序验证有解。</span></div>
+          </li>
+          <li>
+            <span class="point-marker" aria-hidden="true"></span>
+            <div><strong>微信里直接开踢</strong><span>搜《一脚晋级》即玩，小程序码在页底等你。</span></div>
+          </li>
+        </ul>
+        <div class="hero-ctas reveal" data-reveal="5">
+          <a class="btn btn-primary" href="#play-now">微信搜《一脚晋级》</a>
+          <a class="btn btn-ghost" href="#journey">看 500 关怎么升级</a>
+        </div>
+      </div>
+
+      <div class="hero-board reveal" data-reveal="2">
+        <div class="board-card" id="board-card">
+          <div class="board-card-head">
+            <div class="board-title">
+              <p class="board-kicker">试玩 · 迷你球场</p>
+              <h2>三步破门挑战</h2>
+            </div>
+            <div class="board-status">
+              <span class="moves-pill" id="moves-label">步数 0</span>
+              <span class="star-target">三星目标 · 3 步内</span>
+            </div>
+          </div>
+
+          <div class="board-wrap">
+            <div id="demo-board" class="board" tabindex="0" role="application"
+                 aria-label="6 乘 6 迷你球场。拖动足球或按方向键滑动足球，三步内进球。"
+                 aria-describedby="board-help">
+              <div class="board-grid" id="board-grid" aria-hidden="true"></div>
+              <!-- 36 个格子由 JS 生成 -->
+              <svg class="pitch-lines" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+                <rect x="10" y="10" width="580" height="580" rx="10" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="5"/>
+                <line x1="10" y1="300" x2="590" y2="300" stroke="rgba(255,255,255,.45)" stroke-width="4"/>
+                <circle cx="300" cy="300" r="72" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="4"/>
+                <circle cx="300" cy="300" r="7" fill="rgba(255,255,255,.5)"/>
+              </svg>
+              <div class="board-decor" aria-hidden="true">
+                <div class="decor mud" style="--r:5;--c:2" title="泥地"></div>
+                <div class="decor mate" style="--r:2;--c:1">
+                  <img src="assets/player.png" alt="" width="256" height="256" draggable="false">
+                </div>
+                <div class="decor keeper" style="--r:0;--c:5">
+                  <img src="assets/keeper.png" alt="" width="256" height="256" draggable="false">
+                </div>
+                <div class="decor rival" style="--r:4;--c:5">
+                  <svg viewBox="0 0 48 48"><circle cx="24" cy="11" r="7" fill="#14301F"/><path d="M24 19c-8 0-12 6-12 13v9h24v-9c0-7-4-13-12-13z" fill="#14301F"/><rect x="14" y="38" width="20" height="4" rx="2" fill="#C93A2E"/></svg>
+                </div>
+                <div class="decor rival" style="--r:0;--c:4">
+                  <svg viewBox="0 0 48 48"><circle cx="24" cy="11" r="7" fill="#14301F"/><path d="M24 19c-8 0-12 6-12 13v9h24v-9c0-7-4-13-12-13z" fill="#14301F"/><rect x="14" y="38" width="20" height="4" rx="2" fill="#C93A2E"/></svg>
+                </div>
+                <div class="decor goal" style="--r:1;--c:5">
+                  <svg viewBox="0 0 60 60" class="goal-net"><rect x="6" y="14" width="48" height="38" rx="4" fill="rgba(255,255,255,.28)" stroke="#fff" stroke-width="3"/><path d="M14 14v38M22 14v38M30 14v38M38 14v38M46 14v38M6 24h48M6 33h48M6 42h48" stroke="rgba(255,255,255,.75)" stroke-width="1.6"/></svg>
+                  <svg viewBox="0 0 60 60" class="goal-flag loop" aria-hidden="true"><line x1="10" y1="8" x2="10" y2="30" stroke="#F3F8EF" stroke-width="3" stroke-linecap="round"/><path d="M10 8h18l-5 6 5 6H10z" fill="#F4C430"/></svg>
+                </div>
+              </div>
+              <div class="ball" id="ball" aria-hidden="true">
+                <span class="ball-pulse loop"></span>
+                <svg viewBox="0 0 48 48" class="ball-svg">
+                  <circle cx="24" cy="24" r="21" fill="#fff"/>
+                  <circle cx="24" cy="24" r="21" fill="none" stroke="#10271A" stroke-width="2.4"/>
+                  <path d="M24 16l7.6 5.5-2.9 8.9h-9.4l-2.9-8.9z" fill="#10271A"/>
+                  <path d="M24 3.2V16M38.7 10.3l-6.1 5.7M44.7 27.5l-7.6 2.5M34.4 43.6l-5.7-6.1M13.6 43.6l5.7-6.1M3.3 27.5l7.6 2.5M9.3 10.3l6.1 5.7" stroke="#10271A" stroke-width="2" fill="none"/>
+                </svg>
+              </div>
+            </div>
+            <canvas id="confetti-canvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+            <div class="win-panel" id="win-panel" role="dialog" aria-modal="false" aria-labelledby="win-title" hidden>
+              <div class="win-stars" id="win-stars" aria-hidden="true">
+                <svg viewBox="0 0 24 24" class="star"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z"/></svg>
+                <svg viewBox="0 0 24 24" class="star"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z"/></svg>
+                <svg viewBox="0 0 24 24" class="star"><path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z"/></svg>
+              </div>
+              <h3 id="win-title">球进了！</h3>
+              <p id="win-text">三步破门，完美晋级。</p>
+              <div class="win-actions">
+                <button type="button" class="btn btn-primary" id="replay-btn">重新挑战</button>
+                <a class="btn btn-ghost-light" href="#journey" id="win-journey-btn">看看 500 关怎么升级</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="board-controls">
+            <div class="dpad" role="group" aria-label="方向按钮">
+              <button type="button" class="dpad-btn dpad-up" data-dir="up" aria-label="向上滑动">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 5l7 8h-4v6H9v-6H5z" fill="currentColor"/></svg>
+              </button>
+              <button type="button" class="dpad-btn dpad-left" data-dir="left" aria-label="向左滑动">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M5 12l8-7v4h6v6h-6v4z" fill="currentColor"/></svg>
+              </button>
+              <button type="button" class="dpad-btn dpad-right" data-dir="right" aria-label="向右滑动">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M19 12l-8 7v-4H5V9h6V5z" fill="currentColor"/></svg>
+              </button>
+              <button type="button" class="dpad-btn dpad-down" data-dir="down" aria-label="向下滑动">
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 19l-7-8h4V5h6v6h4z" fill="currentColor"/></svg>
+              </button>
+            </div>
+            <p class="board-help" id="board-help">拖动足球、在球场上滑动，或按方向键：朝球门滑出这一脚。路线会在你拖动时提前亮出来。</p>
+            <div class="board-tools">
+              <button type="button" class="tool-btn" id="hint-btn">提示路线</button>
+              <button type="button" class="tool-btn" id="reset-btn">
+                <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M12 5a7 7 0 1 1-6.3 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M5 4v5h5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                重置
+              </button>
+            </div>
+          </div>
+        </div>
+        <p class="board-outside-note">这一步踢完别停——往下滑，看 500 关怎么一层层加码。</p>
+      </div>
+    </div>
+    <p class="sr-only" id="live-region" aria-live="polite"></p>
+  </section>
+
+  <!-- ============ #journey 500 关逐层加规则 ============ -->
+  <section id="journey" class="journey" aria-label="500 关规则旅程">
+    <div class="section-head reveal-group">
+      <p class="eyebrow">关卡设计</p>
+      <h2>500 关，不是重复堆量</h2>
+      <p class="lead">规则一层一层加进来，每一层都改写你对路线的判断。点开一级，看看它到底改变了什么。每一关上线前都经过程序验证：必有解。</p>
+    </div>
+
+    <div class="journey-body">
+      <ol class="journey-rail" role="tablist" aria-label="规则进阶列表">
+        <li><button type="button" role="tab" id="tab-move" aria-controls="journey-panel" aria-selected="true" data-mech="move"><span class="rail-num">01</span><span class="rail-name">基础移动</span><span class="rail-stage">前期</span></button></li>
+        <li><button type="button" role="tab" id="tab-mud" aria-controls="journey-panel" aria-selected="false" data-mech="mud"><span class="rail-num">02</span><span class="rail-name">泥地</span><span class="rail-stage">前期</span></button></li>
+        <li><button type="button" role="tab" id="tab-arrow" aria-controls="journey-panel" aria-selected="false" data-mech="arrow"><span class="rail-num">03</span><span class="rail-name">转向箭头</span><span class="rail-stage">中期</span></button></li>
+        <li><button type="button" role="tab" id="tab-offside" aria-controls="journey-panel" aria-selected="false" data-mech="offside"><span class="rail-num">04</span><span class="rail-name">越位</span><span class="rail-stage">中期</span></button></li>
+        <li><button type="button" role="tab" id="tab-people" aria-controls="journey-panel" aria-selected="false" data-mech="people"><span class="rail-num">05</span><span class="rail-name">队友/对手</span><span class="rail-stage">中期</span></button></li>
+        <li><button type="button" role="tab" id="tab-keeper" aria-controls="journey-panel" aria-selected="false" data-mech="keeper"><span class="rail-num">06</span><span class="rail-name">对手门将</span><span class="rail-stage">后期</span></button></li>
+        <li><button type="button" role="tab" id="tab-card" aria-controls="journey-panel" aria-selected="false" data-mech="card"><span class="rail-num">07</span><span class="rail-name">黄牌</span><span class="rail-stage">后期</span></button></li>
+        <li><button type="button" role="tab" id="tab-portal" aria-controls="journey-panel" aria-selected="false" data-mech="portal"><span class="rail-num">08</span><span class="rail-name">传送门</span><span class="rail-stage">后期</span></button></li>
+      </ol>
+
+      <div class="journey-detail" id="journey-panel" role="tabpanel" aria-labelledby="tab-move" tabindex="0">
+        <div class="detail-top">
+          <span class="detail-icon" id="detail-icon" aria-hidden="true"></span>
+          <div>
+            <p class="detail-stage" id="detail-stage">前期 · 上手</p>
+            <h3 id="detail-title">基础移动</h3>
+          </div>
+        </div>
+        <p class="detail-desc" id="detail-desc"></p>
+        <p class="detail-effect"><span class="effect-label">它改写了</span><span id="detail-effect"></span></p>
+        <div class="detail-meter" aria-hidden="true">
+          <div class="meter-track">
+            <span class="meter-zone zone-a">前期 · 上手</span>
+            <span class="meter-zone zone-b">中期 · 变奏</span>
+            <span class="meter-zone zone-c">后期 · 决胜</span>
+            <span class="meter-cursor" id="meter-cursor"></span>
+          </div>
+          <p class="meter-caption">500 关的节奏：新规则一层压一层，旧规则一个也不退场。</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="props-strip" aria-label="道具">
+      <div class="img-box prop-box">
+        <img src="assets/route-card.png" alt="路线卡道具：一张画着球场与虚线路线的卡片" width="192" height="192">
+      </div>
+      <p class="props-text">真卡住了也有退路：<strong>路线卡</strong>帮你亮出一条可行路线，<strong>保连卡</strong>替你保住连胜纪录。道具是扶手，不是拐杖——路线还是得你自己判断。</p>
+      <div class="img-box prop-box">
+        <img src="assets/revive-card.png" alt="保连卡道具：一张画着角旗与火焰的卡片" width="192" height="192">
+      </div>
+    </aside>
+  </section>
+
+  <!-- ============ #proof 真实截图 ============ -->
+  <section id="proof" class="proof" aria-label="真实关卡截图">
+    <div class="section-head reveal-group">
+      <p class="eyebrow">真实截图</p>
+      <h2>同一关，从开球到三星晋级</h2>
+      <p class="lead">下面三张来自真实关卡「第 10 关 · 首轮决胜」：开球前、一脚之后、三星晋级。点两侧的卡，或用按钮切换，把这一局翻完。</p>
+    </div>
+
+    <div class="deck" id="deck">
+      <button type="button" class="deck-nav deck-prev" id="deck-prev" aria-label="上一张截图">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="deck-stage" id="deck-stage">
+        <figure class="deck-card" data-index="0" tabindex="0" role="button" aria-label="截图一：开球前，点按放大查看">
+          <div class="phone img-box">
+            <img src="assets/gameplay-start.png" alt="真实关卡截图：第 10 关首轮决胜，开球前，剩余 6 脚，三星目标 4 脚内" width="860" height="1864" loading="lazy" draggable="false">
+          </div>
+          <figcaption><strong>开球前</strong><span>先看整块球场，想好路线再动手。</span></figcaption>
+        </figure>
+        <figure class="deck-card" data-index="1" tabindex="0" role="button" aria-label="截图二：一脚之后，点按放大查看">
+          <div class="phone img-box">
+            <img src="assets/gameplay-pass.png" alt="真实关卡截图：一脚之后，足球停在新位置，剩余 5 脚" width="860" height="1864" loading="lazy" draggable="false">
+          </div>
+          <figcaption><strong>一脚之后</strong><span>球停在哪，局面就变成什么样。</span></figcaption>
+        </figure>
+        <figure class="deck-card" data-index="2" tabindex="0" role="button" aria-label="截图三：三星晋级，点按放大查看">
+          <div class="phone img-box">
+            <img src="assets/gameplay-win.png" alt="真实关卡截图：三星晋级，本关已晋级，金币加 35" width="860" height="1864" loading="lazy" draggable="false">
+          </div>
+          <figcaption><strong>三星晋级</strong><span>压哨破门，下一轮见。</span></figcaption>
+        </figure>
+      </div>
+      <button type="button" class="deck-nav deck-next" id="deck-next" aria-label="下一张截图">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M9 4l8 8-8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="deck-dots" role="tablist" aria-label="截图切换">
+      <button type="button" role="tab" data-goto="0" aria-selected="true" aria-label="第 1 张：开球前"></button>
+      <button type="button" role="tab" data-goto="1" aria-selected="false" aria-label="第 2 张：一脚之后"></button>
+      <button type="button" role="tab" data-goto="2" aria-selected="false" aria-label="第 3 张：三星晋级"></button>
+    </div>
+  </section>
+
+  <!-- ============ #play-now 立即开玩 ============ -->
+  <section id="play-now" class="play-now" aria-label="立即开玩">
+    <div class="ticket reveal-group">
+      <div class="ticket-copy">
+        <p class="eyebrow">立即开玩</p>
+        <h2>现在，轮到你开球了</h2>
+        <p class="lead">打开微信，搜索《一脚晋级》。500 关球场已经摆好，第一脚从你今天开始。</p>
+        <button type="button" class="btn btn-primary btn-big" id="copy-name-btn">复制游戏名，去微信搜索</button>
+        <p class="copy-feedback" id="copy-feedback" aria-live="polite"></p>
+      </div>
+      <div class="ticket-qr">
+        <div class="img-box qr-box">
+          <img src="assets/qr.png" alt="《一脚晋级》微信小程序码" width="430" height="430">
+        </div>
+        <p class="qr-note">微信搜《一脚晋级》</p>
+        <p class="qr-disclaimer">本地原型展示，发布前需微信实扫确认</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>《一脚晋级》 · 微信小游戏 · 足球路线解谜</p>
+  <p class="footer-note">本页为本地原型展示，玩法、截图与小程序码以正式发布版本为准。</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

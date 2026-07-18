@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Breach Point / 破门点 — 海港仓库拆弹训练</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230c1420'/><rect x='4' y='5' width='8' height='7' fill='%23ffb42c'/></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <!-- WebGL 画布由 game.js 创建并挂载到这里 -->
+  <div id="game-container"></div>
+
+  <!-- ================= HUD ================= -->
+  <div id="hud" class="hidden">
+    <div id="hud-top">
+      <div id="objective-panel">
+        <div id="objective-title">当前目标</div>
+        <div id="objective-text">肃清区域守卫</div>
+        <div id="enemies-left">剩余敌人 5</div>
+      </div>
+      <div id="timer-wrap">
+        <div id="timer">75.0</div>
+        <div id="timer-label">撤离倒计时</div>
+      </div>
+      <div id="hud-buttons">
+        <button id="btn-pause" class="hud-btn" title="暂停 (Esc)">⏸</button>
+        <button id="btn-restart" class="hud-btn" title="重新开始">↻</button>
+        <button id="btn-mute" class="hud-btn" title="静音 (M)">🔊</button>
+      </div>
+    </div>
+
+    <div id="obj-arrow" class="hidden">▲</div>
+
+    <div id="crosshair">
+      <span class="ch-line ch-t"></span><span class="ch-line ch-b"></span>
+      <span class="ch-line ch-l"></span><span class="ch-line ch-r"></span>
+      <span class="ch-dot"></span>
+    </div>
+    <div id="hitmarker"></div>
+
+    <div id="dmg-indicator" class="hidden"></div>
+    <div id="vignette"></div>
+
+    <div id="defuse-wrap" class="hidden">
+      <div id="defuse-ring"></div>
+      <div id="defuse-label">拆除中…</div>
+    </div>
+
+    <div id="hud-bottom">
+      <div id="health-wrap">
+        <div class="hud-tag">生命</div>
+        <div id="health-bar"><div id="health-fill"></div></div>
+        <div id="health-num">100</div>
+      </div>
+      <div id="hint"></div>
+      <div id="ammo-wrap">
+        <div id="ammo-mag">12</div>
+        <div id="ammo-reserve">/ 36</div>
+        <div class="hud-tag" id="ammo-tag">弹匣 / 备弹</div>
+      </div>
+    </div>
+
+    <div id="banner" class="hidden"></div>
+
+    <!-- 触屏控制 -->
+    <div id="touch-controls" class="hidden">
+      <div id="stick-zone"><div id="stick-base"><div id="stick-knob"></div></div></div>
+      <button id="btn-fire">开火</button>
+      <button id="btn-reload-t">换弹</button>
+      <button id="btn-interact-t">拆除</button>
+    </div>
+  </div>
+
+  <!-- ================= 开始界面 ================= -->
+  <div id="start-screen" class="overlay">
+    <div class="panel start-panel">
+      <div class="game-logo">
+        <div class="logo-en">BREACH POINT</div>
+        <div class="logo-zh">破 门 点</div>
+        <div class="logo-sub">原创低多边形 · 海港仓库拆弹训练场</div>
+      </div>
+      <p class="brief">
+        情报：废弃海港仓库区内被安放了爆破装置，多名武装守卫驻守。<br>
+        突入训练场，<b>肃清全部守卫</b>，随后靠近<b class="accent">发光装置</b>长按拆除，在倒计时结束前完成任务。
+      </p>
+      <div class="controls-grid">
+        <div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动</div>
+        <div><kbd>鼠标</kbd> 瞄准 / <kbd>左键</kbd> 射击</div>
+        <div><kbd>R</kbd> 换弹</div>
+        <div><kbd>E</kbd> 长按拆除装置</div>
+        <div><kbd>Esc</kbd> 暂停</div>
+        <div><kbd>M</kbd> 静音</div>
+      </div>
+      <div class="controls-grid touch-help">
+        <div>左侧摇杆移动 · 右侧滑动观察</div>
+        <div>右下按钮：开火 / 换弹 / 拆除</div>
+      </div>
+      <button id="btn-start">开始任务</button>
+      <div id="best-record"></div>
+      <div class="footnote">点击后进入鼠标锁定视角；若浏览器拒绝锁定，可用鼠标拖拽观察、单击射击。</div>
+    </div>
+  </div>
+
+  <!-- ================= 暂停界面 ================= -->
+  <div id="pause-screen" class="overlay hidden">
+    <div class="panel">
+      <div class="panel-title">任务暂停</div>
+      <div class="panel-sub">倒计时与敌人已冻结</div>
+      <button id="btn-resume" class="menu-btn">继续任务</button>
+      <button id="btn-restart-p" class="menu-btn">重新开始</button>
+      <button id="btn-mute-p" class="menu-btn">切换静音</button>
+      <button id="btn-menu-p" class="menu-btn ghost">返回主菜单</button>
+    </div>
+  </div>
+
+  <!-- ================= 结算界面 ================= -->
+  <div id="end-screen" class="overlay hidden">
+    <div class="panel">
+      <div id="end-title" class="panel-title">任务完成</div>
+      <div id="end-sub" class="panel-sub"></div>
+      <div id="end-stats"></div>
+      <button id="btn-restart-e" class="menu-btn">再来一局</button>
+      <button id="btn-menu-e" class="menu-btn ghost">返回主菜单</button>
+    </div>
+  </div>
+
+  <div id="fatal-error" class="hidden"></div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

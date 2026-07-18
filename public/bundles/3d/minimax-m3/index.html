@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+<meta name="theme-color" content="#0c1620" />
+<title>Breach Point / 破门点 — 海港仓库拆弹训练</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<canvas id="gl" aria-label="game viewport"></canvas>
+
+<!-- START / MENU -->
+<section id="menu" class="layer" aria-hidden="false">
+  <div class="menu-card">
+    <div class="brand-row">
+      <div class="brand-logo" aria-hidden="true">
+        <span class="brand-logo-glow"></span>
+      </div>
+      <div class="brand-text">
+        <div class="brand-title">Breach Point</div>
+        <div class="brand-sub">破门点 · 海港仓库拆弹训练</div>
+      </div>
+    </div>
+
+    <div class="menu-lead">
+      原创低多边形 3D 第一人称战术训练场。
+      肃清区域内全部敌方目标后，靠近核心装置完成长按拆弹。
+    </div>
+
+    <div class="menu-controls">
+      <div class="ctrl-row">
+        <span class="kbd">WASD</span><span class="ctrl-text">移动</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="kbd">鼠标</span><span class="ctrl-text">瞄准</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="kbd">左键</span><span class="ctrl-text">射击</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="kbd">R</span><span class="ctrl-text">换弹</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="kbd">E</span><span class="ctrl-text">长按拆弹</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="kbd">Esc</span><span class="ctrl-text">暂停</span>
+      </div>
+    </div>
+
+    <div class="menu-actions">
+      <button id="btn-start" class="btn btn-primary" type="button">开始任务</button>
+      <button id="btn-mute-menu" class="btn btn-ghost" type="button">🔊 声音</button>
+    </div>
+
+    <div class="menu-footnote" id="best-line">最佳战绩：未记录</div>
+  </div>
+</section>
+
+<!-- HUD -->
+<section id="hud" class="layer" aria-hidden="true">
+  <div class="hud-top">
+    <div class="hud-stat" id="hud-hp">
+      <span class="hud-icon" aria-hidden="true">❤</span>
+      <span class="hud-num" id="hp-num">100</span>
+      <div class="hud-bar"><div class="hud-bar-fill" id="hp-fill"></div></div>
+    </div>
+    <div class="hud-stat hud-ammo">
+      <span class="hud-icon" aria-hidden="true">⦿</span>
+      <span class="hud-num"><span id="ammo-num">12</span><span class="hud-sub">/<span id="reserve-num">24</span></span></span>
+      <div class="hud-reload" id="reload-tag" aria-hidden="true">换弹…</div>
+    </div>
+    <div class="hud-stat">
+      <span class="hud-icon" aria-hidden="true">⏱</span>
+      <span class="hud-num" id="time-num">75</span>
+    </div>
+    <div class="hud-stat">
+      <span class="hud-icon" aria-hidden="true">☠</span>
+      <span class="hud-num"><span id="enemy-dead">0</span><span class="hud-sub">/<span id="enemy-total">4</span></span></span>
+    </div>
+  </div>
+
+  <div class="crosshair" id="crosshair">
+    <span class="ch-line ch-l"></span>
+    <span class="ch-line ch-r"></span>
+    <span class="ch-line ch-u"></span>
+    <span class="ch-line ch-d"></span>
+    <span class="ch-dot"></span>
+  </div>
+
+  <div class="objective">
+    <div class="objective-title">任务目标</div>
+    <div class="objective-text" id="objective-text">肃清仓库内全部敌方目标</div>
+    <div class="objective-tag" id="objective-tag">存活敌人 4</div>
+  </div>
+
+  <div class="hit-marker" id="hit-marker" aria-hidden="true"></div>
+  <div class="damage-flash" id="damage-flash" aria-hidden="true"></div>
+
+  <div class="bomb-progress" id="bomb-progress" aria-hidden="true">
+    <div class="bomb-label">长按 <b>E</b> / 触屏拆弹按钮</div>
+    <div class="bomb-bar"><div class="bomb-fill" id="bomb-fill"></div></div>
+    <div class="bomb-hint" id="bomb-hint">靠近核心装置</div>
+  </div>
+
+  <div class="hud-bottom">
+    <div class="hud-status" id="status-line">WASD 移动 · 鼠标瞄准 · 左键开火</div>
+    <div class="hud-buttons">
+      <button id="btn-pause" class="circ-btn" type="button" title="暂停">⏸</button>
+    </div>
+  </div>
+</section>
+
+<!-- TOUCH OVERLAY -->
+<section id="touch" class="layer touch-layer" aria-hidden="true">
+  <div id="touch-stick" class="touch-stick">
+    <div class="touch-stick-base"></div>
+    <div class="touch-stick-knob" id="touch-stick-knob"></div>
+  </div>
+  <div id="touch-look" class="touch-look"></div>
+  <div class="touch-actions">
+    <button id="touch-fire" class="touch-btn touch-fire" type="button">FIRE</button>
+    <button id="touch-interact" class="touch-btn touch-interact" type="button">拆弹</button>
+    <button id="touch-reload" class="touch-btn touch-reload" type="button">换弹</button>
+  </div>
+</section>
+
+<!-- PAUSE / RESULT OVERLAY -->
+<section id="overlay" class="layer overlay" aria-hidden="true">
+  <div class="overlay-card" id="overlay-card">
+    <div class="overlay-title" id="overlay-title">已暂停</div>
+    <div class="overlay-body" id="overlay-body"></div>
+    <div class="overlay-actions" id="overlay-actions"></div>
+  </div>
+</section>
+
+<!-- BIG DIRECTIONAL HINT (initial 3s) -->
+<div id="intro-arrow" class="intro-arrow" aria-hidden="true">
+  <div class="intro-arrow-icon">▼</div>
+  <div class="intro-arrow-text">向仓库纵深推进</div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

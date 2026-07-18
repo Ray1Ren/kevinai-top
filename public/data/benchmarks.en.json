@@ -1,0 +1,89 @@
+{
+  "metadata": {
+    "title": "Final quality scores across four Kimi K3 / GPT-5.6 Sol / MiniMax M3 evaluations",
+    "dateRange": "2026-07-17 to 2026-07-18",
+    "scoringNote": "Every task uses a 100-point quality scale. Speed is reported separately and does not affect quality. The four tasks are equally weighted at 25% each. Model order is fixed as Kimi K3, GPT-5.6 Sol (Codex CLI), and MiniMax M3.",
+    "modelOrder": ["Kimi K3", "GPT-5.6 Sol (Codex CLI)", "MiniMax M3"],
+    "methodNote": "Within each of the 2D, 3D, and promotion-page evaluations, all systems received the same task brief, an empty directory, and identical inputs. The briefs and assets differed across the three evaluation types. The vision evaluation used the same frozen set of 50 strictly valid images and the same question wording. Every run used the same machine, consistent Chrome QA, and real screen recordings.",
+    "publicDataNote": "This site publishes final scores, final interactive outputs, and filtered evidence only. Raw run logs, stdout, stderr, raw response folders, and private manifests are not public."
+  },
+  "summary": {
+    "table": [
+      { "task": "2D web game", "kimi": 79.4, "codex": 95.0, "minimax": 68.1 },
+      { "task": "3D web game", "kimi": 88.8, "codex": 86.5, "minimax": 79.5 },
+      { "task": "Promotion page", "kimi": 90.0, "codex": 94.4, "minimax": 93.3 },
+      { "task": "Image recognition", "kimi": 97.5, "codex": 92.6, "minimax": 90.8 },
+      { "task": "Four-task weighted total", "kimi": 88.9, "codex": 92.1, "minimax": 82.9 }
+    ],
+    "speedTable": [
+      { "task": "2D web game", "kimi": "40:00.09", "codex": "14:44.97", "minimax": "36:56.44" },
+      { "task": "3D web game", "kimi": "1:16:55.95", "codex": "22:57.51", "minimax": "44:05.49" },
+      { "task": "Promotion page", "kimi": "45:00", "codex": "34:42", "minimax": "5:45" },
+      { "task": "Median per vision item", "kimi": "28.93 s", "codex": "8.84 s", "minimax": "8.61 s" }
+    ],
+    "colors": {
+      "kimi": "#7256B8",
+      "codex": "#2B746D",
+      "minimax": "#F06D2F"
+    }
+  },
+  "tasks": {
+    "2d": {
+      "name": "2D web game",
+      "project": "Sling Siege",
+      "date": "2026-07-17",
+      "prompt": "Build an original browser game whose slingshot drag, release-to-launch action, and building-collapse objective are immediately understandable to an ordinary player.",
+      "models": {
+        "kimi": { "score": 79.4, "time": "40:00.09", "note": "Delivered visuals, gameplay, sound, and an ambitious physics structure. Overall completion was strong, but structures in levels two and three drifted while idle and the mobile control area was small." },
+        "codex": { "score": 95.0, "time": "14:44.97", "note": "Real dragging, trajectory preview, collision, reload, and all three levels stayed stable and passed the unified Chrome QA. The visual direction was safer and less ambitious than K3." },
+        "minimax": { "score": 68.1, "time": "36:56.44", "note": "The desktop scene, opening screen, HUD, trajectory, trail, and Air Burst were complete, and both mouse and touch could launch. The vertical aiming constraint was reversed, preventing upward arcs and making high targets difficult to hit; level three lacked a reliable real completion route, and the highest unlocked level was not stored in localStorage." }
+      },
+      "conclusion": "Codex led on stability and playability. K3 had strong completeness but physics drift and a small mobile control area. MiniMax M3's reversed vertical aiming constraint made high targets difficult to hit.",
+      "playHref": "/bundles/2d/",
+      "dataHref": "/data/benchmarks.en.json"
+    },
+    "3d": {
+      "name": "3D web game",
+      "project": "Breach Point",
+      "date": "2026-07-18",
+      "prompt": "Build an original browser game that clearly communicates entering a 3D tactical training ground, moving and aiming, engaging enemies, clearing the area, and defusing a device.",
+      "models": {
+        "kimi": { "score": 88.8, "time": "1:16:55.95", "note": "The harbor landmarks, guidance route, device feedback, and mobile controls were the clearest. It ranked first in the blind visual and feel review and passed all 19 checks; its main weakness was speed." },
+        "codex": { "score": 86.5, "time": "22:57.51", "note": "Combat, reload, damage, defusal, and results all worked end to end, and all 19 checks passed. The scene was slightly less memorable than K3." },
+        "minimax": { "score": 79.5, "time": "44:05.49", "note": "The complete victory route, manual clock, restart, mobile controls, and persistence all worked, and all 19 checks passed. Visual finish and control feedback remained behind the other two." }
+      },
+      "conclusion": "K3 ranked first on quality alone at 88.8. Codex ranked first under the earlier format that included speed. The final MiniMax M3 build also passed all 19 QA checks but had weaker visual finish.",
+      "speedNote": "If speed is converted into points under the earlier rules, Codex becomes the overall winner. The primary score shown here excludes speed, so K3 remains first on final quality.",
+      "playHref": "/bundles/3d/",
+      "dataHref": "/data/benchmarks.en.json"
+    },
+    "promo": {
+      "name": "Promotion page",
+      "project": "One Kick promotion page",
+      "date": "2026-07-18",
+      "prompt": "Put the core appeal of One Kick directly into the page: visitors should be able to slide a ball on a compact 6 by 6 field, reason about the route, and score in three moves from the opening screen.",
+      "models": {
+        "kimi": { "score": 90.0, "time": "45:00", "note": "The page was complete, with clear route highlighting, rule explanations, real-game overlays, and reset behavior. The opening copy was dense, and the logo, characters, and field could have been integrated more tightly." },
+        "codex": { "score": 94.4, "time": "34:42", "note": "The match-day composition and integration of brand and real assets were strongest, with a complete interaction flow. The celebration moment could have been more memorable." },
+        "minimax": { "score": 93.3, "time": "5:45", "note": "The three-move challenge, 500-level progression, three real screenshots, and QR call to action had balanced hierarchy. The real assets blended slightly less well with the procedural field than in the Codex version." }
+      },
+      "conclusion": "Codex had the strongest finished feel. MiniMax M3 was fastest with balanced information hierarchy. K3 was complete but could reduce opening-screen density.",
+      "speedNote": "The promotion-page evaluation also had a separate speed-inclusive score: MiniMax M3 94, Codex 89, and K3 83. That format is separate from the final quality scores and is not mixed into the overall table.",
+      "playHref": "/bundles/promo/",
+      "dataHref": "/data/benchmarks.en.json"
+    },
+    "vision": {
+      "name": "Image recognition",
+      "project": "50-image vision evaluation",
+      "date": "2026-07-18",
+      "prompt": "Answer using only the attached image. Even if it is blurry, select the option that best matches the image and output exactly one line of JSON.",
+      "models": {
+        "kimi": { "score": 97.5, "accuracy": "49/50", "stability": "14/15", "time": "28.93 s/item", "note": "49/50, with complete agreement across three hard-item runs on 14/15. The one clear weakness remained dense counting." },
+        "codex": { "score": 92.6, "accuracy": "47/50", "stability": "12/15", "time": "8.84 s/item", "note": "47/50, with complete agreement on 12/15 hard items. Errors mainly involved dense counting and a tiny distant arrow." },
+        "minimax": { "score": 90.8, "accuracy": "46/50", "stability": "12/15", "time": "8.61 s/item", "note": "46/50, with complete agreement on 12/15 hard items. Dense counting, extremely small directional targets, and OCR of strings without semantic context were more error-prone." }
+      },
+      "conclusion": "Kimi led this 50-image local tool-chain evaluation, followed by Codex and MiniMax M3. The result must not be generalized into a universal vision-model leaderboard.",
+      "dataHref": "/data/vision-cases.json"
+    }
+  }
+}

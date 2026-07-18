@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+<meta name="theme-color" content="#10131c" />
+<title>Sling Siege / 弹弓攻城</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="stage" width="1280" height="720" aria-label="Sling Siege playfield"></canvas>
+
+    <!-- HUD overlay -->
+    <div id="hud" class="hud hidden">
+      <div class="hud-left">
+        <div class="hud-chip"><span class="chip-label">LV</span><span id="hud-level" class="chip-value">1</span></div>
+        <div class="hud-chip"><span class="chip-label">Score</span><span id="hud-score" class="chip-value">0</span></div>
+        <div class="hud-chip"><span class="chip-label">Best</span><span id="hud-best" class="chip-value">0</span></div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-chip ammo"><span class="chip-label">Ammo</span><span id="hud-ammo" class="chip-value">● ● ●</span></div>
+        <button id="btn-ability" class="hud-btn" title="Air burst (Space)">Air Burst</button>
+        <button id="btn-pause" class="hud-btn icon" title="Pause (P)">II</button>
+        <button id="btn-mute" class="hud-btn icon" title="Mute (M)">♪</button>
+        <button id="btn-restart" class="hud-btn icon" title="Restart level (R)">↺</button>
+      </div>
+    </div>
+
+    <!-- Floating level banner -->
+    <div id="banner" class="banner hidden"></div>
+
+    <!-- Pause overlay -->
+    <div id="pause-overlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2>Paused</h2>
+        <p>Take a breath, commander.</p>
+        <button class="big-btn" data-action="resume">Resume</button>
+        <button class="ghost-btn" data-action="restart">Restart Level</button>
+        <button class="ghost-btn" data-action="menu">Back to Title</button>
+      </div>
+    </div>
+
+    <!-- Start / Title overlay -->
+    <div id="title-overlay" class="overlay">
+      <div class="overlay-card title-card">
+        <h1 class="title-main">Sling Siege</h1>
+        <h2 class="title-sub">弹弓攻城</h2>
+        <p class="lede">Drag the boulder back, release to launch. Tap <b>Air Burst</b> mid‑flight to detonate. Topple every sentinel to clear the stage.</p>
+        <ul class="tips">
+          <li><span class="kbd">Drag</span> Pull the boulder to aim</li>
+          <li><span class="kbd">Release</span> Fire — gravity does the rest</li>
+          <li><span class="kbd">Space</span> Detonate mid‑air</li>
+          <li><span class="kbd">P</span> Pause · <span class="kbd">R</span> Restart · <span class="kbd">M</span> Mute</li>
+        </ul>
+        <button id="btn-start" class="big-btn">Begin Siege</button>
+        <div class="title-foot">
+          <span id="title-best">Best 0</span>
+          <span id="title-unlock">Fortress 1 / 3 unlocked</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- End-of-level overlay (win / lose) -->
+    <div id="end-overlay" class="overlay hidden">
+      <div class="overlay-card">
+        <h2 id="end-title">Victory</h2>
+        <p id="end-sub">The fort has fallen.</p>
+        <div id="end-stats" class="end-stats"></div>
+        <button id="btn-next" class="big-btn hidden">Next Fortress</button>
+        <button id="btn-replay" class="ghost-btn">Replay Level</button>
+        <button id="btn-home" class="ghost-btn">Back to Title</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js" defer></script>
+</body>
+</html>

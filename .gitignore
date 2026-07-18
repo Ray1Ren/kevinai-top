@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Screenshots / local artifacts
+screenshots/
+
+# Env
+.env
+.env.*
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Local-only handoff documents
+KIMI_HANDOFF.md
+KIMI_REVIEW_ROUND1.md
+
+# Local-only asset/bundle preparation scripts with absolute paths
+scripts/import-assets.py
+scripts/copy-bundles.py
+scripts/prepare-vision-review.py

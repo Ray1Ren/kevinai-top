@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Sling Siege · 弹弓攻城</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <!-- 顶部 HUD -->
+  <header id="hud">
+    <div class="hud-group hud-left">
+      <div class="hud-badge" id="hud-level" title="关卡">关卡 1</div>
+      <div class="hud-badge hud-score" title="分数">分数 <span id="hud-score">0</span></div>
+      <div class="hud-badge hud-ammo" title="剩余弹药">弹药 <span id="hud-ammo">3</span></div>
+    </div>
+    <div class="hud-group hud-right">
+      <button class="hud-btn" id="btn-mute" title="静音开关" aria-label="静音开关">🔊</button>
+      <button class="hud-btn" id="btn-restart" title="重开本关" aria-label="重开本关">↻</button>
+      <button class="hud-btn" id="btn-pause" title="暂停/继续" aria-label="暂停/继续">⏸</button>
+    </div>
+  </header>
+
+  <!-- 游戏舞台 -->
+  <main id="stage">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- 主菜单 -->
+    <div class="overlay" id="menu-overlay">
+      <div class="panel menu-panel">
+        <div class="game-logo">
+          <span class="logo-top">SLING SIEGE</span>
+          <span class="logo-main">弹弓攻城</span>
+        </div>
+        <p class="tagline">橡果工坊的星火石，对抗齿轮哨兵的废铁堡垒</p>
+        <div class="howto">
+          <div class="howto-item"><span class="howto-icon">🎯</span>按住星火石向后拖拽，松手发射</div>
+          <div class="howto-item"><span class="howto-icon">⚡</span>飞行中点击 / 按空格，触发一次雷霆震荡</div>
+          <div class="howto-item"><span class="howto-icon">🏰</span>撞塌堡垒，消灭全部齿轮哨兵即可过关</div>
+        </div>
+        <button class="big-btn" id="btn-start">开始攻城</button>
+        <div class="level-select" id="level-select">
+          <span class="level-select-label">选择关卡</span>
+          <div class="level-dots" id="level-dots"></div>
+        </div>
+        <div class="best-line" id="menu-best">最高分 0 · 已解锁 1 关</div>
+      </div>
+    </div>
+
+    <!-- 暂停 -->
+    <div class="overlay hidden" id="pause-overlay">
+      <div class="panel">
+        <h2 class="panel-title">暂停中</h2>
+        <div class="btn-col">
+          <button class="big-btn" id="btn-resume">继续</button>
+          <button class="mid-btn" id="btn-pause-restart">重开本关</button>
+          <button class="mid-btn" id="btn-pause-menu">回到首页</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 过关 -->
+    <div class="overlay hidden" id="win-overlay">
+      <div class="panel">
+        <h2 class="panel-title win-title">堡垒告破！</h2>
+        <div class="result-score">本局得分 <span id="win-score">0</span></div>
+        <div class="result-bonus" id="win-bonus"></div>
+        <div class="btn-col">
+          <button class="big-btn" id="btn-next">下一关</button>
+          <button class="mid-btn" id="btn-win-replay">重玩本关</button>
+          <button class="mid-btn" id="btn-win-menu">回到首页</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 全部通关 -->
+    <div class="overlay hidden" id="complete-overlay">
+      <div class="panel">
+        <h2 class="panel-title win-title">全境光复！</h2>
+        <div class="result-score">总分 <span id="complete-score">0</span></div>
+        <div class="result-bonus" id="complete-best"></div>
+        <div class="btn-col">
+          <button class="big-btn" id="btn-complete-replay">从头再来</button>
+          <button class="mid-btn" id="btn-complete-menu">回到首页</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 失败 -->
+    <div class="overlay hidden" id="lose-overlay">
+      <div class="panel">
+        <h2 class="panel-title lose-title">弹尽粮绝…</h2>
+        <div class="result-score">还有 <span id="lose-left">0</span> 个哨兵没倒下</div>
+        <div class="btn-col">
+          <button class="big-btn" id="btn-retry">再来一次</button>
+          <button class="mid-btn" id="btn-lose-menu">回到首页</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="foot">拖拽发射 · 空中点击触发雷霆震荡 · 空格同样有效</footer>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,1620 @@
+{
+  "title": "K3 / MiniMax M3 / Codex 严格有效 50 图视觉识别结果",
+  "generated_at": "2026-07-18T18:08:32+08:00",
+  "scope_note": "V020 and V043 were uniformly replaced by pre-frozen V051 and V052; hard cases use three-run majority answers.",
+  "not_a_general_model_leaderboard": true,
+  "dataset_checks": {
+    "case_count": 50,
+    "unique_case_count": 50,
+    "category_distribution": {
+      "UI 与信息截图": 5,
+      "图表推断": 5,
+      "图表读数": 5,
+      "场景文字": 5,
+      "复杂场景计数": 5,
+      "工程图与电路图": 5,
+      "文档与表格": 5,
+      "日常物体": 5,
+      "科学示意图": 5,
+      "细粒度空间关系": 5
+    },
+    "difficulty_distribution": {
+      "easy": 15,
+      "hard": 15,
+      "medium": 20
+    },
+    "answer_distribution": {
+      "A": 13,
+      "B": 13,
+      "C": 12,
+      "D": 12
+    },
+    "excluded_case_ids": [
+      "V020",
+      "V043"
+    ],
+    "added_case_ids": [
+      "V051",
+      "V052"
+    ],
+    "status": "pass"
+  },
+  "labels": {
+    "kimi": "Kimi Code + K3 max",
+    "m3": "OpenCode + MiniMax M3 thinking",
+    "codex": "Codex CLI + gpt-5.6-sol xhigh"
+  },
+  "accuracy_ranking": [
+    {
+      "rank": 1,
+      "system": "kimi",
+      "label": "Kimi Code + K3 max",
+      "correct": 49
+    },
+    {
+      "rank": 2,
+      "system": "codex",
+      "label": "Codex CLI + gpt-5.6-sol xhigh",
+      "correct": 47
+    },
+    {
+      "rank": 3,
+      "system": "m3",
+      "label": "OpenCode + MiniMax M3 thinking",
+      "correct": 46
+    }
+  ],
+  "cases": [
+    {
+      "id": "V001",
+      "category": "日常物体",
+      "difficulty": "easy",
+      "question": "图中小孩脚下使用的运动器材是什么？",
+      "options": [
+        "单板滑雪板",
+        "冲浪板",
+        "雪橇",
+        "滑板"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V001.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V002",
+      "category": "日常物体",
+      "difficulty": "medium",
+      "question": "花瓶里主要插的是什么花？",
+      "options": [
+        "玫瑰",
+        "郁金香",
+        "向日葵",
+        "兰花"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V002.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V003",
+      "category": "日常物体",
+      "difficulty": "easy",
+      "question": "盘中绿色、对半切开的水果是什么？",
+      "options": [
+        "青苹果",
+        "青柠",
+        "牛油果",
+        "猕猴桃"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V003.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V004",
+      "category": "日常物体",
+      "difficulty": "easy",
+      "question": "画面中央的大型车辆是什么？",
+      "options": [
+        "火车",
+        "货车",
+        "有轨电车",
+        "大巴车"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V004.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.98
+        }
+      }
+    },
+    {
+      "id": "V005",
+      "category": "日常物体",
+      "difficulty": "easy",
+      "question": "前景中的手拿着什么水果？",
+      "options": [
+        "香蕉",
+        "梨",
+        "芒果",
+        "柠檬"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V005.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V006",
+      "category": "复杂场景计数",
+      "difficulty": "easy",
+      "question": "蓝色边框内一共展示了多少块完整路牌？",
+      "options": [
+        "3 块",
+        "4 块",
+        "5 块",
+        "6 块"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V006.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V007",
+      "category": "复杂场景计数",
+      "difficulty": "hard",
+      "question": "雪地里一共能看到多少个人？",
+      "options": [
+        "6 人",
+        "7 人",
+        "8 人",
+        "9 人"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V007.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.62
+        },
+        "codex": {
+          "answer": "B",
+          "correct": false,
+          "confidence": 0.98
+        },
+        "m3": {
+          "answer": "B",
+          "correct": false,
+          "confidence": 0.82
+        }
+      }
+    },
+    {
+      "id": "V008",
+      "category": "复杂场景计数",
+      "difficulty": "hard",
+      "question": "树枝上一共有多少只鸟？",
+      "options": [
+        "6 只",
+        "7 只",
+        "9 只",
+        "8 只"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V008.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.82
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "m3": {
+          "answer": "C",
+          "correct": false,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V009",
+      "category": "复杂场景计数",
+      "difficulty": "medium",
+      "question": "画面中一共能看到多少个人？",
+      "options": [
+        "8 人",
+        "7 人",
+        "9 人",
+        "10 人"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V009.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": false,
+          "confidence": 0.85
+        },
+        "codex": {
+          "answer": "C",
+          "correct": false,
+          "confidence": 0.97
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.75
+        }
+      }
+    },
+    {
+      "id": "V010",
+      "category": "复杂场景计数",
+      "difficulty": "medium",
+      "question": "画面中有多少个人打着伞行走？",
+      "options": [
+        "2 人",
+        "3 人",
+        "4 人",
+        "5 人"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V010.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.98
+        }
+      }
+    },
+    {
+      "id": "V011",
+      "category": "细粒度空间关系",
+      "difficulty": "easy",
+      "question": "汤碗的右侧放着什么？",
+      "options": [
+        "勺子",
+        "叉子",
+        "筷子",
+        "餐刀"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V011.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.8
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.72
+        }
+      }
+    },
+    {
+      "id": "V012",
+      "category": "细粒度空间关系",
+      "difficulty": "medium",
+      "question": "床尾后方最明显的家具是什么？",
+      "options": [
+        "衣柜",
+        "沙发",
+        "书架",
+        "椅子"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V012.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.92
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.88
+        }
+      }
+    },
+    {
+      "id": "V013",
+      "category": "细粒度空间关系",
+      "difficulty": "medium",
+      "question": "长颈鹿后方露出的动物是什么？",
+      "options": [
+        "鸵鸟",
+        "斑马",
+        "羚羊",
+        "火烈鸟"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V013.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.92
+        }
+      }
+    },
+    {
+      "id": "V014",
+      "category": "细粒度空间关系",
+      "difficulty": "easy",
+      "question": "白色翻领衬衫上方摆着什么配饰？",
+      "options": [
+        "腰带",
+        "领带",
+        "围巾",
+        "手套"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V014.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.97
+        }
+      }
+    },
+    {
+      "id": "V015",
+      "category": "细粒度空间关系",
+      "difficulty": "hard",
+      "question": "街道中央远处红绿灯下的小箭头指向哪个方向？",
+      "options": [
+        "向左",
+        "向右",
+        "向上",
+        "向下"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V015.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.85
+        },
+        "codex": {
+          "answer": "B",
+          "correct": false,
+          "confidence": 0.62
+        },
+        "m3": {
+          "answer": "A",
+          "correct": false,
+          "confidence": 0.55
+        }
+      }
+    },
+    {
+      "id": "V016",
+      "category": "场景文字",
+      "difficulty": "easy",
+      "question": "图片中的英文单词是什么？",
+      "options": [
+        "EXPERIMENT",
+        "EXPEDITION",
+        "EXPRESSION",
+        "EXPERIENCE"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V016.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.85
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.91
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.91
+        }
+      }
+    },
+    {
+      "id": "V017",
+      "category": "场景文字",
+      "difficulty": "easy",
+      "question": "绿色艺术字写的是什么？",
+      "options": [
+        "WOODZILLA",
+        "WOODVILLA",
+        "WORDZILLA",
+        "WOODZILIA"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V017.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.97
+        }
+      }
+    },
+    {
+      "id": "V018",
+      "category": "场景文字",
+      "difficulty": "hard",
+      "question": "手写英文单词是什么？",
+      "options": [
+        "firmly",
+        "grimly",
+        "grimy",
+        "family"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V018.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.9
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.92
+        }
+      }
+    },
+    {
+      "id": "V019",
+      "category": "场景文字",
+      "difficulty": "hard",
+      "question": "图片中的大小写字符串是什么？",
+      "options": [
+        "idUnit",
+        "idUnite",
+        "idUnte",
+        "idUrite"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V019.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.92
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.96
+        },
+        "m3": {
+          "answer": "A",
+          "correct": false,
+          "confidence": 0.97
+        }
+      }
+    },
+    {
+      "id": "V021",
+      "category": "文档与表格",
+      "difficulty": "medium",
+      "question": "文档表格中，2008 年已行权期权的总内在价值是多少？",
+      "options": [
+        "5.06 亿美元",
+        "5.60 亿美元",
+        "5.06 亿英镑",
+        "506 万美元"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V021.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        }
+      }
+    },
+    {
+      "id": "V022",
+      "category": "文档与表格",
+      "difficulty": "hard",
+      "question": "文件中的 Advisory Board Meeting 安排在哪一段日期？",
+      "options": [
+        "1961 年 10 月 6–8 日",
+        "1961 年 10 月 8–10 日",
+        "1961 年 10 月 10–12 日",
+        "1962 年 10 月 8–10 日"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V022.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V023",
+      "category": "文档与表格",
+      "difficulty": "medium",
+      "question": "图中表格列出的 2013 年 Sales 是多少？",
+      "options": [
+        "92,538",
+        "93,258",
+        "93,528",
+        "95,328"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V023.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V024",
+      "category": "文档与表格",
+      "difficulty": "hard",
+      "question": "表单字段“TO:”后填写的是谁？",
+      "options": [
+        "MR. K. A. SPARROW",
+        "MRS. K. E. SPARROW",
+        "MRS. R. A. SPARROW",
+        "MRS. K. A. SPARROW"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V024.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V025",
+      "category": "文档与表格",
+      "difficulty": "medium",
+      "question": "营养成分表中，每 100g 的 Sodium 是多少？",
+      "options": [
+        "224 mg",
+        "96 mg",
+        "24 mg",
+        "244 mg"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V025.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V026",
+      "category": "图表读数",
+      "difficulty": "easy",
+      "question": "认为特朗普“Dangerous”的受访者比例是多少？",
+      "options": [
+        "55%",
+        "62%",
+        "65%",
+        "75%"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V026.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V027",
+      "category": "图表读数",
+      "difficulty": "easy",
+      "question": "折线在图中哪一年达到峰值？",
+      "options": [
+        "2012",
+        "2013",
+        "2014",
+        "2015"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V027.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.97
+        }
+      }
+    },
+    {
+      "id": "V028",
+      "category": "图表读数",
+      "difficulty": "easy",
+      "question": "2018 年中学毕业率最高的是哪个国家？",
+      "options": [
+        "西班牙",
+        "墨西哥",
+        "韩国",
+        "意大利"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V028.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V029",
+      "category": "图表读数",
+      "difficulty": "easy",
+      "question": "图中最不受欢迎的游戏类型是什么？",
+      "options": [
+        "Simulation",
+        "Racing",
+        "Strategy",
+        "Shooter"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V029.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V030",
+      "category": "图表读数",
+      "difficulty": "medium",
+      "question": "图中深绿色代表哪个国家？",
+      "options": [
+        "英国",
+        "美国",
+        "法国",
+        "德国"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V030.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.75
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.85
+        }
+      }
+    },
+    {
+      "id": "V031",
+      "category": "图表推断",
+      "difficulty": "medium",
+      "question": "“Charismatic”和“Well-qualified to be president”两项之和，是否大于“A strong leader”？",
+      "options": [
+        "否",
+        "两者相等",
+        "是",
+        "图中无法判断"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V031.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.98
+        }
+      }
+    },
+    {
+      "id": "V032",
+      "category": "图表推断",
+      "difficulty": "hard",
+      "question": "男孩与女孩两条线的差距在哪一年最大？",
+      "options": [
+        "2006",
+        "2007",
+        "2009",
+        "2008"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V032.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.92
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.85
+        }
+      }
+    },
+    {
+      "id": "V033",
+      "category": "图表推断",
+      "difficulty": "hard",
+      "question": "Lithuania 这条线上，高于 10 的年份点共有几个？",
+      "options": [
+        "5 个",
+        "4 个",
+        "6 个",
+        "7 个"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V033.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.7
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.72
+        }
+      }
+    },
+    {
+      "id": "V034",
+      "category": "图表推断",
+      "difficulty": "hard",
+      "question": "绿色折线最后三个数值的平均数（保留一位小数）是多少？",
+      "options": [
+        "27.6",
+        "28.6",
+        "29.6",
+        "30.6"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V034.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.85
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.82
+        }
+      }
+    },
+    {
+      "id": "V035",
+      "category": "图表推断",
+      "difficulty": "medium",
+      "question": "图中最高与最低 Human Development Index 相差多少？",
+      "options": [
+        "0.13",
+        "0.18",
+        "0.23",
+        "0.28"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V035.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V036",
+      "category": "科学示意图",
+      "difficulty": "easy",
+      "question": "这个昆虫生命周期图一共画了几个阶段？",
+      "options": [
+        "2 个",
+        "3 个",
+        "5 个",
+        "4 个"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V036.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V037",
+      "category": "科学示意图",
+      "difficulty": "medium",
+      "question": "昆虫图中的 B 标签指向什么部位？",
+      "options": [
+        "口器",
+        "腿",
+        "复眼",
+        "触角"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V037.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.88
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.82
+        }
+      }
+    },
+    {
+      "id": "V038",
+      "category": "科学示意图",
+      "difficulty": "medium",
+      "question": "青蛙生命周期图中的 A 阶段是什么？",
+      "options": [
+        "蝌蚪",
+        "卵",
+        "幼蛙",
+        "成蛙"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V038.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V039",
+      "category": "科学示意图",
+      "difficulty": "medium",
+      "question": "图中哪一种生物直接摄食 Phytoplankton？",
+      "options": [
+        "Bacteria",
+        "Planktivorous fish",
+        "Zooplankton",
+        "Piscivorous fish"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V039.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V040",
+      "category": "科学示意图",
+      "difficulty": "hard",
+      "question": "示意图中清晨太阳所在的位置用哪个字母标记？",
+      "options": [
+        "A",
+        "C",
+        "D",
+        "B"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V040.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.78
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.62
+        }
+      }
+    },
+    {
+      "id": "V041",
+      "category": "工程图与电路图",
+      "difficulty": "hard",
+      "question": "桁架图底部标注的总跨度是多少英尺？",
+      "options": [
+        "90 英尺",
+        "75 英尺",
+        "105 英尺",
+        "120 英尺"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V041.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V042",
+      "category": "工程图与电路图",
+      "difficulty": "medium",
+      "question": "喷嘴工程图中，窄管直径标注为多少？",
+      "options": [
+        "2 cm",
+        "4 cm",
+        "8 cm",
+        "12 cm"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V042.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V044",
+      "category": "工程图与电路图",
+      "difficulty": "medium",
+      "question": "电路子图 (c) 右侧电感的标注值是多少？",
+      "options": [
+        "2 H",
+        "5 H",
+        "6 H",
+        "8 H"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V044.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V045",
+      "category": "工程图与电路图",
+      "difficulty": "medium",
+      "question": "轴最右端的扭矩箭头标注为多少？",
+      "options": [
+        "5 kN·m",
+        "2 kN·m",
+        "4.5 kN·m",
+        "1 kN·m"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V045.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.9
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.9
+        }
+      }
+    },
+    {
+      "id": "V046",
+      "category": "UI 与信息截图",
+      "difficulty": "medium",
+      "question": "左侧行程规划面板中的“Accessible Trip”开关当前是什么状态？",
+      "options": [
+        "ON",
+        "NO / 关闭",
+        "不可见",
+        "加载中"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V046.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.92
+        }
+      }
+    },
+    {
+      "id": "V047",
+      "category": "UI 与信息截图",
+      "difficulty": "medium",
+      "question": "ALDI 页面中 Organic Grass Fed 93/7 Ground Beef 的标价是多少？",
+      "options": [
+        "$3.75/lb",
+        "$4.25/lb",
+        "$4.75/lb",
+        "$5.75/lb"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V047.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V048",
+      "category": "UI 与信息截图",
+      "difficulty": "hard",
+      "question": "NBA Eastern Conference 排名第 5 的球队战绩是多少？",
+      "options": [
+        "39–29",
+        "40–27",
+        "41–28",
+        "40–28"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V048.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.72
+        }
+      }
+    },
+    {
+      "id": "V049",
+      "category": "UI 与信息截图",
+      "difficulty": "easy",
+      "question": "网页右上角蓝绿色按钮写着什么？",
+      "options": [
+        "SUBSCRIBE",
+        "SIGN IN",
+        "SEARCH",
+        "JOIN NOW"
+      ],
+      "correct_answer": "A",
+      "image": "/assets/vision-images/V049.png",
+      "results": {
+        "kimi": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.98
+        },
+        "codex": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "A",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V050",
+      "category": "UI 与信息截图",
+      "difficulty": "hard",
+      "question": "计算器按键区中，EXP 与 M− 之间的按键符号是什么？",
+      "options": [
+        "×",
+        "÷（/）",
+        "+",
+        "%"
+      ],
+      "correct_answer": "B",
+      "image": "/assets/vision-images/V050.png",
+      "results": {
+        "kimi": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "B",
+          "correct": true,
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "id": "V051",
+      "category": "场景文字",
+      "difficulty": "medium",
+      "question": "左上方车钥匙上倒置的红色英文单词是什么？",
+      "options": [
+        "POWER",
+        "PARK",
+        "PANIC",
+        "PUNCH"
+      ],
+      "correct_answer": "C",
+      "image": "/assets/vision-images/V051.png",
+      "results": {
+        "kimi": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.95
+        },
+        "codex": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "C",
+          "correct": true,
+          "confidence": 0.99
+        }
+      }
+    },
+    {
+      "id": "V052",
+      "category": "工程图与电路图",
+      "difficulty": "hard",
+      "question": "沿蓝色管路从状态点 4 前进到状态点 1，会经过哪个部件？",
+      "options": [
+        "冷凝器",
+        "压缩机",
+        "膨胀阀",
+        "蒸发器"
+      ],
+      "correct_answer": "D",
+      "image": "/assets/vision-images/V052.png",
+      "results": {
+        "kimi": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.97
+        },
+        "codex": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.99
+        },
+        "m3": {
+          "answer": "D",
+          "correct": true,
+          "confidence": 0.97
+        }
+      }
+    }
+  ],
+  "public_note": "仅公开最终分数、题面、冻结图片与三家答案；原始运行日志、stdout、stderr、raw 目录和私有 manifest 不公开。"
+}

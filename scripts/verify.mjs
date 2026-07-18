@@ -1,0 +1,417 @@
+#!/usr/bin/env node
+import { readFile, readdir, stat } from 'node:fs/promises'
+import { basename, extname, join, resolve } from 'node:path'
+import { execSync } from 'node:child_process'
+
+const ROOT = resolve(process.cwd())
+const PUBLIC = join(ROOT, 'public')
+const SRC = join(ROOT, 'src')
+const DIST = join(ROOT, 'dist')
+const BUNDLES = join(PUBLIC, 'bundles')
+
+const REQUIRED_PUBLIC_ASSETS = [
+  'assets/images/kevin-avatar.png',
+  'assets/images/qr-code.png',
+  'assets/images/four-task-benchmark.png',
+  'assets/images/og-image.png',
+  'assets/images/apple-touch-icon.png',
+  'assets/images/game-home.png',
+  'assets/images/game-level-100.png',
+  'assets/images/game-rank.png',
+  'assets/images/game-promotion.png',
+  'assets/images/game-animal-event.png',
+  'assets/images/game-reward-bank.png',
+  'assets/images/image-recognition-dataset-1.jpg',
+  'assets/images/image-recognition-dataset-2.jpg',
+  'assets/gifs/2d-k3.gif',
+  'assets/gifs/2d-codex.gif',
+  'assets/gifs/2d-m3.gif',
+  'assets/gifs/3d-k3.gif',
+  'assets/gifs/3d-codex.gif',
+  'assets/gifs/3d-m3.gif',
+  'assets/gifs/promo-k3.gif',
+  'assets/gifs/promo-codex.gif',
+  'assets/gifs/promo-m3.gif',
+  'data/benchmarks.json',
+  'data/benchmarks.en.json',
+  'data/vision-cases.json',
+  'favicon.svg',
+  'CNAME',
+  'robots.txt',
+  'sitemap.xml',
+]
+
+const BUNDLE_ALLOWLIST = {
+  '2d': new Set(['index.html', 'styles.css', 'game.js']),
+  '3d': new Set(['index.html', 'styles.css', 'game.js', 'vendor/three.min.js']),
+  'promo': new Set(['index.html', 'styles.css', 'app.js']),
+}
+const BUNDLE_REQUIRED = {
+  '2d': ['index.html', 'styles.css', 'game.js'],
+  '3d': ['index.html', 'styles.css', 'game.js', 'vendor/three.min.js'],
+  'promo': ['index.html', 'styles.css', 'app.js'],
+}
+
+const BASE_ROUTES = ['/', '/notes', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/links']
+const ROUTES = [
+  ...BASE_ROUTES,
+  ...BASE_ROUTES.map((route) => (route === '/' ? '/en' : `/en${route}`)),
+]
+
+const BAD_EXTENSIONS = ['.jsonl', '.stderr', '.stdout', '.log']
+const PUBLIC_BAD_SUBSTRINGS = [
+  '晋级之路',
+  'mkqpZv3fsCcnlpQu2tGM1A',
+  'runs/',
+  'runs/formal-',
+  'runs/hard-retest',
+  'runs/extension',
+  'raw/',
+  'raw/kimi',
+  'raw/codex',
+  'raw/m3',
+]
+const CANDIDATE_BAD_SUBSTRINGS = ['/Users/', 'mkqpZv3fsCcnlpQu2tGM1A']
+const BAD_DOMAINS = [
+  'unsplash',
+  'picsum',
+  'placeholder',
+  'placehold',
+  'via.placeholder',
+  'lorem.space',
+  'dummyimage',
+]
+const TEXT_EXTENSIONS = new Set([
+  '.cjs',
+  '.css',
+  '.html',
+  '.js',
+  '.json',
+  '.md',
+  '.mjs',
+  '.svg',
+  '.ts',
+  '.tsx',
+  '.txt',
+  '.yaml',
+  '.yml',
+])
+const VERIFY_SCRIPT = 'scripts/verify.mjs'
+
+const errors = []
+const warnings = []
+
+async function fileExists(path) {
+  try {
+    await stat(path)
+    return true
+  } catch {
+    return false
+  }
+}
+
+async function walk(dir, callback) {
+  const entries = await readdir(dir, { withFileTypes: true })
+  for (const entry of entries) {
+    const path = join(dir, entry.name)
+    if (entry.isDirectory()) {
+      await walk(path, callback)
+    } else {
+      await callback(path, entry.name)
+    }
+  }
+}
+
+async function checkPublicAssets() {
+  for (const asset of REQUIRED_PUBLIC_ASSETS) {
+    const path = join(PUBLIC, asset)
+    if (!(await fileExists(path))) {
+      errors.push(`Missing public asset: ${asset}`)
+    }
+  }
+}
+
+async function checkBundles() {
+  if (!(await fileExists(BUNDLES))) {
+    errors.push('Missing public/bundles/')
+    return
+  }
+  for (const kind of ['2d', '3d', 'promo']) {
+    for (const model of ['kimi', 'codex', 'minimax-m3']) {
+      const dir = join(BUNDLES, kind, model)
+      if (!(await fileExists(dir))) {
+        errors.push(`Missing bundle: ${kind}/${model}`)
+        continue
+      }
+      for (const required of BUNDLE_REQUIRED[kind]) {
+        if (!(await fileExists(join(dir, required)))) {
+          errors.push(`Missing required bundle file: ${kind}/${model}/${required}`)
+        }
+      }
+      await walk(dir, async (path, name) => {
+        const rel = path.replace(dir + '/', '')
+        const allow = BUNDLE_ALLOWLIST[kind]
+        if (rel.startsWith('assets/')) {
+          if (kind !== 'promo') {
+            errors.push(`Disallowed assets dir in ${kind}/${model}: ${rel}`)
+          }
+          return
+        }
+        if (kind === 'promo' && rel.startsWith('assets/')) return
+        if (!allow.has(rel)) {
+          errors.push(`Bundle file not in allowlist: ${kind}/${model}/${rel}`)
+        }
+        if (BAD_EXTENSIONS.some((ext) => name.endsWith(ext))) {
+          errors.push(`Raw log-like file in bundle: ${kind}/${model}/${rel}`)
+        }
+      })
+    }
+  }
+}
+
+function listCandidateFiles() {
+  try {
+    return execSync('git ls-files --cached --others --exclude-standard -z', {
+      cwd: ROOT,
+      encoding: 'utf8',
+    })
+      .split('\0')
+      .filter(Boolean)
+  } catch {
+    errors.push('Unable to enumerate candidate git files')
+    return []
+  }
+}
+
+async function checkTextContent(path, rel, publicContent) {
+  if (!TEXT_EXTENSIONS.has(extname(path).toLowerCase()) && !['CNAME', '.gitignore'].includes(basename(path))) {
+    return
+  }
+
+  const content = await readFile(path, 'utf8')
+  if (rel !== VERIFY_SCRIPT) {
+    for (const bad of CANDIDATE_BAD_SUBSTRINGS) {
+      if (content.includes(bad)) errors.push(`Forbidden candidate substring "${bad}" in ${rel}`)
+    }
+    const remoteUrls = content.match(/https?:\/\/[^\s"'<>)}]+/gi) ?? []
+    for (const url of remoteUrls) {
+      const domain = BAD_DOMAINS.find((item) => url.toLowerCase().includes(item))
+      if (domain) errors.push(`Placeholder domain "${domain}" in ${rel}`)
+    }
+  }
+
+  if (publicContent) {
+    for (const bad of PUBLIC_BAD_SUBSTRINGS) {
+      if (content.includes(bad)) errors.push(`Forbidden public substring "${bad}" in ${rel}`)
+    }
+  }
+}
+
+async function checkCandidateFiles() {
+  const candidates = listCandidateFiles()
+  for (const rel of candidates) {
+    const path = join(ROOT, rel)
+    const fileStat = await stat(path)
+    const lowerName = basename(path).toLowerCase()
+    if (fileStat.size > 100 * 1024 * 1024) {
+      errors.push(`Candidate file exceeds 100MB: ${rel}`)
+    }
+    if (BAD_EXTENSIONS.includes(extname(lowerName)) || lowerName.startsWith('.env')) {
+      errors.push(`Raw log or environment file in candidate set: ${rel}`)
+    }
+    if (rel === 'raw' || rel.startsWith('raw/') || rel.includes('/raw/')) {
+      errors.push(`Raw directory in candidate set: ${rel}`)
+    }
+    const publicContent = rel === 'index.html' || rel.startsWith('src/') || rel.startsWith('public/')
+    await checkTextContent(path, rel, publicContent)
+  }
+}
+
+async function checkDistributionContent() {
+  if (!(await fileExists(DIST))) return
+  await walk(DIST, async (path) => {
+    const rel = path.replace(ROOT + '/', '')
+    await checkTextContent(path, rel, true)
+  })
+}
+
+async function checkRouteManifest() {
+  const appFile = await readFile(join(SRC, 'App.tsx'), 'utf8')
+  if (!appFile.includes("renderLocalizedRoutes('')") || !appFile.includes("renderLocalizedRoutes('/en')")) {
+    errors.push('App.tsx does not mount both localized route sets')
+  }
+  for (const route of BASE_ROUTES) {
+    if (!appFile.includes(`route('${route}')`)) errors.push(`Base route ${route} not declared in App.tsx`)
+  }
+
+  const redirectFile = await readFile(join(SRC, 'components/RedirectHandler.tsx'), 'utf8')
+  for (const route of ROUTES) {
+    if (!redirectFile.includes(`'${route}'`)) errors.push(`Route ${route} missing from static redirect allowlist`)
+  }
+
+  const sitemap = await readFile(join(PUBLIC, 'sitemap.xml'), 'utf8')
+  for (const route of ROUTES) {
+    const url = `https://kevinai.top${route === '/' ? '/' : route}`
+    if (!sitemap.includes(`<loc>${url}</loc>`)) errors.push(`Route ${route} missing from sitemap.xml`)
+  }
+}
+
+function normalizedTime(value) {
+  return String(value ?? '').replace(/[^0-9:.]/g, '')
+}
+
+async function checkBilingualBenchmarks() {
+  const zh = JSON.parse(await readFile(join(PUBLIC, 'data/benchmarks.json'), 'utf8'))
+  const en = JSON.parse(await readFile(join(PUBLIC, 'data/benchmarks.en.json'), 'utf8'))
+  if (zh.summary.table.length !== en.summary.table.length) {
+    errors.push('Chinese and English benchmark tables have different row counts')
+    return
+  }
+  zh.summary.table.forEach((row, index) => {
+    for (const model of ['kimi', 'codex', 'minimax']) {
+      if (row[model] !== en.summary.table[index][model]) {
+        errors.push(`Bilingual benchmark score mismatch at row ${index + 1}/${model}`)
+      }
+    }
+  })
+  for (const task of ['2d', '3d', 'promo', 'vision']) {
+    for (const model of ['kimi', 'codex', 'minimax']) {
+      const zhModel = zh.tasks[task].models[model]
+      const enModel = en.tasks[task].models[model]
+      if (zhModel.score !== enModel.score) errors.push(`Bilingual score mismatch: ${task}/${model}`)
+      if (normalizedTime(zhModel.time) !== normalizedTime(enModel.time)) {
+        errors.push(`Bilingual time mismatch: ${task}/${model}`)
+      }
+    }
+  }
+}
+
+async function checkVisionDataset() {
+  const vision = JSON.parse(await readFile(join(PUBLIC, 'data/vision-cases.json'), 'utf8'))
+  if (!Array.isArray(vision.cases) || vision.cases.length !== 50) {
+    errors.push('Vision review dataset must contain exactly 50 cases')
+    return
+  }
+  const ids = new Set()
+  for (const item of vision.cases) {
+    if (ids.has(item.id)) errors.push(`Duplicate vision case id: ${item.id}`)
+    ids.add(item.id)
+    if (!item.image?.startsWith('/assets/vision-images/')) {
+      errors.push(`Unexpected public vision image path: ${item.id}`)
+      continue
+    }
+    if (!(await fileExists(join(PUBLIC, item.image.slice(1))))) {
+      errors.push(`Missing public vision image: ${item.id}`)
+    }
+  }
+}
+
+async function checkWorkflow() {
+  const wfPath = join(ROOT, '.github/workflows/deploy.yml')
+  if (!(await fileExists(wfPath))) {
+    warnings.push('Missing .github/workflows/deploy.yml')
+    return
+  }
+  try {
+    const { load } = await import('js-yaml')
+    const workflow = await readFile(wfPath, 'utf8')
+    load(workflow)
+    if (/^\s*-\s+run:\s*(?:#.*)?$/m.test(workflow)) {
+      errors.push('.github/workflows/deploy.yml contains an empty run step')
+    }
+  } catch {
+    errors.push('.github/workflows/deploy.yml YAML parse failed')
+  }
+}
+
+async function checkDistSize() {
+  if (!(await fileExists(DIST))) {
+    warnings.push('dist/ does not exist; run npm run build before verifying distribution')
+    return
+  }
+  let totalBytes = 0
+  await walk(DIST, async (path, name) => {
+    const s = await stat(path)
+    totalBytes += s.size
+    if (s.size > 100 * 1024 * 1024) {
+      errors.push(`Dist file exceeds 100MB: ${path.replace(ROOT + '/', '')}`)
+    }
+    if (BAD_EXTENSIONS.some((ext) => name.endsWith(ext))) {
+      errors.push(`Raw log file found in dist: ${path.replace(ROOT + '/', '')}`)
+    }
+    if (name === 'raw' || path.includes('/raw/')) {
+      errors.push(`Raw directory found in dist: ${path.replace(ROOT + '/', '')}`)
+    }
+  })
+  const totalMB = (totalBytes / 1024 / 1024).toFixed(2)
+  if (totalMB > 500) {
+    warnings.push(`dist/ total size is ${totalMB} MB; consider asset optimization`)
+  }
+  console.log(`dist/ total size: ${totalMB} MB`)
+}
+
+async function checkGitignore() {
+  if (!(await fileExists(join(ROOT, '.gitignore')))) {
+    errors.push('Missing .gitignore')
+    return
+  }
+  const gitignore = await readFile(join(ROOT, '.gitignore'), 'utf8')
+  for (const pat of ['node_modules/', 'dist/', 'screenshots/', '*.tsbuildinfo', 'KIMI_HANDOFF.md', 'KIMI_REVIEW_ROUND1.md']) {
+    if (!gitignore.includes(pat)) {
+      errors.push(`.gitignore does not include ${pat}`)
+    }
+  }
+  try {
+    const tracked = execSync('git status --short', { cwd: ROOT, encoding: 'utf8' })
+    for (const line of tracked.split('\n')) {
+      if (!line.trim()) continue
+      const file = line.slice(3).trim()
+      if (file.startsWith('node_modules/') || file.startsWith('dist/') || file.startsWith('screenshots/')) {
+        errors.push(`Ignored file appears in git status: ${file}`)
+      }
+    }
+  } catch {
+    // git may not be initialized
+  }
+}
+
+async function checkAbsoluteOG() {
+  const head = await readFile(join(SRC, 'components/SEOHead.tsx'), 'utf8')
+  if (!head.includes('https://kevinai.top/assets/images/kevin-avatar.png')) {
+    errors.push('SEOHead OG image is not an absolute kevinai.top asset URL')
+  }
+}
+
+async function main() {
+  console.log('Running kevinai-top verification...\n')
+
+  await checkPublicAssets()
+  await checkBundles()
+  await checkCandidateFiles()
+  await checkDistributionContent()
+  await checkRouteManifest()
+  await checkBilingualBenchmarks()
+  await checkVisionDataset()
+  await checkWorkflow()
+  await checkDistSize()
+  await checkGitignore()
+  await checkAbsoluteOG()
+
+  if (warnings.length) {
+    console.log('Warnings:')
+    warnings.forEach((w) => console.log(`  ! ${w}`))
+  }
+
+  if (errors.length) {
+    console.log('\nErrors:')
+    errors.forEach((e) => console.log(`  x ${e}`))
+    process.exit(1)
+  }
+
+  console.log('\nAll checks passed')
+}
+
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})

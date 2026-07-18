@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-graphite-950 text-graphite-100 antialiased;
+  overflow-x: hidden;
+}
+
+/* Focus rings for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #8ab82f;
+  outline-offset: 2px;
+}
+
+/* Tactile feedback */
+button:active,
+a:active,
+[role="button"]:active {
+  transform: scale(0.98);
+}
+
+/* Reduced motion and manual pause */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body[data-motion-paused] {
+  --motion-state: paused;
+}
+
+body[data-motion-paused] *,
+body[data-motion-paused] *::before,
+body[data-motion-paused] *::after {
+  animation-play-state: paused !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #141413;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3d3d3b;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4c;
+}
+
+/* Typography */
+.prose-invert h2 {
+  @apply text-2xl md:text-3xl font-semibold tracking-tight text-white mt-12 mb-4;
+}
+
+.prose-invert p {
+  @apply text-base leading-relaxed text-graphite-200 max-w-[65ch];
+}
+
+.prose-invert ul {
+  @apply list-disc pl-5 space-y-2 text-graphite-200;
+}
