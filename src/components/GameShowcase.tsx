@@ -33,31 +33,22 @@ export default function GameShowcase() {
     return () => window.removeEventListener('keydown', closeOnEscape)
   }, [lightbox])
 
-  const desktopPlacement = [
-    'md:col-span-7 md:row-span-5',
-    'md:col-span-5 md:row-span-3',
-    'md:col-span-5 md:row-span-3',
-    'md:col-span-4 md:row-span-3',
-    'md:col-span-3 md:row-span-3',
-    'md:col-span-5 md:row-span-2',
-  ]
-
   return (
     <>
       <div className="relative">
-        <div className="flex md:grid md:grid-cols-12 md:grid-rows-8 md:h-[960px] gap-4 overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory">
+        <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory md:grid md:grid-cols-6 md:overflow-visible md:pb-0">
           {shots.map((shot, i) => (
             <button
               key={shot.src}
               onClick={() => setLightbox(shot.src)}
               aria-label={`${isEnglish ? 'Open image' : '放大查看'}：${shot.label}`}
-              className={`group relative flex-shrink-0 w-[82vw] sm:w-[64vw] h-[68dvh] min-h-[360px] max-h-[620px] md:w-auto md:h-auto md:min-h-0 md:max-h-none snap-start text-left rounded-2xl border border-white/5 bg-graphite-900/30 overflow-hidden transition-colors hover:border-pitch-500/30 ${desktopPlacement[i]}`}
+              className="group relative flex-shrink-0 w-[82vw] max-w-[340px] aspect-[390/844] md:w-auto md:max-w-none snap-center md:snap-start text-left rounded-[1.4rem] border border-white/10 bg-graphite-900/30 overflow-hidden transition-colors hover:border-pitch-500/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-pitch-500"
             >
               <img
                 src={shot.src}
                 alt={shot.alt}
                 loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.025]"
+                className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
               />
               <div className="absolute left-3 top-3 w-8 h-8 rounded-full border border-white/15 bg-graphite-950/80 backdrop-blur flex items-center justify-center text-[10px] tabular-nums text-white">
                 {String(i + 1).padStart(2, '0')}
