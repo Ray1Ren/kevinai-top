@@ -1166,18 +1166,17 @@ function setupTouch(){
     if (ev && ev.preventDefault) ev.preventDefault();
   }
   function btnUp(name, ev){
-    if (name === 'fire')     Input.fire = false;
-    if (name === 'reload')   Input.reload = false;
     if (name === 'interact') Input.interact = false;
     if (ev && ev.preventDefault) ev.preventDefault();
   }
-  fbtn.addEventListener('touchstart', e=>btnDown('fire',e),     { passive:false });
-  fbtn.addEventListener('touchend',   e=>btnUp('fire',e),       { passive:false });
-  fbtn.addEventListener('touchcancel',e=>btnUp('fire',e),       { passive:false });
-  rbtn.addEventListener('touchstart', e=>btnDown('reload',e),   { passive:false });
-  rbtn.addEventListener('touchend',   e=>btnUp('reload',e),     { passive:false });
-  ibtn.addEventListener('touchstart', e=>btnDown('interact',e), { passive:false });
-  ibtn.addEventListener('touchend',   e=>btnUp('interact',e),   { passive:false });
+  function bindPointerButton(button, name){
+    button.addEventListener('pointerdown', e=>btnDown(name,e));
+    button.addEventListener('pointerup', e=>btnUp(name,e));
+    button.addEventListener('pointercancel', e=>btnUp(name,e));
+  }
+  bindPointerButton(fbtn, 'fire');
+  bindPointerButton(rbtn, 'reload');
+  bindPointerButton(ibtn, 'interact');
 }
 
 document.addEventListener('mousemove', onMouseMove);

@@ -255,6 +255,53 @@ async function testM3DesktopShooting(browser, base) {
   log('MiniMax M3 desktop shooting passed: real mouse click consumed one round')
 }
 
+async function testM3MobileShooting(browser, base) {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'MiniMax M3 mobile shooting')
+  await page.goto(`${base}/bundles/3d/minimax-m3/`, { waitUntil: 'networkidle' })
+  await page.locator('#btn-start').click()
+  await page.waitForFunction(() => window.__BREACH_TEST__?.snapshot?.().phase === 'playing')
+
+  const fireButton = page.locator('#touch-fire')
+  await fireButton.waitFor({ state: 'visible' })
+  const beforeMouse = await page.evaluate(() => window.__BREACH_TEST__.snapshot())
+  await fireButton.click()
+  await page.waitForFunction(
+    ({ ammo, shots }) => {
+      const snapshot = window.__BREACH_TEST__.snapshot()
+      return snapshot.player.ammo < ammo && snapshot.stats.shots > shots
+    },
+    { ammo: beforeMouse.player.ammo, shots: beforeMouse.stats.shots },
+  )
+  const afterMouse = await page.evaluate(() => window.__BREACH_TEST__.snapshot())
+  assert.equal(afterMouse.player.ammo, beforeMouse.player.ammo - 1, 'mobile FIRE mouse click must consume one round')
+  assert.equal(afterMouse.stats.shots, beforeMouse.stats.shots + 1, 'mobile FIRE mouse click must register one shot')
+
+  const fireBox = await fireButton.boundingBox()
+  assert(fireBox, 'mobile FIRE button must have a bounding box')
+  await page.waitForTimeout(250)
+  await page.touchscreen.tap(fireBox.x + fireBox.width / 2, fireBox.y + fireBox.height / 2)
+  await page.waitForFunction(
+    ({ ammo, shots }) => {
+      const snapshot = window.__BREACH_TEST__.snapshot()
+      return snapshot.player.ammo < ammo && snapshot.stats.shots > shots
+    },
+    { ammo: afterMouse.player.ammo, shots: afterMouse.stats.shots },
+  )
+  const afterTouch = await page.evaluate(() => window.__BREACH_TEST__.snapshot())
+  assert.equal(afterTouch.player.ammo, afterMouse.player.ammo - 1, 'mobile FIRE touch tap must consume one round')
+  assert.equal(afterTouch.stats.shots, afterMouse.stats.shots + 1, 'mobile FIRE touch tap must register one shot')
+  await page.screenshot({ path: join(SCREENSHOTS, '3d-m3-mobile-shot.png') })
+  finishMonitoring()
+  await context.close()
+  log('MiniMax M3 mobile shooting passed: mouse click and touch tap each consumed one round')
+}
+
 async function testPromoInteraction(browser, base) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
@@ -456,6 +503,7 @@ async function main() {
     await test2DInteraction(browser, base)
     await test3DInteraction(browser, base)
     await testM3DesktopShooting(browser, base)
+    await testM3MobileShooting(browser, base)
     await testPromoInteraction(browser, base)
     await testVisionReview(browser, base)
     await testEmbeddedPlayableBuilds(browser, base)
