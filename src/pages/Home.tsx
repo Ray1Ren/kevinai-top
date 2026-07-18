@@ -6,10 +6,12 @@ import GameShowcase from '../components/GameShowcase'
 import ScrollNarrative from '../components/ScrollNarrative'
 import QrDialog from '../components/QrDialog'
 import { useLocale } from '../hooks/useLocale'
+import { FIRST_ARTICLE_PATH, useFirstArticleRelease } from '../lib/article-release'
 
 export default function Home() {
   const [qrOpen, setQrOpen] = useState(false)
   const { isEnglish, path } = useLocale()
+  const firstArticleReleased = useFirstArticleRelease()
 
   return (
     <>
@@ -181,13 +183,25 @@ export default function Home() {
               <div className="grid gap-3 py-6 sm:grid-cols-[7rem_1fr]">
                 <span className="text-xs uppercase tracking-widest text-graphite-500">02 · Notes</span>
                 <div>
-                  <h3 className="font-medium text-white">{isEnglish ? 'Posts and build notes' : '公众号文章和开发日记'}</h3>
+                  <h3 className="font-medium text-white">
+                    {firstArticleReleased
+                      ? (isEnglish ? 'Kimi K3: two games, one page, and 50 images' : 'Kimi K3 到底值不值得订阅？')
+                      : (isEnglish ? 'The first article goes live at 08:00' : '第一篇文章，早上 8 点见')}
+                  </h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'I am checking the original text and images now. Posts will move here as they are ready.' : '原文和配图核对好后，会陆续搬过来。'}
+                    {firstArticleReleased
+                      ? (isEnglish ? 'A two-day hands-on comparison of Kimi K3, GPT-5.6 Sol, and MiniMax M3.' : '同一套题、同一批素材，连续两天实测 Kimi K3、GPT-5.6 Sol 和 MiniMax M3。')
+                      : (isEnglish ? 'The Chinese and English editions will unlock together on July 19.' : '7 月 19 日，中英文版同时开放。')}
                   </p>
-                  <Link to={path('/notes')} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
-                    {isEnglish ? 'Go to notes' : '去文章页'} <span className="ml-1">→</span>
-                  </Link>
+                  {firstArticleReleased ? (
+                    <Link to={path(FIRST_ARTICLE_PATH)} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
+                      {isEnglish ? 'Read the full test' : '阅读全文'} <span className="ml-1">→</span>
+                    </Link>
+                  ) : (
+                    <Link to={path('/notes')} className="mt-3 inline-flex text-sm text-graphite-400 hover:text-white">
+                      {isEnglish ? 'Open notes' : '去文章页'} <span className="ml-1">→</span>
+                    </Link>
+                  )}
                 </div>
               </div>
               <div className="grid gap-3 py-6 sm:grid-cols-[7rem_1fr]">

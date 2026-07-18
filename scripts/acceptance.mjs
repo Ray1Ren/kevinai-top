@@ -116,10 +116,15 @@ async function testStaticDeepLinks(browser, base) {
     ['/lab/vision', '50 图识别实测'],
     ['/links', '链接'],
     ['/notes', '文章与动态'],
+    ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
     ['/en/lab/2d', '2D Web Game Test'],
     ['/en/notes', 'Notes & Updates'],
+    ['/en/notes/kimi-k3-subscription-review', 'Is Kimi K3 Worth Paying For'],
   ]
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
+  await context.addInitScript(() => {
+    Date.now = () => Date.parse('2026-07-19T00:01:00Z')
+  })
   for (const [path, title] of cases) {
     const page = await context.newPage()
     const finishMonitoring = monitorPage(page, `deep link ${path}`, { allowDocument404: true })
@@ -139,6 +144,82 @@ async function testStaticDeepLinks(browser, base) {
     log(`static 404 deep link passed: ${path}`)
   }
   await context.close()
+}
+
+async function loadLazyArticleMedia(page) {
+  const height = await page.evaluate(() => document.documentElement.scrollHeight)
+  for (let y = 0; y < height; y += 720) {
+    await page.evaluate((top) => window.scrollTo(0, top), y)
+    await page.waitForTimeout(70)
+  }
+  await page.waitForLoadState('networkidle')
+  await page.evaluate(() => window.scrollTo(0, 0))
+  await page.waitForTimeout(250)
+}
+
+async function testArticleReleaseGate(browser, base) {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  await context.addInitScript(() => {
+    Date.now = () => Date.parse('2026-07-18T23:59:00Z')
+  })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'article release gate', { allowDocument404: true })
+
+  await page.goto(`${base}/notes`, { waitUntil: 'networkidle' })
+  assert.match(await page.locator('main').innerText(), /第一篇文章，早上 8 点见/)
+  assert.equal(await page.getByRole('link', { name: '阅读全文' }).count(), 0)
+
+  await page.goto(`${base}/notes/kimi-k3-subscription-review`, { waitUntil: 'networkidle' })
+  assert.match(await page.title(), /第一篇文章 08:00 发布/)
+  const body = await page.locator('main').innerText()
+  assert(!body.includes('89.8'), 'article score must stay hidden before 08:00')
+  finishMonitoring()
+  await context.close()
+  log('article release gate passed: list and detail stay locked at 07:59')
+}
+
+async function testFirstArticle(browser, base) {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  })
+  await context.addInitScript(() => {
+    Date.now = () => Date.parse('2026-07-19T00:01:00Z')
+  })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'first bilingual article', { allowDocument404: true })
+
+  await page.goto(`${base}/notes/kimi-k3-subscription-review`, { waitUntil: 'networkidle' })
+  assert.match(await page.title(), /Kimi K3 到底值不值得订阅/)
+  assert.equal(await page.locator('html').getAttribute('lang'), 'zh-CN')
+  const zhBody = await page.locator('main').innerText()
+  for (const required of ['92.6', '89.8', '77.8', '80.5', '96.0', '54.5', '91.0', '89.2', '83.6', '95.0', '85.0', '96.7', '90.0', '88.0', '49/50', '47/50', '46/50', '1 亿+', '30 亿+']) {
+    assert(zhBody.includes(required), `Chinese article must include ${required}`)
+  }
+  assert(!zhBody.includes('tempkey'), 'Chinese article must not expose an expiring WeChat preview URL')
+  assert.equal(await page.locator('img[src^="/assets/article-kimi-k3/"]').count() >= 10, true)
+  const zhWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+  assert(zhWidth <= 392, `Chinese article must not overflow a 390px viewport, got ${zhWidth}px`)
+  await loadLazyArticleMedia(page)
+  await page.screenshot({ path: join(SCREENSHOTS, 'article-kimi-k3-mobile.png'), fullPage: true })
+
+  await page.goto(`${base}/en/notes/kimi-k3-subscription-review`, { waitUntil: 'networkidle' })
+  assert.match(await page.title(), /Is Kimi K3 Worth Paying For/)
+  assert.equal(await page.locator('html').getAttribute('lang'), 'en')
+  const enBody = await page.locator('main').innerText()
+  for (const required of ['92.6', '89.8', '77.8', '80.5', '96.0', '54.5', '91.0', '89.2', '83.6', '95.0', '85.0', '96.7', '90.0', '88.0', '49/50', '47/50', '46/50', '100 million-plus', '3 billion-plus']) {
+    assert(enBody.includes(required), `English article must include ${required}`)
+  }
+  assert(!enBody.includes('tempkey'), 'English article must not expose an expiring WeChat preview URL')
+  const enWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+  assert(enWidth <= 392, `English article must not overflow a 390px viewport, got ${enWidth}px`)
+  await loadLazyArticleMedia(page)
+  await page.screenshot({ path: join(SCREENSHOTS, 'article-kimi-k3-en-mobile.png'), fullPage: true })
+
+  finishMonitoring()
+  await context.close()
+  log('first article passed: Chinese and English facts, local assets, SEO title, and 390px layout')
 }
 
 const bundleKinds = {
@@ -531,6 +612,8 @@ async function main() {
   try {
     browser = await chromium.launch({ channel: 'chrome' })
     await testStaticDeepLinks(browser, base)
+    await testArticleReleaseGate(browser, base)
+    await testFirstArticle(browser, base)
     await testBundleMimeAndLoad(browser, base)
     await test2DInteraction(browser, base)
     await test3DInteraction(browser, base)

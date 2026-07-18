@@ -12,6 +12,8 @@ const OUTDIR = 'screenshots'
 const routes = [
   { path: '/', name: 'home', title: 'Kevin AI局' },
   { path: '/notes', name: 'notes', title: '文章与动态' },
+  { path: '/notes?preview=article', name: 'notes-released', title: '文章与动态' },
+  { path: '/notes/kimi-k3-subscription-review?preview=article', name: 'article-kimi-k3', title: 'Kimi K3 到底值不值得订阅' },
   { path: '/lab', name: 'lab', title: '四项 AI 实测' },
   { path: '/lab/2d', name: 'lab-2d', title: '2D 小游戏实测' },
   { path: '/lab/3d', name: 'lab-3d', title: '3D 小游戏实测' },
@@ -21,6 +23,8 @@ const routes = [
   { path: '/links', name: 'links', title: '链接' },
   { path: '/en', name: 'en-home', title: 'Kevin AI局' },
   { path: '/en/notes', name: 'en-notes', title: 'Notes & Updates' },
+  { path: '/en/notes?preview=article', name: 'en-notes-released', title: 'Notes & Updates' },
+  { path: '/en/notes/kimi-k3-subscription-review?preview=article', name: 'en-article-kimi-k3', title: 'Is Kimi K3 Worth Paying For' },
   { path: '/en/lab', name: 'en-lab', title: 'Four AI Tests' },
   { path: '/en/lab/2d', name: 'en-lab-2d', title: '2D Web Game Test' },
   { path: '/en/lab/3d', name: 'en-lab-3d', title: '3D Web Game Test' },
@@ -67,6 +71,15 @@ async function startServer() {
 
   await delay(500)
   return child
+}
+
+async function loadLazyMedia(page) {
+  const height = await page.evaluate(() => document.documentElement.scrollHeight)
+  for (let y = 0; y < height; y += 720) {
+    await page.evaluate((top) => window.scrollTo(0, top), y)
+    await delay(70)
+  }
+  await page.waitForLoadState('networkidle')
 }
 
 async function main() {
@@ -126,7 +139,11 @@ async function main() {
         if (bodyWidth > vpWidth + 2) {
           allErrors.push({ type: 'horizontal-overflow', viewport: vp.name, path: route.path, bodyWidth, vpWidth })
         }
-        await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+        if (route.path.includes('kimi-k3-subscription-review')) {
+          await loadLazyMedia(page)
+        } else {
+          await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+        }
         await delay(500)
         const screenshotPath = `${OUTDIR}/${vp.name}-${route.name}.png`
         await page.screenshot({ path: screenshotPath, fullPage: true })

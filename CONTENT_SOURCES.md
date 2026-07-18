@@ -8,9 +8,9 @@
 
 - Kevin 头像：本地已生成图像，经圆形裁切去除四角绿色后作为 `public/assets/images/kevin-avatar.png`。
 - 正式小程序码：`Kevin AI局_首发_20260715/assets/一脚晋级_公众号小程序码_ch_mp1.png`。
-- 四项总榜图：`弹弓攻城三方同题实测_20260718/assets/00-four-task-benchmark.png`。
-- 四项分项图：同目录下 `14-quality-2d.png`、`15-quality-3d.png`、`16-quality-promo.png`、`17-quality-vision.png`。
 - 四项用时图：同目录下 `18-duration-benchmark.png`。
+- 文章分项图：同目录下 `14-total-2d.png`、`14-detail-2d.png`、`16-total-web.png`、`16-detail-web.png`、`17-total-vision.png`、`17-detail-vision.png`。
+- 历史总榜图和旧 3D 分数图仍含早期分数，已停止导入；网站总榜和 3D 分数由最终数据直接渲染。
 
 ### 《一脚晋级》真实画面
 
@@ -48,11 +48,18 @@
 - 公开文件：`public/data/vision-cases.json`、`public/assets/vision-images/`
 - 仅公开题面、冻结图片、选项、真值与三家最终答案；原始运行日志、stdout、stderr、raw 目录和私有 manifest 不公开。
 
+### 第一篇双语文章
+
+- 中文事实源：`弹弓攻城三方同题实测_20260718/03_KimiCode公众号稿.md`。
+- 网站路由：`/notes/kimi-k3-subscription-review` 与 `/en/notes/kimi-k3-subscription-review`。
+- 文章配图复制到 `public/assets/article-kimi-k3/`；已有实机 GIF、题库拼图和小程序码直接复用网站现有文件，不重复存储。
+- 发布时刻：`2026-07-19T00:00:00Z`，即北京时间 / 新加坡时间 08:00；中英文同时开放。
+
 ## 文案与数据来源
 
 - Kevin 公开自述：`Kevin AI局_首发_20260715/01_首篇发布稿.md`
 - 四项最终质量分、用时、说明与结论（唯一对外数据口径）：`弹弓攻城三方同题实测_20260718/03_KimiCode公众号稿.md`
-- 最终数字核验图：同目录 `assets/00-four-task-benchmark.png`、`14-quality-2d.png`、`15-quality-3d.png`、`16-quality-promo.png`、`17-quality-vision.png`、`18-duration-benchmark.png`
+- 最终数字直接取公众号稿与 `public/data/benchmarks*.json`；旧总榜图和旧 3D 图不得继续作为核验依据。
 - 2D、3D、宣传页与识图目录中的 `RESULTS.md`、`REPORT.md`、`FINAL_SCORE_V2.json` 仅保留为过程证据；如与最终公众号稿冲突，以公众号稿为准。
 
 ## 公开事实边界

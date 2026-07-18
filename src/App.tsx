@@ -15,6 +15,7 @@ const Lab3D = lazy(() => import('./pages/Lab3D'))
 const LabPromo = lazy(() => import('./pages/LabPromo'))
 const LabVision = lazy(() => import('./pages/LabVision'))
 const LabVisionReview = lazy(() => import('./pages/LabVisionReview'))
+const KimiK3Review = lazy(() => import('./pages/KimiK3Review'))
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function renderLocalizedRoutes(prefix: '' | '/en') {
   return [
     <Route key={route('/')} path={route('/')} element={<Home />} />,
     <Route key={route('/notes')} path={route('/notes')} element={<Notes />} />,
+    <Route key={route('/notes/kimi-k3-subscription-review')} path={route('/notes/kimi-k3-subscription-review')} element={<Suspense fallback={<PageFallback />}><KimiK3Review /></Suspense>} />,
     <Route key={route('/lab')} path={route('/lab')} element={<Lab />} />,
     <Route key={route('/lab/2d')} path={route('/lab/2d')} element={<Suspense fallback={<PageFallback />}><Lab2D /></Suspense>} />,
     <Route key={route('/lab/3d')} path={route('/lab/3d')} element={<Suspense fallback={<PageFallback />}><Lab3D /></Suspense>} />,

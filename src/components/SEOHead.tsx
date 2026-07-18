@@ -6,11 +6,17 @@ interface SEOHeadProps {
   title?: string
   description?: string
   path?: string
+  image?: string
+  type?: 'website' | 'article'
+  publishedTime?: string
 }
 
 export default function SEOHead({
   title = 'Kevin AI局',
   description,
+  image = 'https://kevinai.top/assets/images/kevin-avatar.png',
+  type = 'website',
+  publishedTime,
 }: SEOHeadProps) {
   const { pathname } = useLocation()
   const { isEnglish } = useLocale()
@@ -30,8 +36,11 @@ export default function SEOHead({
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={resolvedDescription} />
       <meta property="og:url" content={url} />
-      <meta property="og:image" content="https://kevinai.top/assets/images/kevin-avatar.png" />
+      <meta property="og:image" content={image} />
+      <meta property="og:type" content={type} />
       <meta property="og:locale" content={isEnglish ? 'en_US' : 'zh_CN'} />
+      {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+      {type === 'article' && <meta property="article:author" content="Kevin AI局" />}
       <link rel="canonical" href={url} />
       <link rel="alternate" hrefLang="zh-CN" href={zhUrl} />
       <link rel="alternate" hrefLang="en" href={enUrl} />

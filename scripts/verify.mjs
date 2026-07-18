@@ -12,7 +12,6 @@ const BUNDLES = join(PUBLIC, 'bundles')
 const REQUIRED_PUBLIC_ASSETS = [
   'assets/images/kevin-avatar.png',
   'assets/images/qr-code.png',
-  'assets/images/four-task-benchmark.png',
   'assets/images/og-image.png',
   'assets/images/apple-touch-icon.png',
   'assets/images/game-home.png',
@@ -23,6 +22,24 @@ const REQUIRED_PUBLIC_ASSETS = [
   'assets/images/game-reward-bank.png',
   'assets/images/image-recognition-dataset-1.jpg',
   'assets/images/image-recognition-dataset-2.jpg',
+  'assets/article-kimi-k3/duration.png',
+  'assets/article-kimi-k3/2d-total.png',
+  'assets/article-kimi-k3/2d-detail.png',
+  'assets/article-kimi-k3/2d-k3-physics-fail.gif',
+  'assets/article-kimi-k3/3d-m3-hidden-enemies.gif',
+  'assets/article-kimi-k3/web-total.png',
+  'assets/article-kimi-k3/web-detail.png',
+  'assets/article-kimi-k3/vision-total.png',
+  'assets/article-kimi-k3/vision-detail.png',
+  'assets/article-kimi-k3/vision-count-snow.png',
+  'assets/article-kimi-k3/vision-count-party.png',
+  'assets/article-kimi-k3/vision-arrow.png',
+  'assets/article-kimi-k3/vision-ocr.png',
+  'assets/article-kimi-k3/codex-token-usage.png',
+  'assets/article-kimi-k3/codex-week-quota.png',
+  'assets/article-kimi-k3/kimi-token-ledger.png',
+  'assets/article-kimi-k3/kimi-week-quota.png',
+  'assets/article-kimi-k3/k3-official-benchmark.png',
   'assets/gifs/2d-k3.gif',
   'assets/gifs/2d-codex.gif',
   'assets/gifs/2d-m3.gif',
@@ -52,7 +69,7 @@ const BUNDLE_REQUIRED = {
   'promo': ['index.html', 'styles.css', 'app.js'],
 }
 
-const BASE_ROUTES = ['/', '/notes', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/links']
+const BASE_ROUTES = ['/', '/notes', '/notes/kimi-k3-subscription-review', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/links']
 const ROUTES = [
   ...BASE_ROUTES,
   ...BASE_ROUTES.map((route) => (route === '/' ? '/en' : `/en${route}`)),
@@ -211,6 +228,7 @@ async function checkCandidateFiles() {
   const candidates = listCandidateFiles()
   for (const rel of candidates) {
     const path = join(ROOT, rel)
+    if (!(await fileExists(path))) continue
     const fileStat = await stat(path)
     const lowerName = basename(path).toLowerCase()
     if (fileStat.size > 100 * 1024 * 1024) {
