@@ -135,12 +135,12 @@ export default function VisionReviewGrid({ showHeading = true }: VisionReviewGri
         <div className="mb-8 max-w-3xl">
           <span className="mb-2 block text-xs uppercase tracking-widest text-pitch-500">Vision Review</span>
           <h2 className="mb-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-            {isEnglish ? 'Review all 50 results directly' : '50 题结果直接审阅'}
+            {isEnglish ? 'See every answer' : '直接看 50 题结果'}
           </h2>
           <p className="text-sm leading-relaxed text-graphite-300">
             {isEnglish
-              ? 'Every frozen image, option, ground-truth answer, and result from all three tool chains is shown below. No extra page or download is required.'
-              : '冻结题图、四个选项、标准答案和三家调用链结果全部直接展开，无需再跳转页面或下载数据。'}
+              ? 'Every image, option, correct answer, and response from the three systems is shown below. Filter them by result, category, or difficulty.'
+              : '每道题的图片、选项、标准答案和三家回答都在下面，可以按结果、类别和难度筛选。'}
           </p>
         </div>
       )}
@@ -278,7 +278,7 @@ export default function VisionReviewGrid({ showHeading = true }: VisionReviewGri
         <p className="mt-8 text-xs leading-relaxed text-graphite-500">
           {isEnglish
             ? 'This is a reproducible result from three local tool chains on July 18, 2026, not a universal vision-model leaderboard.'
-            : '本页仅呈现 2026-07-18 三条本地调用链的可复核结果，不代表通用视觉模型排行榜。'}
+            : '结果范围仅限 2026 年 7 月 18 日测试的这 50 道题和三套本地工具。'}
         </p>
       )}
 

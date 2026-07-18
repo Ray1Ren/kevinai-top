@@ -15,8 +15,8 @@ export default function SEOHead({
   const { pathname } = useLocation()
   const { isEnglish } = useLocale()
   const resolvedDescription = description ?? (isEnglish
-    ? 'Kevin\'s independent product studio and field notes on turning ideas into shipped work with AI.'
-    : 'Kevin 的独立产品主页与 AI 实践记录。分享把想法真正做成作品的过程。')
+    ? 'Kevin builds independent products with AI and shares the work, mistakes, and tool tests behind them.'
+    : 'Kevin 的个人主页，放独立产品、开发日记和 AI 工具实测。')
   const fullTitle = title === 'Kevin AI局' ? title : `${title} · Kevin AI局`
   const url = `https://kevinai.top${pathname === '/' ? '' : pathname}`
   const basePath = stripLocalePath(pathname)

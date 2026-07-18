@@ -11,16 +11,16 @@ export default function LabVision() {
 
   return (
     <>
-      <SEOHead title={isEnglish ? 'Image Recognition Evaluation' : '图片识别评测'} />
+      <SEOHead title={isEnglish ? '50-Image Recognition Test' : '50 图识别实测'} />
       <section className="pt-24 pb-20 md:pb-28">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="max-w-3xl mb-12">
-            <span className="text-xs uppercase tracking-widest text-pitch-500 mb-2 block">{isEnglish ? 'Vision · 50 frozen images' : '视觉 · 50 图识别'}</span>
+            <span className="text-xs uppercase tracking-widest text-pitch-500 mb-2 block">{isEnglish ? 'Vision · 50 images' : '视觉 · 50 张图'}</span>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
-              {isEnglish ? 'Image recognition evaluation' : '图片识别评测'}
+              {isEnglish ? '50-image recognition test' : '50 图识别实测'}
             </h1>
             <p className="text-graphite-200 leading-relaxed mb-6">
-              {task?.conclusion ?? (isEnglish ? 'Kimi led this 50-image local tool-chain evaluation. The result is not a universal vision-model leaderboard.' : 'Kimi 在本地调用链的 50 图识别上领先，Codex 与 MiniMax M3 紧随其后；结论不能扩展为通用视觉模型排行榜。')}
+              {task?.conclusion ?? (isEnglish ? 'Kimi scored highest on these 50 images, followed by Codex and MiniMax M3.' : '这次 50 图测试，Kimi 得分最高，Codex 和 MiniMax M3 随后。')}
             </p>
             <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
               {task?.prompt ?? (isEnglish ? 'Answer using only the attached image and output exactly one line of JSON.' : '只根据随附图片回答。即使图片模糊，也请选择最符合图片的一项，只输出一行 JSON。')}
@@ -47,7 +47,7 @@ export default function LabVision() {
                 loading="lazy"
                 className="w-full h-auto object-cover"
               />
-              <figcaption className="px-4 py-3 text-xs text-graphite-400">{isEnglish ? 'Frozen evaluation-set sample' : '50 图识别数据集样例'}</figcaption>
+              <figcaption className="px-4 py-3 text-xs text-graphite-400">{isEnglish ? 'Test set · page 1' : '50 道题 · 第 1 页'}</figcaption>
             </figure>
             <figure className="rounded-xl border border-white/5 bg-graphite-900/30 overflow-hidden">
               <img
@@ -56,19 +56,19 @@ export default function LabVision() {
                 loading="lazy"
                 className="w-full h-auto object-cover"
               />
-              <figcaption className="px-4 py-3 text-xs text-graphite-400">{isEnglish ? 'Frozen evaluation-set sample' : '50 图识别数据集样例'}</figcaption>
+              <figcaption className="px-4 py-3 text-xs text-graphite-400">{isEnglish ? 'Test set · page 2' : '50 道题 · 第 2 页'}</figcaption>
             </figure>
           </div>
 
           <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-8 mb-8">
-            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Final ranking (speed excluded)' : '最终榜（速度不计分）'}</h2>
+            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Scores and answers (speed listed separately)' : '得分和答题情况（速度另列）'}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/5 text-left text-graphite-400">
-                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool chain' : '调用链'}</th>
+                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool' : '工具'}</th>
                     <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Accuracy' : '准确率'}</th>
-                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Hard stability' : 'hard 稳定'}</th>
+                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? '3-run agreement' : '三次一致'}</th>
                     <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Median / item' : '单题中位'}</th>
                     <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Score' : '总分'}</th>
                   </tr>
@@ -99,7 +99,7 @@ export default function LabVision() {
               </table>
             </div>
             <p className="mt-4 text-xs text-graphite-500">
-              {isEnglish ? '100 points = 30 for everyday/text/document items + 20 for counting/spatial items + 30 for charts/professional diagrams/UI + 20 for three-run hard-item stability. Speed is reported separately.' : '100 分 = 日常、文字与文档 30 分 + 计数与空间关系 20 分 + 图表、专业图与界面 30 分 + hard 三次稳定性 20 分。速度单列。'}
+              {isEnglish ? 'The 100 points cover everyday images, text and documents (30), counting and spatial questions (20), charts, technical diagrams and UI (30), plus answer agreement across three runs of the 15 hard items (20). Speed is listed separately.' : '100 分里，日常图片、文字和文档占 30 分，计数和空间题占 20 分，图表、专业图和界面占 30 分；15 道难题重复三次，答案是否一致占 20 分。速度另列。'}
             </p>
           </div>
 

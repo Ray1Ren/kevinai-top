@@ -31,7 +31,7 @@ export default function PlayableComparison({
       <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <span className="mb-2 block text-xs uppercase tracking-widest text-pitch-500">
-            {isEnglish ? 'Live build' : '在线原作'}
+            {isEnglish ? 'Play here' : '直接试玩'}
           </span>
           <h2 id="playable-heading" className="mb-2 text-2xl font-semibold tracking-tight text-white md:text-3xl">
             {title}
@@ -80,7 +80,7 @@ export default function PlayableComparison({
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-graphite-950" role="status" aria-live="polite">
               <div className="flex items-center gap-3 text-sm text-graphite-400">
                 <span className="h-2 w-2 animate-pulse-slow rounded-full bg-pitch-500" />
-                {isEnglish ? 'Loading the playable build…' : '正在加载可试玩原作…'}
+                {isEnglish ? 'Loading the game…' : '游戏加载中…'}
               </div>
             </div>
           )}
@@ -98,8 +98,8 @@ export default function PlayableComparison({
       </div>
       <p className="mt-3 text-xs text-graphite-500">
         {isEnglish
-          ? 'These are the original submitted HTML builds, running directly on this site. Keyboard, mouse, and touch support vary by build.'
-          : '这里运行的是三家提交的原始 HTML 成品；不同版本对键盘、鼠标和触摸操作的支持略有差异。'}
+          ? 'These are the games exactly as submitted. Keyboard, mouse, and touch support vary between them.'
+          : '这里放的是三家交来的原版网页游戏，键盘、鼠标和触摸支持各不相同。'}
       </p>
     </section>
   )

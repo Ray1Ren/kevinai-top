@@ -11,16 +11,16 @@ export default function Lab3D() {
 
   return (
     <>
-      <SEOHead title={isEnglish ? '3D Web Game Evaluation' : '3D 小游戏评测'} />
+      <SEOHead title={isEnglish ? '3D Web Game Test' : '3D 小游戏实测'} />
       <section className="pt-24 pb-20 md:pb-28">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="max-w-3xl mb-12">
             <span className="text-xs uppercase tracking-widest text-pitch-500 mb-2 block">3D · {isEnglish ? 'Breach Point' : '破门点'}</span>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
-              {isEnglish ? '3D web game evaluation' : '3D 小游戏评测'}
+              {isEnglish ? '3D web game test' : '3D 小游戏实测'}
             </h1>
             <p className="text-graphite-200 leading-relaxed mb-4">
-              {task?.conclusion ?? (isEnglish ? 'K3 ranked first at 91.0, followed by Codex at 89.2 and MiniMax M3 at 83.6.' : '公众号最终质量分：K3 91.0 第一，Codex 89.2，MiniMax M3 83.6。')}
+              {task?.conclusion ?? (isEnglish ? 'K3 scored 91.0, Codex 89.2, and MiniMax M3 83.6. All three can be finished.' : 'K3 91.0 第一，Codex 89.2，MiniMax M3 83.6。三套都能玩完。')}
             </p>
             <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
               {task?.prompt ?? (isEnglish ? 'Build an original 3D browser game with a complete tactical training flow.' : '做一款让普通玩家一眼能理解进入 3D 战术训练场、移动瞄准、与敌人交火、清场后拆除装置的原创网页小游戏。')}
@@ -28,8 +28,8 @@ export default function Lab3D() {
           </div>
 
           <PlayableComparison
-            title={isEnglish ? 'Play all three original 3D builds' : '三套 3D 原作直接试玩'}
-            description={isEnglish ? 'Switch between the submitted builds directly. Kimi K3 opens first because it led the final quality score.' : '三家提交的 HTML 3D 游戏都已部署在这里，可直接切换试玩；默认打开最终质量分第一的 Kimi K3 版本。'}
+            title={isEnglish ? 'Play all three submitted games' : '三套原作，切换就能玩'}
+            description={isEnglish ? 'Kimi K3 opens first because it received the highest quality score.' : '默认打开得分最高的 Kimi K3，点上方按钮可切换另外两套。'}
             defaultId="kimi"
             entries={[
               { id: 'kimi', label: 'Kimi K3', src: '/bundles/3d/kimi/', score: 91.0 },
@@ -75,14 +75,14 @@ export default function Lab3D() {
           </div>
 
           <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-8 mb-8">
-            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Final quality score (speed excluded)' : '最终质量分（速度不计入）'}</h2>
+            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Quality scores (speed listed separately)' : '成品得分（速度另算）'}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/5 text-left text-graphite-400">
-                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool chain' : '组合'}</th>
+                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool' : '工具'}</th>
                     <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Quality' : '质量分'}</th>
-                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Time' : '独立用时'}</th>
+                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Time' : '用时'}</th>
                   </tr>
                 </thead>
                 <tbody className="text-graphite-200">

@@ -10,16 +10,16 @@ export default function LabPromo() {
 
   return (
     <>
-      <SEOHead title={isEnglish ? 'Promotion Page Evaluation' : '宣传页 HTML 评测'} />
+      <SEOHead title={isEnglish ? 'Promotion Page Test' : '宣传页实测'} />
       <section className="pt-24 pb-20 md:pb-28">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="max-w-3xl mb-12">
             <span className="text-xs uppercase tracking-widest text-pitch-500 mb-2 block">{isEnglish ? 'Promotion page · One Kick' : '宣传页 · 一脚晋级'}</span>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
-              {isEnglish ? 'Promotion page evaluation' : '宣传页 HTML 评测'}
+              {isEnglish ? 'Promotion page test' : '宣传页实测'}
             </h1>
             <p className="text-graphite-200 leading-relaxed mb-6">
-              {task?.conclusion ?? (isEnglish ? 'Codex had the strongest finished quality. MiniMax M3 was fastest. K3 was complete but dense above the fold.' : 'Codex 成品质感第一，MiniMax M3 速度最快且信息层级均衡，K3 完整但首屏密度可优化。')}
+              {task?.conclusion ?? (isEnglish ? 'Codex scored 95.0, K3 91.0, and MiniMax M3 85.0. MiniMax shipped fastest.' : 'Codex 95.0，K3 91.0，MiniMax M3 85.0。MiniMax 交付最快。')}
             </p>
             <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
               {task?.prompt ?? (isEnglish ? 'Put the core One Kick interaction directly into a promotion page.' : '把《一脚晋级》的核心乐趣直接做进网页：访客进入首屏就能在一个缩小版 6×6 球场里滑动足球、判断路线、三步破门。')}
@@ -63,14 +63,14 @@ export default function LabPromo() {
           </div>
 
           <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-8 mb-8">
-            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Final quality score (speed excluded)' : '最终质量分（速度不计入）'}</h2>
+            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Quality scores (speed listed separately)' : '成品得分（速度另算）'}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/5 text-left text-graphite-400">
-                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool chain' : '组合'}</th>
+                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool' : '工具'}</th>
                     <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Quality' : '质量分'}</th>
-                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Time' : '独立用时'}</th>
+                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Time' : '用时'}</th>
                   </tr>
                 </thead>
                 <tbody className="text-graphite-200">

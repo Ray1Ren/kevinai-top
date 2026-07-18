@@ -112,11 +112,11 @@ function monitorPage(page, label, { allowDocument404 = false } = {}) {
 
 async function testStaticDeepLinks(browser, base) {
   const cases = [
-    ['/lab/2d', '2D 小游戏评测'],
-    ['/lab/vision', '图片识别评测'],
+    ['/lab/2d', '2D 小游戏实测'],
+    ['/lab/vision', '50 图识别实测'],
     ['/links', '链接'],
     ['/notes', '文章与动态'],
-    ['/en/lab/2d', '2D Web Game Evaluation'],
+    ['/en/lab/2d', '2D Web Game Test'],
     ['/en/notes', 'Notes & Updates'],
   ]
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })

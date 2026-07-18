@@ -11,36 +11,44 @@ const taskCardsZh = [
     title: '2D 小游戏',
     project: '弹弓攻城',
     date: '2026-07-17',
-    summary: 'Codex 96.0 第一；K3 80.5 完成度高但二三关漂移；MiniMax M3 54.5，正常操作无法打通第一关。',
+    image: '/assets/images/lab-card-2d.webp',
+    imageAlt: 'Codex 版《弹弓攻城》发射中的实机画面',
+    summary: 'Codex 96.0，操作最稳。K3 80.5，第二、三关会自己漂；MiniMax M3 54.5，正常操作过不了第一关。',
   },
   {
     slug: '3d',
     title: '3D 小游戏',
     project: '破门点',
     date: '2026-07-18',
-    summary: 'K3 91.0 第一，画面与体感最好；Codex 89.2 整套流程最顺；MiniMax M3 83.6，可完整玩下来但质感稍弱。',
+    image: '/assets/images/lab-card-3d.webp',
+    imageAlt: 'Kimi K3 版《破门点》持枪交火的实机画面',
+    summary: '三套都能玩完：K3 91.0，画面和手感最好；Codex 89.2，流程最顺；MiniMax M3 83.6。',
   },
   {
     slug: 'promo',
     title: '宣传页 HTML',
     project: '一脚晋级宣传页',
     date: '2026-07-18',
-    summary: 'Codex 95.0 第一，品牌视觉最完整；K3 91.0 功能齐但首屏偏密；MiniMax M3 85.0，速度最快但视觉与动效第三。',
+    image: '/assets/images/lab-card-promo.webp',
+    imageAlt: 'Codex 版《一脚晋级》宣传页三步破门画面',
+    summary: 'Codex 95.0，把品牌和可玩挑战做得最完整；K3 91.0，首屏有些挤；MiniMax M3 85.0，交付最快。',
   },
   {
     slug: 'vision',
     title: '图片识别',
     project: '50 图视觉识别',
     date: '2026-07-18',
-    summary: 'K3 96.7 领先，49/50；Codex 90.0；MiniMax M3 88.0。速度不计入本榜。',
+    image: '/assets/images/lab-card-vision.webp',
+    imageAlt: '50 图识别题集中的生活、文字和文档类题目总览',
+    summary: 'K3 答对 49/50，得分 96.7；Codex 90.0；MiniMax M3 88.0。速度另算。',
   },
 ]
 
 const taskCardsEn = [
-  { slug: '2d', title: '2D Web Game', project: 'Sling Siege', date: '2026-07-17', summary: 'Codex led at 96.0. K3 reached 80.5 with strong completion but physics drift. MiniMax M3 scored 54.5 because normal play could not clear level one.' },
-  { slug: '3d', title: '3D Web Game', project: 'Breach Point', date: '2026-07-18', summary: 'K3 ranked first at 91.0. Codex reached 89.2 with the smoothest complete flow. MiniMax M3 scored 83.6 and remained fully playable but less polished.' },
-  { slug: 'promo', title: 'Promotion Page', project: 'One Kick', date: '2026-07-18', summary: 'Codex led at 95.0 for brand presentation. K3 scored 91.0 with complete features but a denser opening. MiniMax M3 scored 85.0: fastest, but third on visual and motion quality.' },
-  { slug: 'vision', title: 'Image Recognition', project: '50 frozen images', date: '2026-07-18', summary: 'K3 led this local tool-chain test at 96.7 and 49/50. Codex scored 90.0 and MiniMax M3 88.0. Speed did not affect the ranking.' },
+  { slug: '2d', title: '2D Web Game', project: 'Sling Siege', date: '2026-07-17', image: '/assets/images/lab-card-2d.webp', imageAlt: 'Codex build of Sling Siege during a launch', summary: 'Codex scored 96.0 and felt the most reliable. K3 scored 80.5 with drifting later levels. MiniMax M3 scored 54.5 and could not clear level one through normal play.' },
+  { slug: '3d', title: '3D Web Game', project: 'Breach Point', date: '2026-07-18', image: '/assets/images/lab-card-3d.webp', imageAlt: 'Kimi K3 build of Breach Point during combat', summary: 'All three can be finished. K3 scored 91.0 with the best feel, Codex scored 89.2 with the smoothest flow, and MiniMax M3 scored 83.6.' },
+  { slug: 'promo', title: 'Promotion Page', project: 'One Kick', date: '2026-07-18', image: '/assets/images/lab-card-promo.webp', imageAlt: 'Codex promotion page after completing the three-move challenge', summary: 'Codex scored 95.0 and tied the brand and playable challenge together best. K3 scored 91.0 with a crowded opening. MiniMax M3 scored 85.0 and shipped fastest.' },
+  { slug: 'vision', title: 'Image Recognition', project: '50-image test', date: '2026-07-18', image: '/assets/images/lab-card-vision.webp', imageAlt: 'Overview of everyday, text, and document items in the 50-image set', summary: 'K3 answered 49/50 and scored 96.7. Codex scored 90.0 and MiniMax M3 scored 88.0. Speed is listed separately.' },
 ]
 
 export default function Lab() {
@@ -51,20 +59,20 @@ export default function Lab() {
   return (
     <>
       <SEOHead
-        title={isEnglish ? 'Evaluation Lab' : '四类评测总控实验室'}
-        description={isEnglish ? 'Reproducible AI coding evaluations with directly playable builds, final scores, and filterable visual evidence.' : '可复核的 AI 编码评测：直接试玩原作、查看最终分数与可筛选视觉证据。'}
+        title={isEnglish ? 'Four AI Tests' : '四项 AI 实测'}
+        description={isEnglish ? 'Play the submitted 2D and 3D games, view the promotion pages, and inspect all 50 image-recognition answers.' : '直接玩三家提交的 2D、3D 小游戏，查看宣传页和全部 50 题识图结果。'}
       />
       <section className="pt-24 pb-20 md:pb-28">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="max-w-2xl mb-16">
             <span className="text-xs uppercase tracking-widest text-pitch-500 mb-2 block">Lab</span>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
-              {isEnglish ? 'Evaluation lab' : '四类评测总控实验室'}
+              {isEnglish ? 'Four AI tests' : '四项 AI 实测'}
             </h1>
             <p className="text-graphite-200 leading-relaxed">
               {isEnglish
-                ? 'Run from July 17 to July 18, 2026 on the same machine with consistent Chrome QA and real screen recordings. Within each of the 2D, 3D, and promotion-page tasks, every system received the same brief, empty directory, and inputs. Vision used one frozen, strictly valid 50-image set. Speed and quality remain separate.'
-                : '2026-07-17 至 2026-07-18，在同一台机器上运行，统一 Chrome QA 和真实录屏。2D、3D、宣传页三类各自在本类内部使用同题任务书、空目录与一致输入；图片识别使用同一套冻结的严格有效 50 图。速度分与质量分严格区分。'}
+                ? 'I ran these four tests on July 17 and 18, 2026. For each task, all three systems received the same brief and inputs on the same computer. The image test used the same 50 pictures. I tried every build in Chrome and recorded the runs. Speed is listed separately from quality.'
+                : '这四项测试都在 2026 年 7 月 17 至 18 日完成。每一项里，三家拿到同样的要求和素材，也都在同一台电脑上完成；识图用的是同一批 50 张图。我用 Chrome 逐个试玩并录屏，质量和速度分开算。'}
             </p>
           </div>
 
@@ -87,19 +95,31 @@ export default function Lab() {
               <Link
                 key={card.slug}
                 to={path(`/lab/${card.slug}`)}
-                className="group p-6 rounded-2xl border border-white/5 bg-graphite-900/30 hover:border-pitch-500/30 transition-colors"
+                className="group overflow-hidden rounded-2xl border border-white/5 bg-graphite-900/30 transition-colors hover:border-pitch-500/30 active:scale-[0.99]"
               >
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs text-graphite-400">{card.project}</span>
-                  <span className="text-xs text-graphite-500">{card.date}</span>
+                <div className="aspect-video overflow-hidden border-b border-white/5 bg-graphite-950/70">
+                  <img
+                    src={card.image}
+                    alt={card.imageAlt}
+                    loading="lazy"
+                    width="960"
+                    height={card.slug === 'vision' ? '1088' : '540'}
+                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
+                  />
                 </div>
-                <h2 className="text-xl font-semibold text-white mb-2 group-hover:text-pitch-500 transition-colors">
-                  {card.title}
-                </h2>
-                <p className="text-sm text-graphite-300 leading-relaxed">{card.summary}</p>
-                <span className="inline-flex items-center mt-4 text-sm text-pitch-500 group-hover:text-pitch-400 transition-colors">
-                  {isEnglish ? 'View evidence' : '查看详情'} <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
-                </span>
+                <div className="p-5 md:p-6">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <span className="text-xs text-graphite-400">{card.project}</span>
+                    <span className="shrink-0 text-xs text-graphite-500">{card.date}</span>
+                  </div>
+                  <h2 className="mb-2 text-xl font-semibold text-white transition-colors group-hover:text-pitch-500">
+                    {card.title}
+                  </h2>
+                  <p className="text-sm leading-relaxed text-graphite-300">{card.summary}</p>
+                  <span className="mt-4 inline-flex items-center text-sm text-pitch-500 transition-colors group-hover:text-pitch-400">
+                    {isEnglish ? 'Open test' : '查看详情'} <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
+                  </span>
+                </div>
               </Link>
             ))}
           </div>

@@ -11,18 +11,18 @@ export default function Lab2D() {
 
   return (
     <>
-      <SEOHead title={isEnglish ? '2D Web Game Evaluation' : '2D 小游戏评测'} />
+      <SEOHead title={isEnglish ? '2D Web Game Test' : '2D 小游戏实测'} />
       <section className="pt-24 pb-20 md:pb-28">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6">
           <div className="max-w-3xl mb-12">
             <span className="text-xs uppercase tracking-widest text-pitch-500 mb-2 block">2D · {isEnglish ? 'Sling Siege' : '弹弓攻城'}</span>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
-              {isEnglish ? '2D web game evaluation' : '2D 小游戏评测'}
+              {isEnglish ? '2D web game test' : '2D 小游戏实测'}
             </h1>
             <p className="text-graphite-200 leading-relaxed mb-6">
               {task?.conclusion ?? (isEnglish
-                ? 'Codex led on stability and playability. K3 was ambitious but drifted physically. MiniMax M3 could not reliably aim at high targets.'
-                : 'Codex 在稳定性与可玩性上领先；K3 完成度高但物理漂移和手机操作区仍待优化；MiniMax M3 的纵向瞄准约束导致高处目标难以命中。')}
+                ? 'Codex scored 96.0 and felt the most reliable. K3 scored 80.5 with drifting later levels. MiniMax M3 scored 54.5 and could not clear level one through normal play.'
+                : 'Codex 96.0，操作最稳。K3 80.5，第二、三关会自己漂；MiniMax M3 54.5，正常操作过不了第一关。')}
             </p>
             <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
               {task?.prompt ?? (isEnglish ? 'Build an original browser game with an immediately understandable slingshot interaction.' : '做一款让普通玩家一眼能理解拖弹弓、放手发射、撞塌建筑的原创网页小游戏。')}
@@ -30,8 +30,8 @@ export default function Lab2D() {
           </div>
 
           <PlayableComparison
-            title={isEnglish ? 'Play all three original 2D builds' : '三套 2D 原作直接试玩'}
-            description={isEnglish ? 'Switch between the submitted builds without leaving the evaluation. Codex opens first because it led the final quality score.' : '无需离开评测页即可切换三家提交的 HTML 成品；默认打开最终质量分第一的 Codex 版本。'}
+            title={isEnglish ? 'Play all three submitted games' : '三套原作，切换就能玩'}
+            description={isEnglish ? 'Codex opens first because it received the highest quality score.' : '默认打开得分最高的 Codex，点上方按钮可切换另外两套。'}
             defaultId="codex"
             entries={[
               { id: 'kimi', label: 'Kimi K3', src: '/bundles/2d/kimi/', score: 80.5 },
@@ -77,14 +77,14 @@ export default function Lab2D() {
           </div>
 
           <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-8 mb-8">
-            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Final quality score (speed excluded)' : '最终质量分（速度不计入）'}</h2>
+            <h2 className="text-lg font-semibold text-white mb-4">{isEnglish ? 'Quality scores (speed listed separately)' : '成品得分（速度另算）'}</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-white/5 text-left text-graphite-400">
-                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool chain' : '组合'}</th>
+                    <th className="px-4 py-3 font-medium">{isEnglish ? 'Tool' : '工具'}</th>
                     <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Quality' : '质量分'}</th>
-                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Time' : '独立用时'}</th>
+                    <th className="px-4 py-3 font-medium text-right">{isEnglish ? 'Time' : '用时'}</th>
                   </tr>
                 </thead>
                 <tbody className="text-graphite-200">

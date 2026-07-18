@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "title": "Final quality scores across four Kimi K3 / GPT-5.6 Sol / MiniMax M3 evaluations",
+    "title": "Four hands-on tests of Kimi K3, GPT-5.6 Sol, and MiniMax M3",
     "dateRange": "2026-07-17 to 2026-07-18",
-    "scoringNote": "Every task uses a 100-point quality scale. Speed is reported separately and does not affect quality. The four tasks are equally weighted at 25% each. Model order is fixed as Kimi K3, GPT-5.6 Sol (Codex CLI), and MiniMax M3.",
+    "scoringNote": "Each task is scored out of 100. Speed is listed separately and does not affect quality. The overall score is the average of all four tasks. Table order is Kimi K3, GPT-5.6 Sol (Codex CLI), and MiniMax M3.",
     "modelOrder": ["Kimi K3", "GPT-5.6 Sol (Codex CLI)", "MiniMax M3"],
-    "methodNote": "Within each of the 2D, 3D, and promotion-page evaluations, all systems received the same task brief, an empty directory, and identical inputs. The briefs and assets differed across the three evaluation types. The vision evaluation used the same frozen set of 50 strictly valid images and the same question wording. Every run used the same machine, consistent Chrome QA, and real screen recordings.",
-    "publicDataNote": "This site publishes final scores, final interactive outputs, and filtered evidence only. Raw run logs, stdout, stderr, raw response folders, and private manifests are not public."
+    "methodNote": "For each task, all three systems received the same brief and inputs on the same computer. The image test used the same 50 pictures. I tried every build in Chrome and recorded the runs.",
+    "publicDataNote": "The site shows final scores, playable builds, and image-test answers. Run logs are not public."
   },
   "summary": {
     "table": [
@@ -34,11 +34,11 @@
       "date": "2026-07-17",
       "prompt": "Build an original browser game whose slingshot drag, release-to-launch action, and building-collapse objective are immediately understandable to an ordinary player.",
       "models": {
-        "kimi": { "score": 80.5, "time": "40:00.09", "note": "Delivered the visuals, gameplay, sound, and ambitious physics structure. Overall completion was strong, but structures in levels two and three drifted while idle and the mobile control area was small." },
-        "codex": { "score": 96.0, "time": "14:44.97", "note": "Real dragging, trajectory preview, collisions, reload, and all three levels stayed stable and passed the unified Chrome QA. The visuals were simple, but the controls and feedback were the clearest." },
-        "minimax": { "score": 54.5, "time": "36:56.44", "note": "The opening screen, HUD, trajectory, trail, and Air Burst were complete. However, vertical aiming was reversed, normal play could not clear level one, and progress did not persist after refresh." }
+        "kimi": { "score": 80.5, "time": "40:00.09", "note": "The visuals, gameplay, sound, and complex physics were all there. Structures in levels two and three drifted while idle, and the mobile control area was small." },
+        "codex": { "score": 96.0, "time": "14:44.97", "note": "Dragging, trajectory preview, collisions, reloading, and all three levels stayed stable. The visuals were simple; the controls and feedback were the clearest." },
+        "minimax": { "score": 54.5, "time": "36:56.44", "note": "The opening screen, HUD, trajectory, trail, and Air Burst were all present. Vertical aiming was reversed, normal play could not clear level one, and progress disappeared after refresh." }
       },
-      "conclusion": "Final public-account quality scores: Codex ranked first at 96.0, followed by K3 at 80.5 and MiniMax M3 at 54.5. M3 looked complete, but normal play could not clear level one.",
+      "conclusion": "Codex scored 96.0, K3 80.5, and MiniMax M3 54.5. M3 looked complete, yet normal play could not clear level one.",
       "playHref": "/bundles/2d/",
       "dataHref": "/data/benchmarks.en.json"
     },
@@ -48,11 +48,11 @@
       "date": "2026-07-18",
       "prompt": "Build an original browser game that clearly communicates entering a 3D tactical training ground, moving and aiming, engaging enemies, clearing the area, and defusing a device.",
       "models": {
-        "kimi": { "score": 91.0, "time": "1:16:55.95", "note": "The harbor landmarks, guidance route, device feedback, and mobile controls were the clearest, with the strongest visuals and feel. Its main weakness was still speed." },
-        "codex": { "score": 89.2, "time": "22:57.51", "note": "Combat, reload, damage, defusal, and results all worked end to end, delivering the smoothest complete flow. The scene was slightly less memorable than K3." },
-        "minimax": { "score": 83.6, "time": "44:05.49", "note": "Clearing enemies, approaching the device, holding to defuse, winning, and restarting all worked; mobile controls and persistence also worked. Visual finish and shooting feedback remained one tier behind." }
+        "kimi": { "score": 91.0, "time": "1:16:55.95", "note": "The harbor scene, route hints, defusal feedback, and mobile controls were the easiest to understand. It also looked and felt the best. It took the longest." },
+        "codex": { "score": 89.2, "time": "22:57.51", "note": "Combat, reload, damage, defusal, and results all worked smoothly. The scene was less memorable than K3." },
+        "minimax": { "score": 83.6, "time": "44:05.49", "note": "Clearing enemies, approaching the device, holding to defuse, winning, and restarting all worked. Mobile controls and saved progress worked too. The visuals and shooting feedback were weaker." }
       },
-      "conclusion": "Final public-account quality scores: K3 ranked first at 91.0, followed by Codex at 89.2 and MiniMax M3 at 83.6. All three builds were fully playable; the main differences were visual finish and control feedback.",
+      "conclusion": "K3 scored 91.0, Codex 89.2, and MiniMax M3 83.6. All three can be finished. The main differences are the visuals and control feedback.",
       "playHref": "/bundles/3d/",
       "dataHref": "/data/benchmarks.en.json"
     },
@@ -62,11 +62,11 @@
       "date": "2026-07-18",
       "prompt": "Put the core appeal of One Kick directly into the page: visitors should be able to slide a ball on a compact 6 by 6 field, reason about the route, and score in three moves from the opening screen.",
       "models": {
-        "kimi": { "score": 91.0, "time": "45:00", "note": "The page had the most complete feature set, with route highlighting, rule explanations, real-game overlays, hints, and reset behavior all easy to find. The opening was dense, and the logo, characters, and field could have been integrated more tightly." },
-        "codex": { "score": 95.0, "time": "34:42", "note": "Brand presentation was the strongest: the logo, field background, characters, and playable challenge formed one coherent match scene on both desktop and mobile." },
-        "minimax": { "score": 85.0, "time": "5:45", "note": "The three-move challenge, real screenshots, and QR call to action were all delivered, and it was the fastest. However, oversized opening elements, brand integration, and scrolling motion placed it third on finished quality." }
+        "kimi": { "score": 91.0, "time": "45:00", "note": "It had the most features. Route highlights, rules, game images, hints, and reset controls were easy to find. The opening was crowded, and the logo, characters, and field did not quite feel like one scene." },
+        "codex": { "score": 95.0, "time": "34:42", "note": "The logo, field background, characters, and playable challenge felt like one match scene on both desktop and mobile." },
+        "minimax": { "score": 85.0, "time": "5:45", "note": "The three-move challenge, real screenshots, and QR code were all there, delivered in 5 minutes 45 seconds. The oversized opening, brand feel, and scroll effects placed third." }
       },
-      "conclusion": "Final public-account quality scores: Codex ranked first at 95.0, followed by K3 at 91.0 and MiniMax M3 at 85.0. M3 delivered fastest, but ranked third on brand presentation and motion.",
+      "conclusion": "Codex scored 95.0, K3 91.0, and MiniMax M3 85.0. M3 shipped fastest and placed third for brand feel and scroll effects.",
       "playHref": "/bundles/promo/",
       "dataHref": "/data/benchmarks.en.json"
     },
@@ -76,11 +76,11 @@
       "date": "2026-07-18",
       "prompt": "Answer using only the attached image. Even if it is blurry, select the option that best matches the image and output exactly one line of JSON.",
       "models": {
-        "kimi": { "score": 96.7, "accuracy": "49/50", "stability": "14/15", "time": "28.93 s/item", "note": "49/50, with complete agreement across three hard-item runs on 14/15. The one clear weakness remained dense counting." },
-        "codex": { "score": 90.0, "accuracy": "47/50", "stability": "12/15", "time": "8.84 s/item", "note": "47/50, with complete agreement on 12/15 hard items. Errors mainly involved dense counting and a tiny distant arrow." },
-        "minimax": { "score": 88.0, "accuracy": "46/50", "stability": "12/15", "time": "8.61 s/item", "note": "46/50, with complete agreement on 12/15 hard items. Dense counting, extremely small directional targets, and OCR of strings without semantic context were more error-prone." }
+        "kimi": { "score": 96.7, "accuracy": "49/50", "stability": "14/15", "time": "28.93 s/item", "note": "It answered 49/50 correctly. Of the 15 hard items repeated three times, 14 received the same answer each time. Dense counting was the only clear miss." },
+        "codex": { "score": 90.0, "accuracy": "47/50", "stability": "12/15", "time": "8.84 s/item", "note": "It answered 47/50 correctly. Of the 15 hard items, 12 received the same answer each time. The misses were dense counting and a tiny distant arrow." },
+        "minimax": { "score": 88.0, "accuracy": "46/50", "stability": "12/15", "time": "8.61 s/item", "note": "It answered 46/50 correctly. Of the 15 hard items, 12 received the same answer each time. Dense counting, tiny directional marks, and OCR without semantic context caused more errors." }
       },
-      "conclusion": "Kimi led this 50-image local tool-chain evaluation, followed by Codex and MiniMax M3. The result must not be generalized into a universal vision-model leaderboard.",
+      "conclusion": "Kimi scored highest on these 50 images, followed by Codex and MiniMax M3. The result applies only to this set and these three local tool setups.",
       "dataHref": "/data/vision-cases.json"
     }
   }

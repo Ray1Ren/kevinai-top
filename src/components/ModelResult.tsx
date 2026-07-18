@@ -39,7 +39,7 @@ export default function ModelResult({ data, taskKey, model, playHref }: ModelRes
           rel="noreferrer"
           className="inline-flex items-center mt-4 text-sm text-pitch-500 hover:text-pitch-400 transition-colors active:scale-[0.98]"
         >
-          {isEnglish ? 'Open original output' : '原样试玩'} <span className="ml-1">→</span>
+          {isEnglish ? 'Open submitted version' : '打开原版'} <span className="ml-1">→</span>
         </a>
       )}
     </div>

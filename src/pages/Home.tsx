@@ -16,8 +16,8 @@ export default function Home() {
       <SEOHead
         description={
           isEnglish
-            ? 'Kevin is an Android engineer and independent maker documenting real AI-assisted products, experiments, and lessons learned.'
-            : 'Kevin 是一名 Android 研发与独立创作者，记录 AI 协作开发、真实产品、实验与踩坑。'
+            ? 'Kevin is an Android engineer and independent maker. This is where I share what I build with AI, along with the mistakes and lessons behind it.'
+            : 'Kevin 是一名 Android 工程师，也做独立产品。这里放我做过的东西、开发记录和 AI 工具实测。'
         }
       />
 
@@ -29,7 +29,7 @@ export default function Home() {
               <div className="mb-5 flex items-center gap-3">
                 <span className="h-2 w-2 rounded-full bg-pitch-500 animate-pulse-slow" />
                 <span className="text-xs uppercase tracking-widest text-graphite-400">
-                  {isEnglish ? 'Engineer · Independent Maker' : '研发工程师 · 独立创作者'}
+                  {isEnglish ? 'Android Engineer · Independent Maker' : 'Android 工程师 · 独立开发者'}
                 </span>
               </div>
               <h1 className="mb-5 text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-7xl">
@@ -37,8 +37,8 @@ export default function Home() {
               </h1>
               <p className="mb-6 text-base leading-relaxed text-graphite-200 md:text-xl">
                 {isEnglish
-                  ? 'A long-term home for the products I ship, the experiments I can reproduce, and the lessons that survived real use.'
-                  : '一个长期更新的个人主页：放真正上线的作品、能复现的实验，以及经得住真实使用的方法。'}
+                  ? 'I build independent products with AI and write down what worked, what failed, and what finally shipped.'
+                  : '我用 AI 做独立产品，也把做成了什么、踩过什么坑，如实记在这里。'}
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
@@ -67,7 +67,7 @@ export default function Home() {
                   className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-graphite-800 object-cover shadow-2xl md:h-40 md:w-40 lg:h-48 lg:w-48"
                 />
                 <div className="absolute bottom-6 right-6 rounded-full border border-white/10 bg-graphite-900/90 px-3 py-1.5 text-xs text-graphite-200 backdrop-blur-sm md:bottom-10 md:right-10">
-                  {isEnglish ? 'Human judgment at the core' : '人类判断核心'}
+                  {isEnglish ? 'I make the final call' : '最后由我拍板'}
                 </div>
               </div>
             </div>
@@ -85,27 +85,27 @@ export default function Home() {
                 {isEnglish ? 'About' : '关于我'}
               </span>
               <h2 className="mb-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-                {isEnglish ? 'Build first. Explain with evidence.' : '先把东西做出来，再用证据说话。'}
+                {isEnglish ? 'Build it first. Then talk about the method.' : '先做出来，再谈方法。'}
               </h2>
             </div>
             <div className="space-y-5 leading-relaxed text-graphite-200 md:col-span-8">
               <p>
                 {isEnglish
-                  ? 'I am Kevin, an Android engineer. On June 13, 2026, I knew almost nothing about mini games. I decided to use AI to build one that real people could actually play.'
-                  : '我是 Kevin，一名 Android 研发。2026 年 6 月 13 日之前，我对小游戏基本不了解。那天我决定试试：用 AI 做一款真的能让别人玩的独立游戏。'}
+                  ? 'I am Kevin, an Android engineer. On June 13, 2026, I knew almost nothing about mini games and decided to build one from scratch with AI.'
+                  : '我是 Kevin，做 Android 开发。2026 年 6 月 13 日，我对小游戏几乎一窍不通，却决定用 AI 从零做一款能上线、有人玩的游戏。'}
               </p>
               <p>
                 {isEnglish
-                  ? 'The first demo took one day. Shipping took twenty-four. AI made generation fast; usability, taste, trade-offs, and acceptance still required repeated human judgment.'
-                  : '第一天就有了能玩的 Demo，真正上线却用了二十四天。AI 让生成变快，但好不好玩、看不看得懂、该删什么，仍要靠人一遍遍判断。'}
+                  ? 'The first demo took one day. The game shipped on day twenty-four. Most of that time went into playing, cutting, fixing, and trying again.'
+                  : '第一天出了能玩的 Demo，第 24 天才上线。中间大部分时间都花在试玩、删改和返工上。'}
               </p>
               <p className="font-medium text-pitch-400">
-                {isEnglish ? 'AI scales generation. People remain responsible for judgment.' : 'AI 最擅长批量生成，人最值钱的是判断。'}
+                {isEnglish ? 'AI makes more. I decide what stays.' : 'AI 负责多做，人负责挑对。'}
               </p>
               <p>
                 {isEnglish
-                  ? 'Kevin AI局 is where I keep that process: shipped products, development journals, honest tool evaluations, and the mistakes behind the final result.'
-                  : '所以有了「Kevin AI局」：这里会长期记录上线作品、开发日记、工具实测，以及最终结果背后那些不太体面的返工。'}
+                  ? 'I keep the whole process here: products, build notes, tool tests, and the mistakes I only understood after redoing the work.'
+                  : '我把这些过程留在「Kevin AI局」：做过的产品、开发日记、工具实测，还有那些返工后才明白的事。'}
               </p>
             </div>
           </div>
@@ -165,43 +165,43 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <span className="mb-2 block text-xs uppercase tracking-widest text-pitch-500">
-                {isEnglish ? 'What lives here' : '这个网站会放什么'}
+                {isEnglish ? 'What is here' : '这里有什么'}
               </span>
               <h2 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                {isEnglish ? 'A growing body of work.' : '一个会持续生长的作品档案。'}
+                {isEnglish ? 'Everything I make, in one place.' : '慢慢把做过的事放进来。'}
               </h2>
             </div>
             <div className="divide-y divide-white/10 border-y border-white/10 lg:col-span-8">
               <div className="grid gap-3 py-6 sm:grid-cols-[7rem_1fr]">
                 <span className="text-xs uppercase tracking-widest text-graphite-500">01 · Products</span>
                 <div>
-                  <h3 className="font-medium text-white">{isEnglish ? 'Products that shipped' : '真正上线的产品'}</h3>
+                  <h3 className="font-medium text-white">{isEnglish ? 'Products I have shipped' : '已经上线的产品'}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'Playable builds, real screenshots, and the decisions behind them.' : '可玩的版本、真实截图，以及它们背后的取舍。'}
+                    {isEnglish ? 'Playable builds, real screenshots, and why I made the choices I did.' : '能玩的版本、实机截图，以及我为什么这样做。'}
                   </p>
                 </div>
               </div>
               <div className="grid gap-3 py-6 sm:grid-cols-[7rem_1fr]">
                 <span className="text-xs uppercase tracking-widest text-graphite-500">02 · Notes</span>
                 <div>
-                  <h3 className="font-medium text-white">{isEnglish ? 'Posts and project journals' : '公众号文章与项目日记'}</h3>
+                  <h3 className="font-medium text-white">{isEnglish ? 'Posts and build notes' : '公众号文章和开发日记'}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'The archive is being prepared. Nothing will be published here until the original copy and media are checked.' : '归档结构已经准备好，原文与配图核对完成后再逐篇同步。'}
+                    {isEnglish ? 'I am checking the original text and images now. Posts will move here as they are ready.' : '原文和配图核对好后，会陆续搬过来。'}
                   </p>
                   <Link to={path('/notes')} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
-                    {isEnglish ? 'Open the notes archive' : '查看文章归档状态'} <span className="ml-1">→</span>
+                    {isEnglish ? 'Go to notes' : '去文章页'} <span className="ml-1">→</span>
                   </Link>
                 </div>
               </div>
               <div className="grid gap-3 py-6 sm:grid-cols-[7rem_1fr]">
                 <span className="text-xs uppercase tracking-widest text-graphite-500">03 · Lab</span>
                 <div>
-                  <h3 className="font-medium text-white">{isEnglish ? 'Reproducible evaluations' : '能复核的工具评测'}</h3>
+                  <h3 className="font-medium text-white">{isEnglish ? 'Hands-on AI tests' : 'AI 工具实测'}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'Play the original 2D and 3D builds directly, then inspect final scores and all 50 vision results.' : '直接试玩 2D、3D 原作，并查看最终评分与全部 50 题视觉识别结果。'}
+                    {isEnglish ? 'Play the 2D and 3D games, open the promotion pages, and inspect all 50 image answers.' : '2D、3D 小游戏能直接玩，宣传页能直接看，50 道识图结果也全部展开。'}
                   </p>
                   <Link to={path('/lab')} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
-                    {isEnglish ? 'Enter the evaluation lab' : '进入评测实验室'} <span className="ml-1">→</span>
+                    {isEnglish ? 'See all four tests' : '查看四项实测'} <span className="ml-1">→</span>
                   </Link>
                 </div>
               </div>
@@ -214,10 +214,10 @@ export default function Home() {
         <div className="mx-auto max-w-[1400px] px-4 md:px-6">
           <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-8 md:p-12">
             <h2 className="mb-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-              {isEnglish ? 'Find the rest of my work' : '找到我，也找到其他作品'}
+              {isEnglish ? 'Find me elsewhere' : '还可以在这些地方找到我'}
             </h2>
             <p className="mb-6 max-w-[60ch] text-sm leading-relaxed text-graphite-400">
-              {isEnglish ? 'This site is the index. GitHub holds the code; the links page keeps the current public entry points together.' : '这里是总索引；代码在 GitHub，其他公开入口集中放在链接页。'}
+              {isEnglish ? 'The code is on GitHub. Everything else is collected on the links page.' : '代码放在 GitHub，其他入口都在链接页。'}
             </p>
             <div className="flex flex-wrap gap-3">
               <a

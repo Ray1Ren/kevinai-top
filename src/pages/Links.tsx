@@ -10,7 +10,7 @@ export default function Links() {
   const links = [
     { label: isEnglish ? 'Home' : '个人主页', to: path('/'), desc: 'Kevin AI局' },
     { label: isEnglish ? 'Notes & updates' : '文章与动态', to: path('/notes'), desc: isEnglish ? 'Archive in progress' : '归档整理中' },
-    { label: isEnglish ? 'Evaluation lab' : '评测实验室', to: path('/lab'), desc: isEnglish ? 'Playable builds and visual review' : '在线试玩与视觉审阅' },
+    { label: isEnglish ? 'Four AI tests' : '四项 AI 实测', to: path('/lab'), desc: isEnglish ? 'Play the games and inspect every image answer' : '小游戏直接玩，识图结果直接看' },
     { label: 'GitHub', href: 'https://github.com/Ray1Ren', desc: '@Ray1Ren' },
   ]
 
@@ -27,7 +27,7 @@ export default function Links() {
             />
             <h1 className="text-2xl font-semibold text-white">Kevin AI局</h1>
             <p className="text-sm text-graphite-400 mt-1">
-              {isEnglish ? 'Independent products, field notes, and reproducible experiments' : '独立产品、真实记录与可复核实验'}
+              {isEnglish ? 'Products, notes, and hands-on AI tests' : '产品、文章，还有四项 AI 实测'}
             </p>
           </div>
 

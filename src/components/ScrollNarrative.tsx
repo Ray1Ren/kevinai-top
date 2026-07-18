@@ -4,14 +4,14 @@ import { useLocale } from '../hooks/useLocale'
 
 const phaseCopy = {
   zh: [
-    { title: '想法', body: 'AI 能把一个念头很快变成代码、图片、配音和第一个可以操作的 Demo。' },
-    { title: '实验', body: '能实现，不等于值得留下。真正的工作，是比较、删减、返工，再用真实运行结果验证。' },
-    { title: '作品', body: '当选择开始形成系统，实验才会变成能交给别人使用、也敢长期维护的作品。' },
+    { title: '想法', body: 'AI 可以很快把一个念头变成能玩的 Demo，也能一次做出很多版本。' },
+    { title: '实验', body: '接下来就是一遍遍试玩：留下好用的，删掉多余的，哪里不对就返工。' },
+    { title: '作品', body: '等它真的有人能玩、我也愿意继续维护，才算做完。' },
   ],
   en: [
-    { title: 'Idea', body: 'AI can turn a thought into code, images, audio, and a first interactive demo remarkably fast.' },
-    { title: 'Experiment', body: 'Possible is not the same as worth keeping. The real work is comparison, deletion, repair, and verification.' },
-    { title: 'Work', body: 'When those choices form a system, an experiment becomes something I can ship, share, and maintain.' },
+    { title: 'Idea', body: 'AI can turn a thought into a playable demo quickly, then make several more versions.' },
+    { title: 'Experiment', body: 'Then I play them: keep what works, cut what does not, and redo the parts that feel wrong.' },
+    { title: 'Work', body: 'It is finished when other people can use it and I am willing to keep maintaining it.' },
   ],
 }
 
@@ -175,7 +175,7 @@ export default function ScrollNarrative() {
                 className="relative w-48 h-48 rounded-full border-4 border-graphite-800 shadow-2xl object-cover"
               />
               <span className="absolute bottom-20 right-14 px-3 py-1.5 rounded-full border border-white/10 bg-graphite-900/90 text-xs text-graphite-200">
-                {isEnglish ? 'Human judgment' : '人类判断核心'}
+                {isEnglish ? 'My call' : '由我拍板'}
               </span>
             </div>
 
@@ -188,16 +188,16 @@ export default function ScrollNarrative() {
                 />
                 <div className="absolute right-0 top-0 bottom-0 w-[48%] bg-graphite-900/95 p-7 flex flex-col justify-between">
                   <div>
-                    <span className="text-xs uppercase tracking-widest text-pitch-500">{isEnglish ? 'Shipped product' : '真实产品'}</span>
+                    <span className="text-xs uppercase tracking-widest text-pitch-500">{isEnglish ? 'Shipped product' : '已上线'}</span>
                     <p className="mt-3 text-2xl font-semibold text-white">《一脚晋级》</p>
                     <p className="mt-2 text-sm leading-relaxed text-graphite-300">
                       {isEnglish ? 'From a one-day demo to a product shipped in twenty-four.' : '从一天能玩，到二十四天上线。'}
                     </p>
                   </div>
                   <div className="border-t border-white/10 pt-5">
-                    <p className="text-xs text-graphite-500">{isEnglish ? 'Verified levels' : '程序验证关卡'}</p>
+                    <p className="text-xs text-graphite-500">{isEnglish ? 'Levels' : '关卡'}</p>
                     <p className="mt-1 text-4xl font-semibold text-pitch-500 tabular-nums">500</p>
-                    <p className="text-xs text-graphite-400">{isEnglish ? 'Every level has a valid solution' : '每一关都存在可行解'}</p>
+                    <p className="text-xs text-graphite-400">{isEnglish ? 'Every one has a verified solution' : '每一关都验证过有解'}</p>
                   </div>
                 </div>
               </div>

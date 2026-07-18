@@ -11,8 +11,8 @@ export default function Notes() {
         title={isEnglish ? 'Notes & Updates' : '文章与动态'}
         description={
           isEnglish
-            ? 'Field notes from Kevin on shipping AI-assisted products, independent game development, and practical tool use.'
-            : 'Kevin 关于 AI 协作开发、独立产品和真实工具使用过程的文章与动态。'
+            ? 'Kevin\'s build notes, AI tool tests, and independent product updates.'
+            : 'Kevin 的开发日记、AI 工具实测和独立产品更新。'
         }
       />
       <section className="min-h-[75dvh] pb-24 pt-28 md:pb-32 md:pt-36">
@@ -23,12 +23,12 @@ export default function Notes() {
                 {isEnglish ? 'Field Notes' : '文章 / 动态'}
               </span>
               <h1 className="mb-5 text-4xl font-semibold tracking-tight text-white md:text-6xl">
-                {isEnglish ? 'Work in public, without pretending it was easy.' : '把真实过程，慢慢写下来。'}
+                {isEnglish ? 'Notes from the work, as it happened.' : '把做东西的过程写下来。'}
               </h1>
               <p className="max-w-[60ch] text-base leading-relaxed text-graphite-200 md:text-lg">
                 {isEnglish
-                  ? 'This will become the permanent home for posts first shared through Kevin AI局: project journals, tool evaluations, mistakes, and lessons learned.'
-                  : '这里会逐步同步 Kevin AI局发布过的内容：项目开发日记、工具实测、踩过的坑，以及真正留下来的方法。'}
+                  ? 'This page will hold posts from Kevin AI局, including build notes, tool tests, mistakes, and fixes.'
+                  : '这里以后放 Kevin AI局的公众号文章、开发日记和工具实测。第一批还在核对原文和配图。'}
               </p>
             </div>
 
@@ -37,15 +37,15 @@ export default function Notes() {
                 <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
                   <div>
                     <p className="mb-2 text-xs uppercase tracking-widest text-graphite-500">
-                      {isEnglish ? 'Archive status' : '归档状态'}
+                      {isEnglish ? 'Current status' : '目前进度'}
                     </p>
                     <h2 className="text-2xl font-semibold text-white">
-                      {isEnglish ? 'The first batch is being prepared.' : '首批内容正在整理。'}
+                      {isEnglish ? 'The first batch is still being checked.' : '第一批还在整理。'}
                     </h2>
                     <p className="mt-3 max-w-xl text-sm leading-relaxed text-graphite-400">
                       {isEnglish
-                        ? 'No placeholder articles and no invented publication dates. Posts will appear here only after the original copy and media have been checked.'
-                        : '这里不放占位文章，也不编造发布日期。等原文、配图和数据口径核对完成后，再逐篇上线。'}
+                        ? 'I will add each post after checking its original text, images, and numbers.'
+                        : '原文、配图和数据核对好一篇，就上线一篇。'}
                     </p>
                   </div>
                   <Link

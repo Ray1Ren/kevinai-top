@@ -10,13 +10,13 @@ export default function Footer() {
           <div>
             <p className="text-white font-medium">Kevin AI局</p>
             <p className="text-sm text-graphite-400 mt-1">
-              {isEnglish ? 'Ideas, experiments, and work that actually shipped.' : '记录想法、实验，以及真正上线的作品。'}
+              {isEnglish ? 'I build products and write down how they were made.' : '做产品，也记录怎么做的。'}
             </p>
           </div>
           <div className="flex flex-wrap gap-6 text-sm text-graphite-300">
             <Link to={path('/')} className="hover:text-white transition-colors">{isEnglish ? 'Home' : '首页'}</Link>
             <Link to={path('/notes')} className="hover:text-white transition-colors">{isEnglish ? 'Notes' : '文章'}</Link>
-            <Link to={path('/lab')} className="hover:text-white transition-colors">{isEnglish ? 'Lab' : '评测实验室'}</Link>
+            <Link to={path('/lab')} className="hover:text-white transition-colors">{isEnglish ? 'Tests' : '实测'}</Link>
             <Link to={path('/links')} className="hover:text-white transition-colors">{isEnglish ? 'Links' : '链接'}</Link>
             <a
               href="https://github.com/Ray1Ren"
