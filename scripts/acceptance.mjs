@@ -500,9 +500,9 @@ async function testPrimaryNavigation(browser, base) {
     { home: '/', label: '文章', path: '/notes', heading: '把做东西的过程写下来。' },
     { home: '/', label: '实验室', path: '/lab', heading: '四项 AI 实测' },
     { home: '/', label: '链接', path: '/links', heading: 'Kevin AI局' },
-    { home: '/en', label: 'Articles', path: '/en/articles', heading: 'I write after I have something to show.' },
+    { home: '/en', label: 'Articles', path: '/en/articles', heading: 'Notes from the work, as it happened.' },
     { home: '/en', label: 'Lab', path: '/en/lab', heading: 'Four AI tests' },
-    { home: '/en', label: 'Links', path: '/en/links', heading: 'Kevin AI Observatory' },
+    { home: '/en', label: 'Links', path: '/en/links', heading: 'Kevin AI Lab' },
   ]
 
   for (const testCase of cases) {
