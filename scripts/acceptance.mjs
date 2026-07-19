@@ -275,6 +275,37 @@ async function testBilingualHomepage(browser, base) {
   log('homepage passed: generated hero, natural bilingual copy, WeChat context, and 390px layout')
 }
 
+async function testPrimaryNavigation(browser, base) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'primary SPA navigation', { allowDocument404: true })
+  const cases = [
+    { home: '/', label: '文章', path: '/notes', heading: '把做东西的过程写下来。' },
+    { home: '/', label: '实验室', path: '/lab', heading: '四项 AI 实测' },
+    { home: '/', label: '链接', path: '/links', heading: 'Kevin AI局' },
+    { home: '/en', label: 'Articles', path: '/en/articles', heading: 'I write after I have something to show.' },
+    { home: '/en', label: 'Lab', path: '/en/lab', heading: 'Four AI tests' },
+    { home: '/en', label: 'Links', path: '/en/links', heading: 'Kevin AI Lab' },
+  ]
+
+  for (const testCase of cases) {
+    await page.goto(`${base}${testCase.home}`, { waitUntil: 'networkidle' })
+    await page.waitForFunction(() => document.querySelector('canvas') && document.querySelector('.pin-spacer'))
+    const header = page.getByRole('banner')
+    const link = header.getByRole('link', { name: testCase.label, exact: true })
+    assert.equal(await link.count(), 1, `${testCase.label} must have one primary navigation link`)
+    await link.click()
+    await page.waitForURL(`${base}${testCase.path}`, { timeout: 15000 })
+    await page.getByRole('heading', { name: testCase.heading, exact: true }).waitFor({ state: 'visible' })
+    assert.equal(await page.getByRole('banner').isVisible(), true)
+    assert.equal(await page.locator('footer').isVisible(), true)
+  }
+
+  finishMonitoring()
+  await context.close()
+  log('primary navigation passed: every Chinese and English tab survived the animated homepage teardown')
+}
+
 async function testAutomaticLanguagePreference(browser, base) {
   const englishContext = await browser.newContext({
     viewport: { width: 1280, height: 800 },
@@ -812,6 +843,7 @@ async function main() {
 
   try {
     browser = await chromium.launch({ channel: 'chrome' })
+    await testPrimaryNavigation(browser, base)
     await testStaticDeepLinks(browser, base)
     await testArticleReleaseGate(browser, base)
     await testFirstArticle(browser, base)

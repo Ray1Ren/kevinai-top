@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useMotion } from '../hooks/useMotion'
 import { useLocale } from '../hooks/useLocale'
 
@@ -42,7 +42,8 @@ export default function ScrollNarrative() {
     return () => media.removeEventListener('change', syncMode)
   }, [])
 
-  useEffect(() => {
+  // ScrollTrigger reparents pinned DOM. Revert it before React removes the route tree.
+  useLayoutEffect(() => {
     if (prefersReduced) return
     let ctx: { revert: () => void } | null = null
     let cancelled = false
