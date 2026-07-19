@@ -118,11 +118,11 @@ enChartHtml = enChartHtml
 const browser = await chromium.launch({ channel: 'chrome', headless: true, args: ['--mute-audio'] })
 try {
   const page = await browser.newPage({ viewport: { width: 1640, height: 1100 }, deviceScaleFactor: 1 })
+  // Keep only the published 3D total: the legacy dimension breakdown does not reconcile with MiniMax M3's final 83.6.
   const zhCharts = [
     ['#quality-overview-total', 'overall-total.png'],
     ['#quality-overview-detail', 'overall-detail.png'],
     ['#quality-3d-total', '3d-total.png'],
-    ['#quality-3d-detail', '3d-detail.png'],
     ['#token-overview-total', 'token-total.png'],
     ['#token-overview-detail', 'token-detail.png'],
   ]
