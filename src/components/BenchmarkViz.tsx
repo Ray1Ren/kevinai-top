@@ -15,14 +15,14 @@ export default function BenchmarkViz({ data }: { data: BenchmarkData }) {
   return (
     <div className="rounded-xl border border-white/5 bg-graphite-900/50 p-4 md:p-6">
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto" role="img" aria-label={isEnglish ? 'Quality score comparison across four tasks' : '四项任务质量分对比'}>
-        <text x={width - 10} y={24} textAnchor="end" fill="#6d6d6a" fontSize="12">
+        <text x={width - 10} y={24} textAnchor="end" fill="rgb(var(--graphite-500))" fontSize="12">
           {isEnglish ? 'Score / 100' : '分数 / 100'}
         </text>
         {tasks.map((task, i) => {
           const yBase = 50 + i * (barHeight * 3 + gap + taskGap)
           return (
             <g key={task.task}>
-              <text x={0} y={yBase - 12} fill="#e7e7e6" fontSize="13" fontWeight="500">
+              <text x={0} y={yBase - 12} fill="rgb(var(--graphite-100))" fontSize="13" fontWeight="500">
                 {task.task}
               </text>
               {[
@@ -34,7 +34,7 @@ export default function BenchmarkViz({ data }: { data: BenchmarkData }) {
                 const y = yBase + j * (barHeight + 4)
                 return (
                   <g key={m.key}>
-                    <text x={0} y={y + barHeight - 1} fill="#888885" fontSize="10">
+                    <text x={0} y={y + barHeight - 1} fill="rgb(var(--graphite-400))" fontSize="10">
                       {m.label}
                     </text>
                     <rect
@@ -46,7 +46,7 @@ export default function BenchmarkViz({ data }: { data: BenchmarkData }) {
                       fill={m.color}
                       opacity={0.85}
                     />
-                    <text x={70 + barWidth + 8} y={y + barHeight - 1} fill="#e7e7e6" fontSize="10">
+                    <text x={70 + barWidth + 8} y={y + barHeight - 1} fill="rgb(var(--graphite-100))" fontSize="10">
                       {m.score.toFixed(1)}
                     </text>
                   </g>

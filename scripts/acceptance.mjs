@@ -815,6 +815,103 @@ async function testEmbeddedPlayableBuilds(browser, base) {
   log('embedded playable builds passed: Chinese and English 2D/3D model switching')
 }
 
+async function testThemeModes(browser, base) {
+  const routeCases = [
+    '/',
+    '/notes',
+    '/notes/kimi-k3-subscription-review',
+    '/notes/ai-game-24-days',
+    '/lab',
+    '/lab/2d',
+    '/lab/3d',
+    '/lab/promo',
+    '/lab/vision',
+    '/lab/vision/review',
+    '/links',
+    '/en/articles',
+    '/en/articles/kimi-k3-review',
+    '/en/articles/ai-game-24-days',
+  ]
+  const expected = {
+    light: {
+      background: 'rgb(250, 249, 245)',
+      heading: 'rgb(24, 24, 22)',
+      meta: '#faf9f5',
+    },
+    dark: {
+      background: 'rgb(20, 20, 19)',
+      heading: 'rgb(250, 250, 247)',
+      meta: '#141413',
+    },
+  }
+
+  for (const theme of ['light', 'dark']) {
+    const context = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'zh-CN' })
+    await context.addInitScript((selectedTheme) => {
+      window.localStorage.setItem('kevinai.theme', selectedTheme)
+      Date.now = () => Date.parse('2026-07-19T00:01:00Z')
+    }, theme)
+    const page = await context.newPage()
+    const finishMonitoring = monitorPage(page, `${theme} theme routes`, { allowDocument404: true })
+
+    for (const path of routeCases) {
+      await page.goto(`${base}${path}`, { waitUntil: 'networkidle' })
+      const heading = page.locator('main h1').first()
+      await heading.waitFor({ state: 'visible', timeout: 15000 })
+      const state = await page.evaluate(() => ({
+        theme: document.documentElement.dataset.theme,
+        background: getComputedStyle(document.body).backgroundColor,
+        heading: getComputedStyle(document.querySelector('main h1')).color,
+        meta: document.querySelector('meta[name="theme-color"]')?.getAttribute('content'),
+        width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
+        viewport: document.documentElement.clientWidth,
+      }))
+      assert.equal(state.theme, theme, `${path} must render in ${theme} mode`)
+      assert.equal(state.background, expected[theme].background, `${path} has the wrong ${theme} background`)
+      assert.equal(state.heading, expected[theme].heading, `${path} has the wrong ${theme} heading color`)
+      assert.equal(state.meta, expected[theme].meta, `${path} has the wrong ${theme} browser theme color`)
+      assert(state.width <= state.viewport + 2, `${path} overflows in ${theme} mode: ${state.width}px`)
+    }
+
+    finishMonitoring()
+    await context.close()
+  }
+
+  const persistenceContext = await browser.newContext({ viewport: { width: 1280, height: 800 }, locale: 'zh-CN' })
+  const persistencePage = await persistenceContext.newPage()
+  const finishPersistenceMonitoring = monitorPage(persistencePage, 'theme preference persistence')
+  await persistencePage.goto(`${base}/`, { waitUntil: 'networkidle' })
+  assert.equal(await persistencePage.locator('html').getAttribute('data-theme'), 'light', 'fresh visits must default to light mode')
+  await persistencePage.getByRole('button', { name: '切换到深色模式' }).click()
+  assert.equal(await persistencePage.locator('html').getAttribute('data-theme'), 'dark')
+  assert.equal(await persistencePage.evaluate(() => window.localStorage.getItem('kevinai.theme')), 'dark')
+  await persistencePage.reload({ waitUntil: 'networkidle' })
+  assert.equal(await persistencePage.locator('html').getAttribute('data-theme'), 'dark', 'dark choice must survive reload')
+  await persistencePage.getByRole('button', { name: '切换到浅色模式' }).click()
+  await persistencePage.reload({ waitUntil: 'networkidle' })
+  assert.equal(await persistencePage.locator('html').getAttribute('data-theme'), 'light', 'light choice must survive reload')
+  finishPersistenceMonitoring()
+  await persistenceContext.close()
+
+  const mobileContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+    locale: 'zh-CN',
+  })
+  const mobilePage = await mobileContext.newPage()
+  const finishMobileMonitoring = monitorPage(mobilePage, 'mobile theme control', { allowDocument404: true })
+  await mobilePage.goto(`${base}/links`, { waitUntil: 'networkidle' })
+  await mobilePage.getByRole('button', { name: '菜单' }).click()
+  await mobilePage.getByRole('button', { name: '切换到深色模式' }).click()
+  assert.equal(await mobilePage.locator('html').getAttribute('data-theme'), 'dark')
+  const mobileWidth = await mobilePage.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+  assert(mobileWidth <= 392, `mobile theme menu must not overflow a 390px viewport, got ${mobileWidth}px`)
+  finishMobileMonitoring()
+  await mobileContext.close()
+  log('theme modes passed: all page types, light default, dark switch, persistence, and mobile control')
+}
+
 async function testMotionModes(browser, base) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' })
   const page = await context.newPage()
@@ -935,6 +1032,7 @@ async function main() {
     await testPublishedBenchmarkScores(browser, base)
     await testVisionReview(browser, base)
     await testEmbeddedPlayableBuilds(browser, base)
+    await testThemeModes(browser, base)
     await testMotionModes(browser, base)
     await testQrKeyboardAndLocale(browser, base)
     log('all interactive acceptance checks passed')

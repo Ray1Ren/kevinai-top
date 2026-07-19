@@ -64,7 +64,7 @@ export default function AiGame24Days() {
                 </a>
                 <Link
                   to="/en/articles/ai-game-24-days"
-                  className="inline-flex rounded-full bg-pitch-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-pitch-500"
+                  className="inline-flex rounded-full bg-pitch-600 px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-pitch-500"
                 >
                   Read in English
                 </Link>

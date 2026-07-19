@@ -83,7 +83,7 @@ export function ArticleQrCta({ english = false }: { english?: boolean }) {
         loading="lazy"
         decoding="async"
         data-channel="web_note1"
-        className="mx-auto h-44 w-44 rounded-xl bg-white p-1 sm:mx-0"
+        className="mx-auto h-44 w-44 rounded-xl bg-paper p-1 sm:mx-0"
       />
       <div>
         <p className="text-xs uppercase tracking-[0.18em] text-pitch-500">

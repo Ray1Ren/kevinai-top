@@ -3,7 +3,43 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  --color-strong: 24 24 22;
+  --graphite-50: 24 24 22;
+  --graphite-100: 34 34 31;
+  --graphite-200: 51 51 47;
+  --graphite-300: 72 72 67;
+  --graphite-400: 98 98 91;
+  --graphite-500: 118 118 110;
+  --graphite-600: 162 162 154;
+  --graphite-700: 198 197 189;
+  --graphite-800: 222 221 213;
+  --graphite-900: 241 240 234;
+  --graphite-950: 250 249 245;
+  --pitch-300: 102 137 38;
+  --pitch-400: 83 116 29;
+  --pitch-500: 91 126 31;
+  --pitch-600: 76 106 24;
+}
+
+html[data-theme='dark'] {
   color-scheme: dark;
+  --color-strong: 250 250 247;
+  --graphite-50: 246 246 245;
+  --graphite-100: 231 231 230;
+  --graphite-200: 209 209 207;
+  --graphite-300: 176 176 173;
+  --graphite-400: 136 136 133;
+  --graphite-500: 109 109 106;
+  --graphite-600: 93 93 90;
+  --graphite-700: 79 79 76;
+  --graphite-800: 61 61 59;
+  --graphite-900: 42 42 40;
+  --graphite-950: 20 20 19;
+  --pitch-300: 184 217 110;
+  --pitch-400: 163 207 74;
+  --pitch-500: 138 184 47;
+  --pitch-600: 108 147 36;
 }
 
 html {
@@ -13,6 +49,7 @@ html {
 body {
   @apply bg-graphite-950 text-graphite-100 antialiased;
   overflow-x: hidden;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 /* Focus rings for keyboard navigation */
@@ -58,16 +95,16 @@ body[data-motion-paused] *::after {
 }
 
 ::-webkit-scrollbar-track {
-  background: #141413;
+  background: rgb(var(--graphite-950));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3d3d3b;
+  background: rgb(var(--graphite-800));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4f4f4c;
+  background: rgb(var(--graphite-700));
 }
 
 /* Typography */

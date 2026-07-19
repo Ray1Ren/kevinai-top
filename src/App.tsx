@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { MotionProvider } from './context/MotionContext'
+import { ThemeProvider } from './context/ThemeContext'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Lab from './pages/Lab'
@@ -24,19 +25,21 @@ const AiGame24DaysEn = lazy(() => import('./pages/AiGame24DaysEn'))
 
 function App() {
   return (
-    <MotionProvider>
-      <BrowserRouter>
-        <Layout>
-          <RedirectHandler />
-          <LanguageRedirect />
-          <Routes>
-            {renderLocalizedRoutes('')}
-            {renderLocalizedRoutes('/en')}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </MotionProvider>
+    <ThemeProvider>
+      <MotionProvider>
+        <BrowserRouter>
+          <Layout>
+            <RedirectHandler />
+            <LanguageRedirect />
+            <Routes>
+              {renderLocalizedRoutes('')}
+              {renderLocalizedRoutes('/en')}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </MotionProvider>
+    </ThemeProvider>
   )
 }
 

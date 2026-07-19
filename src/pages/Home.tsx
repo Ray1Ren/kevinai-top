@@ -60,7 +60,7 @@ export default function Home() {
               <div className="flex flex-wrap gap-3">
                 <a
                   href="#work"
-                  className="inline-flex items-center justify-center rounded-full bg-pitch-600 px-5 py-2.5 font-medium text-white transition-colors hover:bg-pitch-500"
+                  className="inline-flex items-center justify-center rounded-full bg-pitch-600 px-5 py-2.5 font-medium text-paper transition-colors hover:bg-pitch-500"
                 >
                   {isEnglish ? 'See One Kick' : '看看《一脚晋级》'}
                 </a>
@@ -175,7 +175,7 @@ export default function Home() {
             <img
               src="/assets/images/qr-code.png"
               alt={isEnglish ? 'One Kick WeChat mini program code' : '《一脚晋级》小程序码'}
-              className="h-24 w-24 rounded-lg bg-white p-1"
+              className="h-24 w-24 rounded-lg bg-paper p-1"
             />
             <div>
               <p className="mb-1 font-medium text-white">

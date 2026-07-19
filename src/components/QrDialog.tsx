@@ -78,7 +78,7 @@ export default function QrDialog({ open, onClose }: QrDialogProps) {
     >
       <div
         ref={panelRef}
-        className="relative w-full max-w-sm rounded-2xl bg-white p-4 pt-14 text-graphite-900 shadow-2xl"
+        className="relative w-full max-w-sm rounded-2xl border border-white/10 bg-graphite-900 p-4 pt-14 text-white shadow-2xl"
         onClick={(event) => event.stopPropagation()}
       >
         <button
@@ -96,7 +96,7 @@ export default function QrDialog({ open, onClose }: QrDialogProps) {
           alt={isEnglish ? 'One Kick WeChat mini program code' : '《一脚晋级》小程序码'}
           className="h-auto w-full"
         />
-        <p className="mt-3 text-center text-sm text-graphite-800">
+        <p className="mt-3 text-center text-sm text-graphite-300">
           {isEnglish
             ? 'Open WeChat, tap Scan, and point it at this code. One Kick will open inside WeChat.'
             : '用微信扫这个码，就能直接玩《一脚晋级》。'}

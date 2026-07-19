@@ -64,7 +64,7 @@ export default function PlayableComparison({
                 aria-pressed={active}
                 className={`flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors active:scale-[0.98] ${
                   active
-                    ? 'border-pitch-500 bg-pitch-600 text-white'
+                    ? 'border-pitch-500 bg-pitch-600 text-paper'
                     : 'border-white/10 bg-graphite-950/50 text-graphite-300 hover:border-white/25 hover:text-white'
                 }`}
               >

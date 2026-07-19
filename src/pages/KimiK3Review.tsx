@@ -536,7 +536,7 @@ export default function KimiK3Review() {
 
             <section className="mt-16 border-t border-white/10 pt-10 md:mt-20">
               <div className="grid items-center gap-8 rounded-2xl border border-white/10 bg-graphite-900/45 p-5 sm:grid-cols-[9rem_1fr] md:p-8">
-                <img src="/assets/images/qr-code.png" alt={t('《一脚晋级》小程序码', 'One Kick WeChat mini-program code')} loading="lazy" className="h-36 w-36 rounded-xl bg-white p-1" />
+                <img src="/assets/images/qr-code.png" alt={t('《一脚晋级》小程序码', 'One Kick WeChat mini-program code')} loading="lazy" className="h-36 w-36 rounded-xl bg-paper p-1" />
                 <div>
                   <p className="text-xs uppercase tracking-widest text-pitch-500">{t('我做的第一款小游戏', 'My first shipped mini game')}</p>
                   <h2 className="mt-2 text-2xl font-semibold text-white">《一脚晋级》</h2>

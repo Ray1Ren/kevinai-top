@@ -73,7 +73,7 @@ export default function Links() {
             <img
               src="/assets/images/qr-code.png"
               alt={isEnglish ? 'One Kick WeChat mini program code' : '《一脚晋级》小程序码'}
-              className="w-40 h-40 rounded-lg bg-white p-1 mb-4"
+              className="w-40 h-40 rounded-lg bg-paper p-1 mb-4"
             />
             <p className="text-white font-medium">{isEnglish ? 'Play One Kick in WeChat' : '扫码试玩《一脚晋级》'}</p>
             <p className="text-xs text-graphite-400 mt-1">{isEnglish ? '500 levels, each verified to have a solution' : '500 关，每一关都有可行解'}</p>

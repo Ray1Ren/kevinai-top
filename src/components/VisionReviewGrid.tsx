@@ -160,7 +160,7 @@ export default function VisionReviewGrid({ showHeading = true }: VisionReviewGri
                   onClick={() => setResultFilter(option.value)}
                   className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors active:scale-[0.98] ${
                     active
-                      ? 'border-pitch-500 bg-pitch-600 text-white'
+                      ? 'border-pitch-500 bg-pitch-600 text-paper'
                       : 'border-white/10 bg-graphite-900 text-graphite-300 hover:border-white/25 hover:text-white'
                   }`}
                 >
@@ -288,7 +288,7 @@ export default function VisionReviewGrid({ showHeading = true }: VisionReviewGri
           <button type="button" onClick={() => setLightbox(null)} className="absolute right-5 top-5 h-10 w-10 rounded-full border border-white/15 bg-graphite-900/90 text-white" aria-label={isEnglish ? 'Close preview' : '关闭预览'}>×</button>
           <div className="max-h-[92dvh] max-w-6xl" onClick={(event) => event.stopPropagation()}>
             <img src={lightbox.image} alt={`${isEnglish ? 'Expanded item' : '题图'} ${lightbox.id}`} className="max-h-[82dvh] max-w-full rounded-lg object-contain" />
-            <p className="mt-3 text-center text-sm text-white">{lightbox.id} · {lightbox.question}</p>
+            <p className="mt-3 text-center text-sm text-paper">{lightbox.id} · {lightbox.question}</p>
           </div>
         </div>
       )}

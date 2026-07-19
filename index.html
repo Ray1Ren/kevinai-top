@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#141413" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#faf9f5" />
+    <meta name="color-scheme" content="light dark" />
     <meta name="description" content="Kevin AI局，Kevin 的个人主页。放独立产品、开发日记和 AI 工具实测。" />
     <meta property="og:title" content="Kevin AI局" />
     <meta property="og:description" content="独立产品、开发日记和 AI 工具实测。" />
@@ -16,6 +16,22 @@
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png" />
     <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     <title>Kevin AI局</title>
+    <script>
+      (function () {
+        var theme = 'light';
+        try {
+          if (window.localStorage.getItem('kevinai.theme') === 'dark') theme = 'dark';
+        } catch (_) {
+          // Keep the light default when storage is unavailable.
+        }
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+        document.querySelector('meta[name="theme-color"]').setAttribute(
+          'content',
+          theme === 'dark' ? '#141413' : '#faf9f5',
+        );
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
