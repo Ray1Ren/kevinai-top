@@ -1,0 +1,1969 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f7">
+  <meta name="description" content="K3、Codex 与 MiniMax M3 四类 AI 实测的公开实机录制台。">
+  <link rel="icon" href="/favicon.svg">
+  <title>K3 / Codex / MiniMax 四类评测录制台</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #101316;
+      --panel: #171b1f;
+      --panel-2: #1d2227;
+      --panel-3: #242a30;
+      --line: rgba(245, 239, 227, .13);
+      --line-strong: rgba(245, 239, 227, .26);
+      --text: #f5efe3;
+      --muted: #aeb3b6;
+      --accent: #e99a43;
+      --accent-ink: #24170a;
+      --accent-soft: rgba(233, 154, 67, .13);
+      --green: #79c49c;
+      --red: #ed8c82;
+      --blue: #84a9c8;
+      --sidebar: 374px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-width: 320px;
+      min-height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+
+    button, a { font: inherit; }
+
+    button {
+      color: inherit;
+      cursor: pointer;
+    }
+
+    button:active, a.button:active { transform: scale(.98); }
+
+    button:focus-visible, a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .topbar {
+      min-height: 82px;
+      display: grid;
+      grid-template-columns: minmax(210px, .8fr) minmax(510px, 1.5fr) minmax(295px, 1fr);
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(16, 19, 22, .97);
+      position: relative;
+      z-index: 20;
+    }
+
+    .brand { min-width: 0; }
+
+    .eyebrow {
+      display: block;
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .brand strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 15px;
+      letter-spacing: -.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .category-tabs, .model-tabs {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--panel);
+    }
+
+    .category-tabs { justify-self: center; }
+
+    .tab {
+      min-height: 38px;
+      padding: 8px 13px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+      transition: background .18s ease, color .18s ease, transform .18s ease;
+    }
+
+    .tab:hover { color: var(--text); }
+
+    .tab[aria-selected="true"] {
+      color: var(--accent-ink);
+      background: var(--accent);
+    }
+
+    .utility {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 690;
+      line-height: 1.2;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background .16s ease, border-color .16s ease, transform .12s ease;
+    }
+
+    .button:hover {
+      border-color: var(--line-strong);
+      background: var(--panel-3);
+    }
+
+    .button.accent {
+      border-color: rgba(233, 154, 67, .42);
+      background: var(--accent-soft);
+      color: #ffd39f;
+    }
+
+    .workspace {
+      height: calc(100dvh - 82px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--sidebar);
+    }
+
+    .stage-column {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(233, 154, 67, .08), transparent 31%),
+        var(--bg);
+    }
+
+    .stage-head {
+      min-height: 49px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 0 2px 11px;
+    }
+
+    .current {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(121, 196, 156, .12);
+      flex: 0 0 auto;
+    }
+
+    .current-copy { min-width: 0; }
+
+    .current-copy strong {
+      display: block;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .current-copy span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .stage-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 0;
+      flex: 1;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #0b0e10;
+      box-shadow: 0 26px 72px rgba(0, 0, 0, .34);
+    }
+
+    .stage iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #111519;
+    }
+
+    .stage:fullscreen {
+      width: 100vw;
+      height: 100vh;
+      border: 0;
+      border-radius: 0;
+      background: #0b0e10;
+    }
+
+    .stage:fullscreen iframe {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .loading-state, .error-state {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #111519;
+      color: var(--muted);
+      text-align: center;
+      z-index: 3;
+    }
+
+    .loading-state[hidden], .error-state[hidden] { display: none; }
+
+    .loading-line {
+      width: 176px;
+      height: 3px;
+      margin: 14px auto 0;
+      overflow: hidden;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .loading-line::after {
+      content: "";
+      display: block;
+      width: 55%;
+      height: 100%;
+      background: var(--accent);
+      transform: translateX(-110%);
+      animation: loading 1.2s ease-in-out infinite;
+    }
+
+    @keyframes loading {
+      60%, 100% { transform: translateX(210%); }
+    }
+
+    .sidebar {
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+      padding: 16px;
+      border-left: 1px solid var(--line);
+      background: var(--panel);
+      scrollbar-width: thin;
+    }
+
+    .section + .section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-kicker {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 790;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .section h2, .section h3 {
+      margin: 7px 0 0;
+      letter-spacing: -.025em;
+    }
+
+    .section h2 { font-size: 22px; }
+    .section h3 { font-size: 15px; }
+
+    .stack-name {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .metric {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 720;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 20px;
+      letter-spacing: -.035em;
+    }
+
+    .metric small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .verdict {
+      margin: 12px 0 0;
+      padding: 11px 12px;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      color: #f8ddbc;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .fact-list, .record-list {
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .fact-list li, .record-list li {
+      position: relative;
+      padding-left: 17px;
+      color: #d8dbdc;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .fact-list li + li, .record-list li + li { margin-top: 7px; }
+
+    .fact-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 6px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .record-list { counter-reset: steps; }
+
+    .record-list li { padding-left: 27px; }
+
+    .record-list li::before {
+      counter-increment: steps;
+      content: counter(steps);
+      position: absolute;
+      left: 0;
+      top: .18em;
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--panel-3);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 11px;
+    }
+
+    .action-grid .button { white-space: normal; text-align: center; }
+
+    .note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .shortcut-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 7px;
+      border: 1px solid var(--line);
+      border-bottom-color: var(--line-strong);
+      border-radius: 6px;
+      background: var(--panel-2);
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 10px;
+    }
+
+    .modal[hidden] { display: none; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(7, 9, 11, .84);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal-shell {
+      width: min(1180px, 96vw);
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: 17px;
+      background: var(--panel);
+      box-shadow: 0 30px 100px rgba(0, 0, 0, .46);
+    }
+
+    .modal-head {
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 15px 12px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head strong { font-size: 15px; }
+
+    .modal-body {
+      min-height: 0;
+      overflow: auto;
+      padding: 20px;
+    }
+
+    .modal-body video {
+      display: block;
+      width: 100%;
+      max-height: 76vh;
+      border-radius: 12px;
+      background: #0b0e10;
+    }
+
+    .official-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .official-layout img {
+      display: block;
+      width: 100%;
+      border-radius: 11px;
+      background: #fff;
+    }
+
+    .official-copy {
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    .official-copy h3 { margin: 0; font-size: 18px; }
+
+    .official-copy p {
+      margin: 11px 0 0;
+      color: #d8dbdc;
+      font-size: 12px;
+      line-height: 1.75;
+    }
+
+    .score-block + .score-block { margin-top: 24px; }
+
+    .score-block h3 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      background: var(--panel-2);
+      font-size: 12px;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    th {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      background: #20262b;
+    }
+
+    td strong { color: var(--accent); }
+
+    .gif-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .gif-item {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel-2);
+    }
+
+    .gif-item img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+      background: #0b0e10;
+    }
+
+    .gif-item span {
+      display: block;
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    @media (max-width: 1120px) {
+      :root { --sidebar: 340px; }
+
+      .topbar {
+        grid-template-columns: minmax(175px, .75fr) minmax(480px, 1.5fr) auto;
+      }
+
+      .utility .hide-mid { display: none; }
+    }
+
+    @media (max-width: 920px) {
+      body { overflow: auto; }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+      }
+
+      .brand { text-align: center; }
+      .category-tabs { justify-self: stretch; overflow-x: auto; }
+      .category-tabs .tab { flex: 1 0 auto; }
+      .utility { justify-content: center; flex-wrap: wrap; }
+
+      .workspace {
+        height: auto;
+        min-height: calc(100dvh - 180px);
+        grid-template-columns: 1fr;
+      }
+
+      .stage-column { min-height: 72dvh; }
+
+      .sidebar {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .official-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .stage-head { align-items: flex-start; flex-direction: column; }
+      .stage-actions { width: 100%; }
+      .stage-actions .button { flex: 1; }
+      .stage-column { min-height: 64dvh; padding: 10px; }
+      .gif-grid { grid-template-columns: 1fr; }
+      .modal { padding: 8px; }
+      .modal-body { padding: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    /* Daylight recording shell — Apple-inspired, source pages unchanged. */
+    :root {
+      color-scheme: light;
+      --bg: #f5f5f7;
+      --panel: rgba(255, 255, 255, .78);
+      --panel-2: rgba(255, 255, 255, .88);
+      --panel-3: #ffffff;
+      --line: rgba(29, 29, 31, .09);
+      --line-strong: rgba(29, 29, 31, .16);
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --accent: #0071e3;
+      --accent-ink: #ffffff;
+      --accent-soft: rgba(0, 113, 227, .09);
+      --green: #30a46c;
+      --red: #d92d20;
+      --blue: #0071e3;
+      --sidebar: 382px;
+      --shadow-soft: 0 1px 2px rgba(0, 0, 0, .04), 0 14px 38px rgba(45, 55, 72, .08);
+      --shadow-stage: 0 2px 4px rgba(0, 0, 0, .04), 0 28px 70px rgba(40, 52, 68, .13);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+      font-optical-sizing: auto;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      min-height: 100dvh;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% -5%, rgba(98, 173, 255, .19), transparent 30%),
+        radial-gradient(circle at 88% 10%, rgba(171, 220, 255, .16), transparent 24%),
+        linear-gradient(180deg, #fbfcfe 0%, #f3f5f8 56%, #eef1f5 100%);
+    }
+
+    button, a.button, .tab {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    button:active, a.button:active, .tab:active {
+      transform: scale(.97);
+      transition-duration: 100ms;
+    }
+
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(0, 113, 227, .32);
+      outline-offset: 2px;
+    }
+
+    .topbar {
+      min-height: 88px;
+      grid-template-columns: minmax(230px, .85fr) minmax(500px, 1.45fr) minmax(320px, 1fr);
+      gap: 18px;
+      padding: 14px 20px;
+      border-bottom: 0;
+      background: rgba(250, 252, 255, .76);
+      -webkit-backdrop-filter: blur(26px) saturate(180%);
+      backdrop-filter: blur(26px) saturate(180%);
+      box-shadow: 0 1px 0 rgba(29, 29, 31, .07), 0 8px 28px rgba(57, 72, 92, .05);
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 760;
+      letter-spacing: .13em;
+    }
+
+    .brand strong {
+      margin-top: 5px;
+      color: #1d1d1f;
+      font-size: 16px;
+      font-weight: 680;
+      letter-spacing: -.025em;
+    }
+
+    .category-tabs,
+    .model-tabs {
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid rgba(29, 29, 31, .06);
+      border-radius: 13px;
+      background: rgba(118, 118, 128, .12);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .035);
+    }
+
+    .model-tabs {
+      margin-top: 16px;
+      background: rgba(118, 118, 128, .10);
+    }
+
+    .tab {
+      min-height: 39px;
+      border-radius: 10px;
+      color: #626267;
+      font-size: 12px;
+      font-weight: 650;
+      transition: color 180ms ease-out, background 180ms ease-out, transform 100ms ease-out, box-shadow 180ms ease-out;
+    }
+
+    .tab:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, .48);
+    }
+
+    .tab[aria-selected="true"] {
+      color: #1d1d1f;
+      background: rgba(255, 255, 255, .96);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 4px 12px rgba(28, 39, 54, .08);
+    }
+
+    .utility {
+      gap: 8px;
+    }
+
+    .button {
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid rgba(29, 29, 31, .08);
+      border-radius: 11px;
+      background: rgba(255, 255, 255, .78);
+      color: #343438;
+      font-size: 12px;
+      font-weight: 630;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, .025);
+      transition: color 180ms ease-out, background 180ms ease-out, border-color 180ms ease-out, transform 100ms ease-out, box-shadow 180ms ease-out;
+    }
+
+    .button:hover {
+      border-color: rgba(29, 29, 31, .13);
+      background: #ffffff;
+      color: #1d1d1f;
+      box-shadow: 0 5px 18px rgba(34, 48, 65, .08);
+    }
+
+    .button.accent {
+      border-color: rgba(0, 113, 227, .12);
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 6px 18px rgba(0, 113, 227, .18);
+    }
+
+    .button.accent:hover {
+      border-color: #0077ed;
+      background: #0077ed;
+      color: #ffffff;
+      box-shadow: 0 8px 22px rgba(0, 113, 227, .24);
+    }
+
+    .workspace {
+      height: calc(100dvh - 88px);
+      grid-template-columns: minmax(0, 1fr) var(--sidebar);
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .stage-column {
+      padding: 0;
+      background: transparent;
+    }
+
+    .stage-head {
+      min-height: 58px;
+      padding: 0 6px 12px;
+    }
+
+    .current {
+      gap: 12px;
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(48, 164, 108, .11);
+    }
+
+    .current-copy strong {
+      color: #1d1d1f;
+      font-size: 14px;
+      font-weight: 680;
+      letter-spacing: -.012em;
+    }
+
+    .current-copy span {
+      color: #74747a;
+      font-size: 11px;
+    }
+
+    .stage-actions {
+      gap: 8px;
+    }
+
+    .stage {
+      border: 1px solid rgba(29, 29, 31, .09);
+      border-radius: 22px;
+      background: #ffffff;
+      box-shadow: var(--shadow-stage);
+    }
+
+    .stage iframe {
+      background: #ffffff;
+    }
+
+    .stage:fullscreen {
+      background: #ffffff;
+    }
+
+    .loading-state,
+    .error-state {
+      background: #ffffff;
+      color: var(--muted);
+    }
+
+    .loading-state strong,
+    .error-state strong {
+      color: #1d1d1f;
+      font-size: 15px;
+      font-weight: 670;
+    }
+
+    .loading-line {
+      height: 4px;
+      background: rgba(118, 118, 128, .12);
+    }
+
+    .loading-line::after {
+      background: linear-gradient(90deg, #68aef5, #0071e3);
+    }
+
+    .sidebar {
+      padding: 20px;
+      border: 1px solid rgba(29, 29, 31, .07);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, .74);
+      -webkit-backdrop-filter: blur(24px) saturate(165%);
+      backdrop-filter: blur(24px) saturate(165%);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .section + .section {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(29, 29, 31, .075);
+    }
+
+    .section-kicker {
+      color: #86868b;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .10em;
+    }
+
+    .section h2,
+    .section h3 {
+      color: #1d1d1f;
+      letter-spacing: -.03em;
+    }
+
+    .section h2 {
+      margin-top: 8px;
+      font-size: 23px;
+      line-height: 1.15;
+    }
+
+    .section h3 {
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .stack-name {
+      color: #6e6e73;
+      line-height: 1.62;
+    }
+
+    .metrics {
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .metric {
+      padding: 13px;
+      border: 1px solid rgba(29, 29, 31, .07);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .9);
+      box-shadow: 0 5px 16px rgba(37, 51, 67, .045);
+    }
+
+    .metric span,
+    .metric small {
+      color: #7b7b80;
+    }
+
+    .metric strong {
+      color: #1d1d1f;
+      font-size: 21px;
+      font-weight: 680;
+      letter-spacing: -.04em;
+    }
+
+    .verdict {
+      border-left-color: var(--accent);
+      border-radius: 0 10px 10px 0;
+      background: var(--accent-soft);
+      color: #174b7f;
+    }
+
+    .fact-list li,
+    .record-list li {
+      color: #3a3a3c;
+    }
+
+    .fact-list li::before {
+      background: var(--accent);
+    }
+
+    .record-list li::before {
+      background: #eef5fc;
+      color: #0068d1;
+      box-shadow: inset 0 0 0 1px rgba(0, 113, 227, .09);
+    }
+
+    .note {
+      color: #77777c;
+    }
+
+    kbd {
+      border: 1px solid rgba(29, 29, 31, .09);
+      border-bottom-color: rgba(29, 29, 31, .18);
+      background: rgba(255, 255, 255, .88);
+      color: #66666b;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, .035);
+    }
+
+    .modal {
+      background: rgba(211, 218, 228, .56);
+      -webkit-backdrop-filter: blur(22px) saturate(120%);
+      backdrop-filter: blur(22px) saturate(120%);
+    }
+
+    .modal-shell {
+      border: 1px solid rgba(255, 255, 255, .88);
+      border-radius: 22px;
+      background: rgba(250, 251, 253, .94);
+      box-shadow: 0 34px 110px rgba(37, 49, 64, .24);
+      transform-origin: center center;
+      animation: materialize 260ms cubic-bezier(.16, 1, .3, 1) both;
+    }
+
+    @keyframes materialize {
+      from { opacity: 0; transform: scale(.97) translateY(8px); filter: blur(5px); }
+      to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+
+    .modal-head {
+      border-bottom: 1px solid rgba(29, 29, 31, .07);
+      background: rgba(255, 255, 255, .56);
+    }
+
+    .modal-head strong {
+      color: #1d1d1f;
+      font-weight: 680;
+    }
+
+    .modal-body video,
+    .gif-item img {
+      background: #f1f3f6;
+    }
+
+    .official-copy {
+      border: 1px solid rgba(29, 29, 31, .07);
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(38, 51, 67, .06);
+    }
+
+    .official-copy h3,
+    .official-copy p {
+      color: #1d1d1f;
+    }
+
+    .table-wrap {
+      border-color: rgba(29, 29, 31, .08);
+      background: #ffffff;
+    }
+
+    table {
+      background: #ffffff;
+    }
+
+    th,
+    td {
+      border-bottom-color: rgba(29, 29, 31, .075);
+      color: #333337;
+    }
+
+    th {
+      color: #77777c;
+      background: #f4f5f7;
+    }
+
+    td strong {
+      color: #0068d1;
+    }
+
+    .gif-item {
+      border-color: rgba(29, 29, 31, .08);
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(38, 51, 67, .06);
+    }
+
+    .gif-item span {
+      color: #6e6e73;
+    }
+
+    @media (max-width: 1120px) {
+      :root { --sidebar: 348px; }
+
+      .topbar {
+        grid-template-columns: minmax(188px, .75fr) minmax(460px, 1.5fr) auto;
+      }
+
+      .utility .hide-mid { display: none; }
+    }
+
+    @media (max-width: 920px) {
+      body { overflow: auto; }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        gap: 11px;
+        padding: 15px;
+      }
+
+      .brand { text-align: center; }
+      .category-tabs { justify-self: stretch; overflow-x: auto; }
+      .category-tabs .tab { flex: 1 0 auto; }
+      .utility { justify-content: center; flex-wrap: wrap; }
+
+      .workspace {
+        height: auto;
+        min-height: calc(100dvh - 190px);
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 12px;
+      }
+
+      .stage-column { min-height: 72dvh; }
+      .sidebar { border-radius: 18px; }
+      .official-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .stage-head { align-items: flex-start; flex-direction: column; }
+      .stage-actions { width: 100%; }
+      .stage-actions .button { flex: 1; }
+      .stage-column { min-height: 66dvh; }
+      .stage { border-radius: 16px; }
+      .sidebar { padding: 16px; }
+      .gif-grid { grid-template-columns: 1fr; }
+      .modal { padding: 8px; }
+      .modal-body { padding: 12px; }
+    }
+
+    @media (prefers-reduced-transparency: reduce) {
+      .topbar,
+      .sidebar,
+      .modal,
+      .modal-shell {
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+        background: #ffffff;
+      }
+    }
+
+    @media (prefers-contrast: more) {
+      :root {
+        --line: rgba(0, 0, 0, .22);
+        --line-strong: rgba(0, 0, 0, .38);
+      }
+
+      .button,
+      .metric,
+      .stage,
+      .sidebar {
+        border-color: rgba(0, 0, 0, .24);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+
+      .modal-shell { filter: none !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="eyebrow">Field test · daylight desk</span>
+      <strong>K3 / Codex / MiniMax · 四类实机录制台</strong>
+    </div>
+
+    <nav class="category-tabs" aria-label="评测类别">
+      <button class="tab category-tab" data-category="game2d" aria-selected="true">01 2D 游戏</button>
+      <button class="tab category-tab" data-category="game3d" aria-selected="false">02 3D 游戏</button>
+      <button class="tab category-tab" data-category="promo" aria-selected="false">03 交互网页</button>
+      <button class="tab category-tab" data-category="vision" aria-selected="false">04 50 图识别</button>
+    </nav>
+
+    <div class="utility">
+      <button class="button accent" id="officialButton">K3 官方性能图</button>
+      <button class="button hide-mid" id="scoreButton">评分总表</button>
+      <a class="button" href="/notes/kimi-k3-subscription-review#result" target="_blank" rel="noopener">完整评测文章</a>
+      <button class="button hide-mid" id="gifButton">GIF 素材</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="stage-column" aria-label="原始产物体验区">
+      <div class="stage-head">
+        <div class="current">
+          <span class="live-dot" aria-hidden="true"></span>
+          <div class="current-copy">
+            <strong id="stageTitle">正在载入</strong>
+            <span id="stageSubtitle">原始文件，不是重制演示</span>
+          </div>
+        </div>
+        <div class="stage-actions">
+          <button class="button" id="reloadButton">重新载入</button>
+          <button class="button" id="newWindowButton">新窗口试玩</button>
+          <button class="button" id="fullscreenButton">全屏画面</button>
+        </div>
+      </div>
+
+      <div class="stage" id="stage">
+        <div class="loading-state" id="loadingState" aria-live="polite">
+          <div>
+            <strong>正在载入原始产物</strong>
+            <div class="loading-line" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="error-state" id="errorState" hidden>
+          <div>
+            <strong>页面还没有完成载入</strong>
+            <p>请确认是通过“启动录制台.command”打开，而不是直接双击 HTML。</p>
+            <button class="button accent" id="retryButton">重新尝试</button>
+          </div>
+        </div>
+        <iframe id="stageFrame" title="评测原始产物" allow="autoplay; fullscreen; pointer-lock" referrerpolicy="no-referrer"></iframe>
+      </div>
+    </section>
+
+    <aside class="sidebar" aria-label="录制提要与证据">
+      <section class="section">
+        <span class="section-kicker" id="categoryKicker">01 / 04</span>
+        <h2 id="categoryTitle">2D 游戏《弹弓攻城》</h2>
+        <p class="stack-name" id="categorySummary"></p>
+        <div class="model-tabs" id="modelTabs" role="tablist" aria-label="模型顺序"></div>
+      </section>
+
+      <section class="section">
+        <span class="section-kicker">当前原始产物</span>
+        <h3 id="modelName"></h3>
+        <p class="stack-name" id="stackName"></p>
+        <div class="metrics">
+          <div class="metric">
+            <span>版本身份</span>
+            <strong id="editionValue"></strong>
+            <small id="editionNote"></small>
+          </div>
+          <div class="metric">
+            <span id="timeLabel">真实耗时</span>
+            <strong id="timeValue"></strong>
+            <small id="timeNote"></small>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <span class="section-kicker">推荐现场动作</span>
+        <ol class="record-list" id="recordList"></ol>
+        <p class="note" id="recordNote"></p>
+      </section>
+
+      <section class="section">
+        <span class="section-kicker">原始证据</span>
+        <div class="action-grid" id="evidenceGrid"></div>
+        <p class="note" id="evidenceNote"></p>
+      </section>
+
+      <section class="section">
+        <span class="section-kicker">录制快捷键</span>
+        <div class="shortcut-strip">
+          <kbd>1 / 2 / 3 切模型</kbd>
+          <kbd>[ / ] 切类别</kbd>
+          <kbd>R 重载</kbd>
+          <kbd>F 全屏</kbd>
+          <kbd>V 现成录屏</kbd>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-shell">
+      <div class="modal-head">
+        <strong id="modalTitle">素材</strong>
+        <button class="button" id="closeModalButton">关闭</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const categories = {
+        game2d: {
+          index: "01 / 04",
+          title: "2D 游戏《弹弓攻城》",
+          short: "2D 游戏",
+          summary: "同一份约 5KB Prompt，从空目录生成原创弹弓物理游戏；40 分钟上限，统一 Chrome QA 与真实鼠标录屏。",
+          sourceFolder: "/lab/2d",
+          prompt: "/recording-desk/evidence/view.html?file=2d-prompt.txt",
+          results: "/lab/2d",
+          bugs: "/notes/kimi-k3-subscription-review#2d",
+          summaryJson: "/data/benchmarks.json",
+          recordNote: "录 K3 与 Codex 时先展示完整画面，再操作一次拖拽和空中能力；MiniMax 当前默认加载从空目录独立重跑的最终可交付版。页面分数统一采用公众号质量分，速度另列；首轮 37 分仅作为内部旧口径证据保留。",
+          models: [
+            {
+              id: "k3",
+              label: "K3",
+              name: "Kimi Code + K3 max",
+              stack: "Kimi Code 0.26.0 · kimi-code/k3 · 1M context · max",
+              score: "80.5",
+              scoreNote: "公众号质量分 / 100",
+              time: "40:00.09",
+              timeNote: "触及上限，exit 124",
+              verdict: "画面完成度高、物理实现最有野心，但在截止前没把关卡静置坍塌收住。",
+              facts: [
+                "首屏、暮色山景、机器人守卫和粒子反馈完整，真实拖拽、轨迹与发射可用。",
+                "自研 OBB/SAT、顺序冲量、摩擦和休眠，工程深度是三者最高。",
+                "L2 / L3 静置 3 秒最大漂移 218.68px / 346.70px，玩家出手前结构会坍塌。",
+                "触及 2400 秒上限；公众号质量分不计速度，手机可玩区偏小仍计入质量判断。"
+              ],
+              record: [
+                "保留首屏 4–6 秒，点开始进入完整 Canvas。",
+                "拖拽一次，松手发射，飞行中点击或按 Space 触发能力。",
+                "展示暮色场景、守卫与建筑；需要讲坍塌时打开 Bug 证据。"
+              ],
+              src: "/bundles/2d/kimi/",
+              video: "/recording-desk/videos/2d-k3.mp4",
+              gif: "/assets/gifs/2d-k3.gif"
+            },
+            {
+              id: "codex",
+              label: "Codex",
+              name: "Codex + gpt-5.6-sol xhigh",
+              stack: "Codex 0.130.0 · gpt-5.6-sol · xhigh · 非 fast",
+              score: "96.0",
+              scoreNote: "公众号质量分 · 本轮第 1",
+              time: "14:44.97",
+              timeNote: "自然完成，exit 0",
+              verdict: "这一轮唯一完整通过统一 Chrome QA 的版本，视觉惊喜略少，但是真正能直接交付试玩。",
+              facts: [
+                "三关都能正确加载，暂停、手动时钟、命中、存档和切关接口完整。",
+                "三关静置 3 秒最大漂移全部为 0；真实鼠标两次拉弓均成功。",
+                "桌面 Canvas 占屏 78.8%，手机没有横向溢出。",
+                "视觉更像成熟产品 Demo，物理是轻量 AABB，旋转并非精确多边形碰撞。"
+              ],
+              record: [
+                "首屏停留 3–4 秒，点开始展示完整主区域。",
+                "拖拽、松手、触发空中能力，保留命中分数与结构位移。",
+                "切到下一关或重开，展示流程完整性。"
+              ],
+              src: "/bundles/2d/codex/",
+              video: "/recording-desk/videos/2d-codex.mp4",
+              gif: "/assets/gifs/2d-codex.gif"
+            },
+            {
+              id: "m3",
+              label: "MiniMax",
+              name: "mmx + MiniMax M3 · 从空目录重跑",
+              stack: "mmx 1.0.18 · MiniMax-M3 · 1M context · 原生最高思考",
+              edition: "独立重跑可玩版",
+              editionNote: "从空目录重跑；公众号采用最终版质量分",
+              scoreLabel: "公众号质量分",
+              score: "54.5",
+              scoreNote: "最终可交付版 / 时间另算",
+              timeLabel: "独立重跑耗时",
+              time: "24:57.46",
+              timeNote: "自然完成，exit 0",
+              verdict: "这不是首轮补丁，而是从空目录重新生成的最终可交付版：画布全屏、真实输入可发射，但向上弧线不可靠，第一关无法稳定打通。",
+              facts: [
+                "桌面 Canvas 占满 1280×720，真实鼠标与 390px 手机触摸都能完成发射，Space 能触发空中能力。",
+                "统一 QA 自动结果为 12/13；唯一失败来自方块没有 id 导致的错误匹配，外部按索引复核后三关静置漂移均为 0。",
+                "仍有 P1：真实拖拽会把正向 dy 夹成 0，向上发射弧线不可靠；最高解锁关也没有持久化。",
+                "首轮 OpenCode 的 37 分只保留为含速度的内部旧口径；一次 350.66 秒补考三份源码哈希完全相同，实际没有修复。"
+              ],
+              record: [
+                "保留首屏 3–5 秒，点开始进入全屏 Canvas。",
+                "向左拖拽后松手发射，飞行中按 Space 展示空中能力。",
+                "口播明确这是独立重跑版；讲首轮失败时再打开首轮原版或首轮录屏。"
+              ],
+              src: "/bundles/2d/minimax-m3/",
+              video: "/recording-desk/videos/2d-m3.mp4",
+              gif: "/assets/gifs/2d-m3.gif",
+              evidenceNote: "当前试玩是 mmx + M3 从空目录独立重跑的最终可交付版；公众号质量分为 54.5。首轮 OpenCode 37 分属于含速度的内部旧口径，两套原始文件都保留。",
+              extras: []
+            }
+          ]
+        },
+        game3d: {
+          index: "02 / 04",
+          title: "3D 游戏《破门点》",
+          short: "3D 游戏",
+          summary: "同题生成原创低多边形第一人称拆弹游戏；不限时自然结束，统一 19 项 QA、同机位截图与盲评。",
+          sourceFolder: "/lab/3d",
+          prompt: "/recording-desk/evidence/view.html?file=3d-prompt.txt",
+          results: "/lab/3d",
+          bugs: "/notes/kimi-k3-subscription-review#3d",
+          summaryJson: "/data/benchmarks.json",
+          recordNote: "3D 操作建议点“新窗口试玩”后录制，避免 iframe 中的 Pointer Lock 与快捷键互相抢焦点。MiniMax 当前默认加载修复补考版；页面分数统一采用公众号最终质量分，首轮 29.81 仅作为内部旧口径证据保留。",
+          models: [
+            {
+              id: "k3",
+              label: "K3",
+              name: "Kimi Code + K3 max",
+              stack: "Kimi Code 0.26.0 · kimi-code/k3 · 1M context · max",
+              score: "91.0",
+              scoreNote: "公众号质量分 · 本轮第 1",
+              time: "1:16:55.95",
+              timeNote: "自然完成，exit 0",
+              verdict: "盲评画面与玩法体感都是第一，19/19 QA 全绿；代价是耗时达到 Codex 的 3.35 倍。",
+              facts: [
+                "港区、吊机、灯塔光束、黄色引导线和拆弹装置的辨识度最好。",
+                "桌面和手机任务链都可完成，真实录屏最终 phase=won。",
+                "自行通过换机位和截图追出黑色材质楔形物并在退出前修复。",
+                "公众号质量分不计速度；靠近建筑时仍会被大平面遮挡。"
+              ],
+              record: [
+                "新窗口打开，展示首屏与操作说明后进入任务。",
+                "WASD 移动、鼠标观察，录一段敌我辨识和射击反馈。",
+                "带到黄色路线或拆弹装置附近，展示视觉引导。"
+              ],
+              src: "/bundles/3d/kimi/",
+              video: "/recording-desk/videos/3d-k3.mp4",
+              gif: "/assets/gifs/3d-k3.gif"
+            },
+            {
+              id: "codex",
+              label: "Codex",
+              name: "Codex + gpt-5.6-sol xhigh",
+              stack: "Codex 0.130.0 · gpt-5.6-sol · xhigh · 非 fast",
+              score: "89.2",
+              scoreNote: "公众号质量分 · 本轮第 2",
+              time: "22:57.51",
+              timeNote: "本轮最快，exit 0",
+              verdict: "最快完成且 19/19 QA 全绿，完整走通交火、换弹、受击、清场、拆除和结算。",
+              facts: [
+                "不是少做所以快：桌面与手机完整，手动时钟、AI、弹药、碰撞和重开都通过。",
+                "真实录屏能读出 HUD、受击、换弹、装置与最终结算。",
+                "速度、正确性和可交付性最均衡。",
+                "低多边形完成度稳定，但材质与装置造型不如 K3 有记忆点。"
+              ],
+              record: [
+                "新窗口进入任务，展示 HUD、准星与港区空间。",
+                "录移动、射击、受击和一次换弹。",
+                "如果不现场打完整局，用现成统一录屏补清场、拆除和结算。"
+              ],
+              src: "/bundles/3d/codex/",
+              video: "/recording-desk/videos/3d-codex.mp4",
+              gif: "/assets/gifs/3d-codex.gif"
+            },
+            {
+              id: "m3",
+              label: "MiniMax",
+              name: "OpenCode + MiniMax M3 · 修复补考版",
+              stack: "OpenCode 1.17.11 · MiniMax-M3 · 1M context · thinking/adaptive",
+              edition: "修复补考版",
+              editionNote: "自动 QA 19/19；真人复查仍发现问题",
+              scoreLabel: "公众号质量分",
+              score: "83.6",
+              scoreNote: "最终可交付版 / 时间另算",
+              timeLabel: "修复会话耗时",
+              time: "9:35.38",
+              timeNote: "两轮累计 44:05.49",
+              verdict: "清场、靠近装置、长按拆除、胜利和重开都能完成，手机操作与存档也正常；画面和射击反馈弱于前两家。",
+              facts: [
+                "首屏遮罩会真正消失，开始后进入可玩的第一人称 WebGL 场景。",
+                "拆弹装置已经可达；清场后靠近装置持续交互可完成拆除并进入 won。",
+                "进行中 restart 与 step 手动时钟已经修复，移动、射击、换弹、受伤链路正常。",
+                "统一 QA 19/19、控制台与页面错误为 0；但自动检查漏掉了黄色弹道残留、视觉实墙和 HUD 敌人数不更新。"
+              ],
+              record: [
+                "点“新窗口试玩”，保留首屏后真实点击开始任务。",
+                "录一段 WASD、射击和换弹；留意敌方黄色弹道是否残留。",
+                "两名敌人藏在视觉实墙后，正常玩家很可能找不到；不用现场强行打完整局。",
+                "口播明确这是修复补考版；首轮遮罩与目标不可达用首轮录屏说明。"
+              ],
+              src: "/bundles/3d/minimax-m3/",
+              video: "/recording-desk/videos/3d-m3.mp4",
+              gif: "/assets/gifs/3d-m3.gif",
+              evidenceNote: "当前试玩是 MiniMax 3D 最终可交付版，公众号质量分为 83.6。首轮旧口径只作为内部审计保留，公开页统一展示最终成品。",
+              extras: []
+            }
+          ]
+        },
+        promo: {
+          index: "03 / 04",
+          title: "《一脚晋级》交互宣传页",
+          short: "交互网页",
+          summary: "同一素材包、同一 Prompt，生成可直接玩的 6×6 三步破门宣传页；三份统一 QA 均为 13/13。",
+          sourceFolder: "/lab/promo",
+          prompt: "/recording-desk/evidence/view.html?file=promo-prompt.txt",
+          results: "/lab/promo",
+          bugs: "/notes/kimi-k3-subscription-review#web",
+          summaryJson: "/data/benchmarks.json",
+          recordNote: "三份网页的标准解法都是 right → up → right。录制时既要保留首屏视觉，也要完成三步进球，再滚动到 500 关叙事、真实截图和二维码 CTA。此轮 MiniMax 是 mmx + M3，不是 OpenCode。",
+          models: [
+            {
+              id: "k3",
+              label: "K3",
+              name: "Kimi Code + K3 max",
+              stack: "Kimi Code 0.26.0 · kimi-code/k3 · 1M context · max",
+              score: "91.0",
+              scoreNote: "公众号质量分 · 本轮第 2",
+              time: "45:00",
+              timeNote: "触及截止，返回码 143",
+              verdict: "功能完整、规则信息最直白，13/13 QA 全绿；首屏文案偏多，一体化与扫读效率略弱。",
+              facts: [
+                "路径高亮、规则列表、实机叠卡、提示与重置都容易找到。",
+                "真实鼠标和手机触摸都能三步进球，稳定性没有扣分。",
+                "匿名成品分 71/80，主要差距来自首屏密度和素材融合。",
+                "触及 2700 秒截止；公众号质量分不计速度，用时在旁边单列。"
+              ],
+              record: [
+                "首屏停留，展示品牌、球场和可玩棋盘。",
+                "按 right → up → right 完成进球与晋级反馈。",
+                "向下滚动，展示规则、三张实机图与二维码区。"
+              ],
+              src: "/bundles/promo/kimi/",
+              video: "/recording-desk/videos/promo-k3.mp4",
+              gif: "/assets/gifs/promo-k3.gif"
+            },
+            {
+              id: "codex",
+              label: "Codex",
+              name: "Codex + gpt-5.6-sol max",
+              stack: "Codex 0.144.5 · gpt-5.6-sol · max · 非 fast",
+              score: "95.0",
+              scoreNote: "公众号质量分 · 本轮第 1",
+              time: "34:42",
+              timeNote: "自然完成",
+              verdict: "匿名最终网页质量第一，品牌、球场与角色素材融合最好；公众号质量分 95.0，本轮第一。",
+              facts: [
+                "匿名成品分 75/80，是三者最高；桌面与手机首屏构图都成立。",
+                "路径线、步数、晋级弹层、规则标签和实机展示交互清楚。",
+                "统一 QA 13/13，稳定性满分。",
+                "进球庆祝记忆点还能更强；耗时约为 M3 的 6 倍。"
+              ],
+              record: [
+                "先录比赛日首屏的整体构图与真实素材融合。",
+                "按 right → up → right 完成三步破门。",
+                "滚动到 journey、proof 和 play-now，展示完整转化链。"
+              ],
+              src: "/bundles/promo/codex/",
+              video: "/recording-desk/videos/promo-codex.mp4",
+              gif: "/assets/gifs/promo-codex.gif"
+            },
+            {
+              id: "m3",
+              label: "MiniMax",
+              name: "mmx + MiniMax M3",
+              stack: "mmx 1.0.18 · MiniMax-M3 · 1M context · native thinking",
+              score: "85.0",
+              scoreNote: "公众号质量分 · 本轮第 3",
+              time: "5:45",
+              timeNote: "344.593 秒，自然完成",
+              verdict: "只用 5 分 45 秒交付 13/13 QA 的完整网页；速度确实突出，但公众号质量分单看成品为 85.0。",
+              facts: [
+                "目标、500 关成长、真实关卡证据与 CTA 的产品层级最均衡。",
+                "匿名成品分 74/80，仅比 Codex 少 1 分；叙事分三者最高。",
+                "点状路径、四向按钮、三步晋级、三张实机图和二维码链路完整。",
+                "角色、球场与真实截图的场景融合略弱于 Codex。"
+              ],
+              record: [
+                "首屏快速扫一遍信息层级与交互棋盘。",
+                "按 right → up → right 完成三步破门。",
+                "滚动展示 500 关叙事、截图和二维码；强调本轮调用链是 mmx。"
+              ],
+              src: "/bundles/promo/minimax-m3/",
+              video: "/recording-desk/videos/promo-m3.mp4",
+              gif: "/assets/gifs/promo-m3.gif"
+            }
+          ]
+        },
+        vision: {
+          index: "04 / 04",
+          title: "50 图视觉识别",
+          short: "50 图识别",
+          summary: "10 类 × 5 题，最终严格有效集 50 题；公众号按日常/OCR、计数空间、专业图/界面和 hard 稳定性四维计分，速度另列。",
+          sourceFolder: "/lab/vision",
+          prompt: "/recording-desk/evidence/view.html?file=vision-prompt.txt",
+          results: "/lab/vision",
+          bugs: "/notes/kimi-k3-subscription-review#vision",
+          summaryJson: "/data/vision-cases.json",
+          recordNote: "逐题页同时展示原图、题面、三家答案与判定；模型按钮只改变右侧讲解焦点。优先录 V007 / V008 / V009 密集计数、V015 小箭头、V019 非语义 OCR，再补一题三家都对的工程图。",
+          sharedSrc: "/lab/vision/review",
+          models: [
+            {
+              id: "k3",
+              label: "K3",
+              name: "Kimi Code + K3 max",
+              stack: "Kimi Code 调用链 · K3 max · 最终 50 图",
+              score: "96.7",
+              scoreNote: "公众号质量分 · 本轮第 1",
+              time: "49 / 50",
+              timeLabel: "识别准确率",
+              timeNote: "hard 稳定 14 / 15",
+              verdict: "纯准确率和 hard 稳定性都是第一，只错 V009；这是本地题集结果，不是通用视觉模型总榜。",
+              facts: [
+                "严格有效集答对 49/50，准确率分 88.2/90。",
+                "15 道 hard 中 14 道三次完全一致，稳定性 9.33/10。",
+                "唯一错题是 V009 密集实例计数；V007 三次为 C/C/B，但多数票仍正确。",
+                "UI、图表、工程图、文档、日常物体和科学示意图均为 5/5。"
+              ],
+              record: [
+                "先展示最终 50 题总览与评分口径。",
+                "定位 V009，放大原图、题面与 K3 答案。",
+                "再看 V007 三次稳定性，最后补一题工程图作为正例。"
+              ],
+              src: "/lab/vision/review"
+            },
+            {
+              id: "codex",
+              label: "Codex",
+              name: "Codex CLI + gpt-5.6-sol xhigh",
+              stack: "Codex CLI 调用链 · gpt-5.6-sol xhigh · 最终 50 图",
+              score: "90.0",
+              scoreNote: "公众号质量分 · 本轮第 2",
+              time: "47 / 50",
+              timeLabel: "识别准确率",
+              timeNote: "hard 稳定 12 / 15",
+              verdict: "大部分类型稳定，主要失分在密集计数和远距小箭头；格式与速度只作诊断，不计主分。",
+              facts: [
+                "严格有效集答对 47/50，准确率分 84.6/90。",
+                "失分题为 V007、V009、V015，分别涉及密集计数和极小箭头方向。",
+                "hard 三次完全一致 12/15，不稳定题为 V008、V015、V018。",
+                "首跑中位耗时 8.8 秒，但最终规则明确不把速度计入 100 分。"
+              ],
+              record: [
+                "在逐题页定位 V007 / V009，展示密集计数差异。",
+                "定位 V015，放大小箭头并对照真值。",
+                "指出失分集中在计数与空间关系，公众号四维质量分为 90.0。"
+              ],
+              src: "/lab/vision/review"
+            },
+            {
+              id: "m3",
+              label: "MiniMax",
+              name: "OpenCode + MiniMax M3 thinking",
+              stack: "OpenCode 调用链 · MiniMax M3 thinking · 最终 50 图",
+              score: "88.0",
+              scoreNote: "公众号质量分 · 本轮第 3",
+              time: "46 / 50",
+              timeLabel: "识别准确率",
+              timeNote: "hard 稳定 12 / 15",
+              verdict: "整体仍有 92% 准确率，差距集中在密集计数、小箭头和非语义 OCR，并非全面落后。",
+              facts: [
+                "严格有效集答对 46/50，准确率分 82.8/90。",
+                "失分题为 V007、V008、V015、V019。",
+                "V019 把 idUnte 自动纠正成更像英文的 idUnit，是典型非语义精确 OCR 失误。",
+                "hard 完全一致 12/15；首跑中位耗时 8.6 秒，但速度不计分。"
+              ],
+              record: [
+                "定位 V008，展示密集鸟类计数。",
+                "定位 V015 与 V019，分别展示小箭头和非语义 OCR。",
+                "最后回到总览，说明这是具体调用链和小题集的相对结果。"
+              ],
+              src: "/lab/vision/review"
+            }
+          ],
+          extras: [
+            ["50 题逐题审阅", "/lab/vision/review"],
+            ["公开题面与答案 JSON", "/data/vision-cases.json"]
+          ]
+        }
+      };
+
+      const scoreReasons = {
+        game2d: [
+          ["K3", "40:00.09", "80.5", "任务完成度 17、视觉 25.5、交互 23、稳定适配 15；L2/L3 静置漂移，时间不计入本分。"],
+          ["Codex", "14:44.97", "96.0", "任务完成度 20、视觉 28.5、交互 27.5、稳定适配 20；三关漂移为 0，真实操作链完整。"],
+          ["MiniMax M3", "36:56.44 累计", "54.5", "最终可交付版为 14 + 24.5 + 8 + 8；首屏与画面完成，但真实操作不能可靠通过第一关。"]
+        ],
+        game3d: [
+          ["K3", "1:16:55.95", "91.0", "任务闭环 20、3D 视觉 25、操作 26、稳定适配 20；画面与体感最好，时间另算。"],
+          ["Codex", "22:57.51", "89.2", "任务闭环 20、3D 视觉 23.7、操作 25.5、稳定适配 20；完整任务链可达。"],
+          ["MiniMax M3", "44:05.49 累计", "83.6", "清场、拆除、胜利、重开、手机操作和存档均可完成；画面与射击反馈弱于前两家。"]
+        ],
+        promo: [
+          ["K3", "45:00", "91.0", "品牌视觉 25.5、核心交互 23、动效呈现 22.5、稳定适配 20；功能完整，首屏信息偏密。"],
+          ["Codex", "34:42", "95.0", "28.5 + 23.5 + 23 + 20；品牌、球场与真实素材融合最好。"],
+          ["MiniMax M3", "5:45", "85.0", "22.5 + 23 + 19.5 + 20；交付最快且功能完整，但品牌素材融合与动效质感较弱。"]
+        ],
+        vision: [
+          ["K3", "49/50 · 稳定 14/15", "96.7", "日常/OCR 30、计数空间 18、专业图/界面 30、hard 稳定 18.7。"],
+          ["Codex", "47/50 · 稳定 12/15", "90.0", "30 + 14 + 30 + 16；失分集中在密集计数和远距小箭头。"],
+          ["MiniMax M3", "46/50 · 稳定 12/15", "88.0", "28 + 14 + 30 + 16；失分集中在计数、小箭头和非语义 OCR。"]
+        ],
+        overall: [
+          ["K3", "四项等权", "89.8", "80.5、91.0、91.0、96.7 四项各占 25%；仅作本次公开样本汇总。"],
+          ["Codex", "四项等权", "92.6", "96.0、89.2、95.0、90.0 四项各占 25%；仅作本次公开样本汇总。"],
+          ["MiniMax M3", "四项等权", "77.8", "54.5、83.6、85.0、88.0 四项各占 25%；仅作本次公开样本汇总。"]
+        ]
+      };
+
+      const gifItems = [
+        ["2d-k3.gif", "2D · K3"],
+        ["2d-codex.gif", "2D · Codex"],
+        ["2d-m3.gif", "2D · MiniMax M3"],
+        ["3d-k3.gif", "3D · K3"],
+        ["3d-codex.gif", "3D · Codex"],
+        ["3d-m3.gif", "3D · MiniMax M3"],
+        ["3d-m3-repair.gif", "3D · MiniMax M3 修复旁证"],
+        ["promo-k3.gif", "宣传页 · K3"],
+        ["promo-codex.gif", "宣传页 · Codex"],
+        ["promo-m3.gif", "宣传页 · MiniMax M3"]
+      ];
+
+      const state = { category: "game2d", model: 0, errorTimer: null };
+      const categoryKeys = Object.keys(categories);
+
+      const $ = (selector) => document.querySelector(selector);
+      const stageFrame = $("#stageFrame");
+      const loadingState = $("#loadingState");
+      const errorState = $("#errorState");
+      const modal = $("#modal");
+      const modalTitle = $("#modalTitle");
+      const modalBody = $("#modalBody");
+
+      function currentCategory() { return categories[state.category]; }
+      function currentModel() { return currentCategory().models[state.model]; }
+
+      function setLoading() {
+        loadingState.hidden = false;
+        errorState.hidden = true;
+        clearTimeout(state.errorTimer);
+        state.errorTimer = setTimeout(() => {
+          if (!loadingState.hidden) errorState.hidden = false;
+        }, 6500);
+      }
+
+      function buildModelTabs() {
+        const host = $("#modelTabs");
+        host.innerHTML = "";
+        currentCategory().models.forEach((model, index) => {
+          const button = document.createElement("button");
+          button.className = "tab";
+          button.type = "button";
+          button.role = "tab";
+          button.textContent = `${index + 1} ${model.label}`;
+          button.setAttribute("aria-selected", String(index === state.model));
+          button.addEventListener("click", () => setModel(index));
+          host.appendChild(button);
+        });
+      }
+
+      function makeLink(label, href, accent = false) {
+        const link = document.createElement("a");
+        link.className = "button" + (accent ? " accent" : "");
+        link.textContent = label;
+        link.href = href;
+        link.target = "_blank";
+        link.rel = "noopener";
+        return link;
+      }
+
+      function renderEvidence() {
+        const category = currentCategory();
+        const model = currentModel();
+        const grid = $("#evidenceGrid");
+        grid.innerHTML = "";
+        grid.append(
+          makeLink("原始 Prompt", category.prompt, true),
+          makeLink("评分结果", category.results),
+          makeLink(state.category === "vision" ? "最终计分规则" : "Bug / 限制", category.bugs),
+          makeLink("原始结果 JSON", category.summaryJson),
+          makeLink("公开详情页", category.sourceFolder)
+        );
+
+        if (model.video) {
+          const videoButton = document.createElement("button");
+          videoButton.className = "button";
+          videoButton.textContent = "播放现成录屏";
+          videoButton.addEventListener("click", () => showVideo());
+          grid.append(videoButton);
+        }
+
+        const extras = [...(category.extras || []), ...(model.extras || [])];
+        extras.forEach(([label, href]) => grid.append(makeLink(label, href)));
+
+        $("#evidenceNote").textContent = model.evidenceNote || (state.category === "vision"
+          ? "最终逐题页已经把原图、题面、真值和三家输出合在一起；原始 50 图与 prompts.jsonl 仍单独保留。"
+          : "这里打开的试玩、录屏、评分和 Bug 文档全部来自冻结评测目录，没有为视频重做产物。");
+      }
+
+      function renderSidebar() {
+        const category = currentCategory();
+        const model = currentModel();
+        $("#categoryKicker").textContent = category.index;
+        $("#categoryTitle").textContent = category.title;
+        $("#categorySummary").textContent = category.summary;
+        $("#modelName").textContent = model.name;
+        $("#stackName").textContent = model.stack;
+        $("#editionValue").textContent = model.edition || (state.category === "vision" ? "最终 50 题审阅" : "首轮冻结产物");
+        $("#editionNote").textContent = model.editionNote || (state.category === "vision" ? "右侧只切换当前讲解焦点" : "评测时落盘的原始版本");
+        $("#timeLabel").textContent = model.timeLabel || "真实耗时";
+        $("#timeValue").textContent = model.time;
+        $("#timeNote").textContent = model.timeNote;
+        $("#recordNote").textContent = category.recordNote;
+
+        const record = $("#recordList");
+        record.innerHTML = model.record.map((item) => `<li>${item}</li>`).join("");
+        buildModelTabs();
+        renderEvidence();
+      }
+
+      function loadStage(force = false) {
+        const category = currentCategory();
+        const model = currentModel();
+        const src = category.sharedSrc || model.src;
+        $("#stageTitle").textContent = `${category.short} · ${model.label}${model.edition ? ` · ${model.edition}` : ""}`;
+        $("#stageSubtitle").textContent = state.category === "vision"
+          ? "逐题审阅页同时展示三家结果；右侧切换当前讲解焦点"
+          : model.edition
+            ? `当前加载${model.edition}；首轮结果与证据仍从右侧保留入口打开`
+            : "当前加载原始 index.html；模型顺序固定为 K3 → Codex → MiniMax";
+        setLoading();
+        stageFrame.src = force ? src + (src.includes("?") ? "&" : "?") + "reload=" + Date.now() : src;
+      }
+
+      function setCategory(key) {
+        if (!categories[key]) return;
+        state.category = key;
+        state.model = 0;
+        document.querySelectorAll(".category-tab").forEach((button) => {
+          button.setAttribute("aria-selected", String(button.dataset.category === key));
+        });
+        renderSidebar();
+        loadStage();
+      }
+
+      function setModel(index) {
+        if (!currentCategory().models[index]) return;
+        state.model = index;
+        renderSidebar();
+        loadStage();
+      }
+
+      function reloadStage() { loadStage(true); }
+
+      function openCurrent() {
+        const category = currentCategory();
+        window.open(category.sharedSrc || currentModel().src, "_blank", "noopener");
+      }
+
+      async function toggleFullscreen() {
+        try {
+          if (document.fullscreenElement) await document.exitFullscreen();
+          else await $("#stage").requestFullscreen();
+        } catch (error) {
+          openCurrent();
+        }
+      }
+
+      function openModal(title, html) {
+        modalTitle.textContent = title;
+        modalBody.innerHTML = html;
+        modal.hidden = false;
+        document.body.style.overflow = "hidden";
+        $("#closeModalButton").focus();
+      }
+
+      function closeModal() {
+        const video = modalBody.querySelector("video");
+        if (video) video.pause();
+        modal.hidden = true;
+        modalBody.innerHTML = "";
+        document.body.style.overflow = "";
+      }
+
+      function showVideo() {
+        const model = currentModel();
+        if (!model.video) return;
+        openModal(`${currentCategory().short} · ${model.label} · 统一操作录屏`,
+          `<video controls preload="metadata" src="${model.video}"></video>`);
+      }
+
+      function showOfficial() {
+        openModal("K3 官方 Coding Benchmark",
+          `<div class="official-layout">
+            <img src="/assets/article-kimi-k3/k3-official-benchmark.png" alt="Kimi K3 官方 Coding Benchmark">
+            <div class="official-copy">
+              <h3>官方说法与这次实测</h3>
+              <p>官方定位：2.8 万亿参数、原生视觉、100 万 token 上下文，主打长程编程与视觉参与的游戏开发。</p>
+              <p>图中 K3 的 Program Bench 为 77.8、SWE Marathon 为 42.0，均列第一；Terminal Bench 2.1 为 88.3，GPT-5.6 Sol 为 88.8。</p>
+              <p>这四类实测里，K3 在 3D 的匿名画面与体感、50 图识别上表现最好；但三次网页生成任务都是三者最慢。官方 benchmark 与本地一次交付体验应分开看。</p>
+              <p><a class="button accent" href="https://www.kimi.com/blog/kimi-k3" target="_blank" rel="noopener">打开 Kimi K3 官方技术博客</a></p>
+            </div>
+          </div>`);
+      }
+
+      function showScores() {
+        const labels = {
+          game2d: "2D 游戏《弹弓攻城》",
+          game3d: "3D 游戏《破门点》",
+          promo: "《一脚晋级》交互宣传页",
+          vision: "50 图视觉识别（速度不计分）",
+          overall: "四项等权总分（仅作本次样本汇总）"
+        };
+        const html = `<p class="note">本表与公众号公开配图一致：四类均为最终质量分，速度另列。MiniMax 2D / 3D 展示最终可交付版；37 与 29.81 等首轮含速度分仅在原始证据中作为内部旧口径保留。</p>` + Object.entries(scoreReasons).map(([key, rows]) => `
+          <section class="score-block">
+            <h3>${labels[key]}</h3>
+            <div class="table-wrap"><table>
+              <thead><tr><th>模型 / 调用链</th><th>${key === "vision" ? "准确率与稳定性" : key === "overall" ? "汇总方式" : "真实耗时"}</th><th>公众号质量分</th><th>为什么</th></tr></thead>
+              <tbody>${rows.map((row) => `<tr><td>${row[0]}</td><td>${row[1]}</td><td><strong>${row[2]}</strong></td><td>${row[3]}</td></tr>`).join("")}</tbody>
+            </table></div>
+          </section>`).join("");
+        openModal("公众号公开评分与原因", html);
+      }
+
+      function showGifs() {
+        const html = `<div class="gif-grid">${gifItems.map(([file, label]) => `
+          <a class="gif-item" href="/assets/gifs/${file}" target="_blank" rel="noopener">
+            <img loading="lazy" src="/assets/gifs/${file}" alt="${label} 实机 GIF">
+            <span>${label} · 点击单独打开原文件</span>
+          </a>`).join("")}</div>`;
+        openModal("已整理的实机 GIF 素材", html);
+      }
+
+      stageFrame.addEventListener("load", () => {
+        clearTimeout(state.errorTimer);
+        loadingState.hidden = true;
+        errorState.hidden = true;
+      });
+
+      document.querySelectorAll(".category-tab").forEach((button) => {
+        button.addEventListener("click", () => setCategory(button.dataset.category));
+      });
+
+      $("#reloadButton").addEventListener("click", reloadStage);
+      $("#retryButton").addEventListener("click", reloadStage);
+      $("#newWindowButton").addEventListener("click", openCurrent);
+      $("#fullscreenButton").addEventListener("click", toggleFullscreen);
+      $("#officialButton").addEventListener("click", showOfficial);
+      $("#scoreButton").addEventListener("click", showScores);
+      $("#gifButton").addEventListener("click", showGifs);
+      $("#closeModalButton").addEventListener("click", closeModal);
+      modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+
+      document.addEventListener("keydown", (event) => {
+        if (!modal.hidden) {
+          if (event.key === "Escape") closeModal();
+          return;
+        }
+        if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)) return;
+        if (["1", "2", "3"].includes(event.key)) setModel(Number(event.key) - 1);
+        else if (event.key === "]") {
+          const index = (categoryKeys.indexOf(state.category) + 1) % categoryKeys.length;
+          setCategory(categoryKeys[index]);
+        } else if (event.key === "[") {
+          const index = (categoryKeys.indexOf(state.category) - 1 + categoryKeys.length) % categoryKeys.length;
+          setCategory(categoryKeys[index]);
+        } else if (event.key.toLowerCase() === "r") reloadStage();
+        else if (event.key.toLowerCase() === "f") toggleFullscreen();
+        else if (event.key.toLowerCase() === "v") showVideo();
+      });
+
+      renderSidebar();
+      loadStage();
+    })();
+  </script>
+</body>
+</html>
