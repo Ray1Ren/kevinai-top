@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 
 const ARTICLE_PATH = '/en/articles/kimi-k3-review'
+const BUILD_ARTICLE_PATH = '/en/articles/ai-game-24-days'
 
 export default function EnglishArticles() {
   return (
@@ -62,8 +63,35 @@ export default function EnglishArticles() {
                 </Link>
               </article>
 
+              <article className="border-b border-white/10 py-7 md:py-10">
+                <Link to={BUILD_ARTICLE_PATH} className="group grid gap-7 md:grid-cols-[1fr_12rem] md:items-end">
+                  <div>
+                    <div className="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-xs uppercase tracking-[0.16em] text-graphite-500">
+                      <span className="text-pitch-500">Independent build notes</span>
+                      <span>July 15, 2026</span>
+                      <span>9 min</span>
+                    </div>
+                    <h2 className="max-w-3xl text-3xl font-semibold leading-tight tracking-tight text-white transition-colors group-hover:text-pitch-300 md:text-5xl">
+                      AI made my first game playable in a day. Shipping it took 24.
+                    </h2>
+                    <p className="mt-5 max-w-[62ch] text-sm leading-relaxed text-graphite-300 md:text-base">
+                      The first build worked on day two. The real work was onboarding, difficulty, voice, small screens, package size, privacy, and review.
+                    </p>
+                    <span className="mt-6 inline-flex text-sm font-medium text-pitch-400">
+                      Read the build story <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+                    </span>
+                  </div>
+
+                  <dl className="grid grid-cols-3 gap-3 md:grid-cols-1">
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">Playable</dt><dd className="mt-1 text-2xl font-semibold text-white">1 day</dd></div>
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">Released</dt><dd className="mt-1 text-2xl font-semibold text-pitch-400">24 days</dd></div>
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">Current</dt><dd className="mt-1 text-2xl font-semibold text-white">500 levels</dd></div>
+                  </dl>
+                </Link>
+              </article>
+
               <p className="mt-8 max-w-[60ch] text-sm leading-relaxed text-graphite-500">
-                I am translating the rest one at a time and checking the figures as I go.
+                I am translating the rest one by one. I check the copy, screenshots, and figures before each one goes live.
               </p>
             </div>
           </div>

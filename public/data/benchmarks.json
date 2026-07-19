@@ -21,6 +21,17 @@
       { "task": "宣传页 HTML", "kimi": "45:00", "codex": "34:42", "minimax": "5:45" },
       { "task": "50 图识别单题中位", "kimi": "28.93 秒", "codex": "8.84 秒", "minimax": "8.61 秒" }
     ],
+    "tokenUsage": {
+      "unit": "万 Token",
+      "valueOrderNote": "每格上方是新增 Token，下方是缓存读取；两者分开显示，不合并成一个消耗数字。",
+      "exclusionNote": "单位为万 Token。图片识别的 Token 记录不完整，因此这里只列 2D、3D 和宣传页三项编码任务。",
+      "table": [
+        { "task": "2D 小游戏", "kimi": { "new": 17.4, "cache": 270.3 }, "codex": { "new": 21.9, "cache": 179.6 }, "minimax": { "new": 24.4, "cache": 216.7 } },
+        { "task": "3D 小游戏", "kimi": { "new": 22.0, "cache": 559.4 }, "codex": { "new": 22.3, "cache": 200.1 }, "minimax": { "new": 48.0, "cache": 2876.4 } },
+        { "task": "宣传页 HTML", "kimi": { "new": 17.0, "cache": 261.5 }, "codex": { "new": 38.3, "cache": 462.8 }, "minimax": { "new": 6.7, "cache": 12.8 } },
+        { "task": "三项合计", "kimi": { "new": 56.4, "cache": 1091.2 }, "codex": { "new": 82.5, "cache": 842.5 }, "minimax": { "new": 79.1, "cache": 3105.8 } }
+      ]
+    },
     "colors": {
       "kimi": "#7256B8",
       "codex": "#2B746D",

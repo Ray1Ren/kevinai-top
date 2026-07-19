@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+    <rect width="1600" height="900" fill="#141413" />
+
+  <style>
+    .title { font: 700 58px Arial, Helvetica, sans-serif; letter-spacing: -2px; fill: #faf9f5; }
+    .kicker { font: 700 18px Arial, Helvetica, sans-serif; letter-spacing: 5px; fill: #8ab82f; }
+    .sub { font: 400 26px Arial, Helvetica, sans-serif; fill: #b0aea5; }
+    .label { font: 700 20px Arial, Helvetica, sans-serif; letter-spacing: 2px; fill: #b0aea5; }
+    .value { font: 700 42px Arial, Helvetica, sans-serif; fill: #faf9f5; }
+    .body { font: 400 24px Arial, Helvetica, sans-serif; fill: #faf9f5; }
+    .small { font: 400 20px Arial, Helvetica, sans-serif; fill: #b0aea5; }
+    .tiny { font: 700 15px Arial, Helvetica, sans-serif; letter-spacing: 2px; fill: #b0aea5; }
+    .panel { fill: #201f1d; stroke: #4a4944; stroke-width: 2; }
+    .panel2 { fill: #2a2926; stroke: #4a4944; stroke-width: 2; }
+    .accent { fill: #8ab82f; }
+    .accentText { fill: #8ab82f; }
+    .orange { fill: #d97757; }
+    .blue { fill: #6a9bcc; }
+    .line { stroke: #4a4944; stroke-width: 3; fill: none; }
+    .dash { stroke: #4a4944; stroke-width: 3; stroke-dasharray: 12 12; fill: none; }
+  </style>
+
+    <text class="kicker" x="92" y="90">WHAT THE WORK LOOKED LIKE</text>
+    <text class="title" x="92" y="170">AI produced options quickly. I still had to choose.</text>
+    <text class="sub" x="92" y="220">Most of my time went into testing, cutting, rebuilding, and getting through review.</text>
+
+      <rect class="panel" x="92" y="300" width="282" height="410" rx="30" />
+      <circle cx="146" cy="354" r="24" fill="#6a9bcc" />
+      <text x="146" y="362" text-anchor="middle" style="font:700 17px Arial;fill:#141413">01</text>
+      <text class="label" x="184" y="363">AI OUTPUT</text>
+
+        <line x1="126" y1="430" x2="340" y2="430" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="126" y="414">Research</text>
+
+        <line x1="126" y1="492" x2="340" y2="492" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="126" y="476">Code</text>
+
+        <line x1="126" y1="554" x2="340" y2="554" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="126" y="538">Images</text>
+
+        <line x1="126" y1="616" x2="340" y2="616" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="126" y="600">Voices</text>
+
+      <path d="M 392 505 h 48 l -14 -14 m 14 14 l -14 14" stroke="#b0aea5" stroke-width="4" fill="none" />
+
+      <rect class="panel" x="470" y="300" width="282" height="410" rx="30" />
+      <circle cx="524" cy="354" r="24" fill="#d97757" />
+      <text x="524" y="362" text-anchor="middle" style="font:700 17px Arial;fill:#141413">02</text>
+      <text class="label" x="562" y="363">MY CHOICES</text>
+
+        <line x1="504" y1="430" x2="718" y2="430" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="504" y="414">Direction</text>
+
+        <line x1="504" y1="492" x2="718" y2="492" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="504" y="476">Taste</text>
+
+        <line x1="504" y1="554" x2="718" y2="554" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="504" y="538">Cuts</text>
+
+        <line x1="504" y1="616" x2="718" y2="616" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="504" y="600">What stayed</text>
+
+      <path d="M 770 505 h 48 l -14 -14 m 14 14 l -14 14" stroke="#b0aea5" stroke-width="4" fill="none" />
+
+      <rect class="panel" x="848" y="300" width="282" height="410" rx="30" />
+      <circle cx="902" cy="354" r="24" fill="#7f7398" />
+      <text x="902" y="362" text-anchor="middle" style="font:700 17px Arial;fill:#141413">03</text>
+      <text class="label" x="940" y="363">REAL CHECKS</text>
+
+        <line x1="882" y1="430" x2="1096" y2="430" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="882" y="414">Phone</text>
+
+        <line x1="882" y1="492" x2="1096" y2="492" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="882" y="476">Repeat play</text>
+
+        <line x1="882" y1="554" x2="1096" y2="554" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="882" y="538">Package size</text>
+
+        <line x1="882" y1="616" x2="1096" y2="616" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="882" y="600">Platform rules</text>
+
+      <path d="M 1148 505 h 48 l -14 -14 m 14 14 l -14 14" stroke="#b0aea5" stroke-width="4" fill="none" />
+
+      <rect class="panel" x="1226" y="300" width="282" height="410" rx="30" />
+      <circle cx="1280" cy="354" r="24" fill="#8ab82f" />
+      <text x="1280" y="362" text-anchor="middle" style="font:700 17px Arial;fill:#141413">04</text>
+      <text class="label" x="1318" y="363">SHIPPED BUILD</text>
+
+        <line x1="1260" y1="430" x2="1474" y2="430" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="1260" y="414">500 levels</text>
+
+        <line x1="1260" y1="492" x2="1474" y2="492" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="1260" y="476">Clear onboarding</text>
+
+        <line x1="1260" y1="554" x2="1474" y2="554" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="1260" y="538">Reviewed</text>
+
+        <line x1="1260" y1="616" x2="1474" y2="616" stroke="#4a4944" stroke-width="2" />
+        <text class="body" x="1260" y="600">Live in WeChat</text>
+
+
+
+    <rect x="92" y="760" width="1416" height="76" rx="20" fill="#8ab82f" />
+    <text x="800" y="808" text-anchor="middle" style="font:700 25px Arial;fill:#141413">I spent more time testing and rebuilding than generating.</text>
+
+  </svg>

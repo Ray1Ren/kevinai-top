@@ -3,6 +3,7 @@
   <url><loc>https://kevinai.top/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://kevinai.top/notes</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://kevinai.top/notes/kimi-k3-subscription-review</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kevinai.top/notes/ai-game-24-days</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://kevinai.top/lab</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://kevinai.top/lab/2d</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://kevinai.top/lab/3d</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -13,6 +14,7 @@
   <url><loc>https://kevinai.top/en</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://kevinai.top/en/articles</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://kevinai.top/en/articles/kimi-k3-review</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://kevinai.top/en/articles/ai-game-24-days</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://kevinai.top/en/lab</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://kevinai.top/en/lab/2d</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://kevinai.top/en/lab/3d</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>

@@ -14,6 +14,7 @@ const routes = [
   { path: '/notes', name: 'notes', title: '文章与动态' },
   { path: '/notes?preview=article', name: 'notes-released', title: '文章与动态' },
   { path: '/notes/kimi-k3-subscription-review?preview=article', name: 'article-kimi-k3', title: 'Kimi K3 到底值不值得订阅' },
+  { path: '/notes/ai-game-24-days', name: 'article-ai-game-24-days', title: 'AI 做小游戏' },
   { path: '/lab', name: 'lab', title: '四项 AI 实测' },
   { path: '/lab/2d', name: 'lab-2d', title: '2D 小游戏实测' },
   { path: '/lab/3d', name: 'lab-3d', title: '3D 小游戏实测' },
@@ -21,9 +22,10 @@ const routes = [
   { path: '/lab/vision', name: 'lab-vision', title: '50 图识别实测' },
   { path: '/lab/vision/review', name: 'lab-vision-review', title: '50 题识图结果' },
   { path: '/links', name: 'links', title: '链接' },
-  { path: '/en', name: 'en-home', title: 'Kevin AI Lab' },
+  { path: '/en', name: 'en-home', title: 'Kevin AI Observatory' },
   { path: '/en/articles', name: 'en-articles', title: 'Articles' },
   { path: '/en/articles/kimi-k3-review', name: 'en-article-kimi-k3', title: 'I tested Kimi K3' },
+  { path: '/en/articles/ai-game-24-days', name: 'en-article-ai-game-24-days', title: 'AI made my first game playable' },
   { path: '/en/lab', name: 'en-lab', title: 'Four AI Tests' },
   { path: '/en/lab/2d', name: 'en-lab-2d', title: '2D Web Game Test' },
   { path: '/en/lab/3d', name: 'en-lab-3d', title: '3D Web Game Test' },
@@ -72,13 +74,32 @@ async function startServer() {
   return child
 }
 
-async function loadLazyMedia(page) {
-  const height = await page.evaluate(() => document.documentElement.scrollHeight)
-  for (let y = 0; y < height; y += 720) {
-    await page.evaluate((top) => window.scrollTo(0, top), y)
-    await delay(70)
+async function launchBrowser() {
+  try {
+    return await chromium.launch({ channel: 'chrome' })
+  } catch (error) {
+    console.warn(`System Chrome could not start; using Playwright Chromium instead: ${error instanceof Error ? error.message.split('\n')[0] : String(error)}`)
+    return chromium.launch()
   }
-  await page.waitForLoadState('networkidle')
+}
+
+async function loadLazyMedia(page) {
+  let previousHeight = 0
+  for (let pass = 0; pass < 8; pass += 1) {
+    const height = await page.evaluate(() => document.documentElement.scrollHeight)
+    for (let y = 0; y <= height; y += 720) {
+      await page.evaluate((top) => window.scrollTo(0, top), y)
+      await delay(70)
+    }
+    await page.waitForLoadState('networkidle')
+    if (height === previousHeight) break
+    previousHeight = height
+  }
+  await page.waitForFunction(
+    () => Array.from(document.querySelectorAll('article img')).every((image) => image.complete && image.naturalWidth > 0),
+    undefined,
+    { timeout: 15000 },
+  )
 }
 
 async function main() {
@@ -88,7 +109,7 @@ async function main() {
   const allErrors = []
 
   try {
-    browser = await chromium.launch({ channel: 'chrome' })
+    browser = await launchBrowser()
     for (const vp of viewports) {
       const context = await browser.newContext({
         viewport: { width: vp.width, height: vp.height },
@@ -138,7 +159,7 @@ async function main() {
         if (bodyWidth > vpWidth + 2) {
           allErrors.push({ type: 'horizontal-overflow', viewport: vp.name, path: route.path, bodyWidth, vpWidth })
         }
-        if (route.path.includes('kimi-k3-subscription-review') || route.path.includes('kimi-k3-review')) {
+        if (route.path.includes('kimi-k3-subscription-review') || route.path.includes('kimi-k3-review') || route.path.includes('ai-game-24-days')) {
           await loadLazyMedia(page)
         } else {
           await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))

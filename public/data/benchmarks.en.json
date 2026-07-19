@@ -21,6 +21,17 @@
       { "task": "Promotion page", "kimi": "45:00", "codex": "34:42", "minimax": "5:45" },
       { "task": "Median per vision item", "kimi": "28.93 s", "codex": "8.84 s", "minimax": "8.61 s" }
     ],
+    "tokenUsage": {
+      "unit": "10k tokens",
+      "valueOrderNote": "Each cell shows new tokens on top and cache reads below. They are reported separately rather than combined into one usage number.",
+      "exclusionNote": "Values are in ten-thousands of tokens. Image-recognition usage was incomplete, so this table covers only the 2D, 3D, and promotion-page coding tasks.",
+      "table": [
+        { "task": "2D web game", "kimi": { "new": 17.4, "cache": 270.3 }, "codex": { "new": 21.9, "cache": 179.6 }, "minimax": { "new": 24.4, "cache": 216.7 } },
+        { "task": "3D web game", "kimi": { "new": 22.0, "cache": 559.4 }, "codex": { "new": 22.3, "cache": 200.1 }, "minimax": { "new": 48.0, "cache": 2876.4 } },
+        { "task": "Promotion page", "kimi": { "new": 17.0, "cache": 261.5 }, "codex": { "new": 38.3, "cache": 462.8 }, "minimax": { "new": 6.7, "cache": 12.8 } },
+        { "task": "Three-task total", "kimi": { "new": 56.4, "cache": 1091.2 }, "codex": { "new": 82.5, "cache": 842.5 }, "minimax": { "new": 79.1, "cache": 3105.8 } }
+      ]
+    },
     "colors": {
       "kimi": "#7256B8",
       "codex": "#2B746D",
