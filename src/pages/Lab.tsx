@@ -3,6 +3,7 @@ import SEOHead from '../components/SEOHead'
 import { useBenchmarks } from '../hooks/useBenchmarks'
 import ScoreTable from '../components/ScoreTable'
 import BenchmarkViz from '../components/BenchmarkViz'
+import BenchmarkEfficiency from '../components/BenchmarkEfficiency'
 import { useLocale } from '../hooks/useLocale'
 
 const taskCardsZh = [
@@ -89,6 +90,8 @@ export default function Lab() {
           {data && (
             <p className="text-xs text-graphite-500 mb-16 -mt-8">{data.metadata.scoringNote}</p>
           )}
+
+          {data && <BenchmarkEfficiency data={data} />}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {taskCards.map((card) => (

@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+    <rect width="1600" height="900" fill="#141413" />
+
+  <style>
+    .title { font: 700 58px Arial, Helvetica, sans-serif; letter-spacing: -2px; fill: #faf9f5; }
+    .kicker { font: 700 18px Arial, Helvetica, sans-serif; letter-spacing: 5px; fill: #8ab82f; }
+    .sub { font: 400 26px Arial, Helvetica, sans-serif; fill: #b0aea5; }
+    .label { font: 700 20px Arial, Helvetica, sans-serif; letter-spacing: 2px; fill: #b0aea5; }
+    .value { font: 700 42px Arial, Helvetica, sans-serif; fill: #faf9f5; }
+    .body { font: 400 24px Arial, Helvetica, sans-serif; fill: #faf9f5; }
+    .small { font: 400 20px Arial, Helvetica, sans-serif; fill: #b0aea5; }
+    .tiny { font: 700 15px Arial, Helvetica, sans-serif; letter-spacing: 2px; fill: #b0aea5; }
+    .panel { fill: #201f1d; stroke: #4a4944; stroke-width: 2; }
+    .panel2 { fill: #2a2926; stroke: #4a4944; stroke-width: 2; }
+    .accent { fill: #8ab82f; }
+    .accentText { fill: #8ab82f; }
+    .orange { fill: #d97757; }
+    .blue { fill: #6a9bcc; }
+    .line { stroke: #4a4944; stroke-width: 3; fill: none; }
+    .dash { stroke: #4a4944; stroke-width: 3; stroke-dasharray: 12 12; fill: none; }
+  </style>
+
+    <text class="kicker" x="92" y="90">FROM FIRST BUILD TO RELEASE</text>
+    <text class="title" x="92" y="170">Playable in 1 day. Shipped in 24.</text>
+    <text class="sub" x="92" y="220">The first build came quickly. Shipping it took another 23 days.</text>
+    <line x1="160" y1="510" x2="1440" y2="510" stroke="#4a4944" stroke-width="5" />
+
+      <circle cx="180" cy="510" r="17" fill="#6a9bcc" stroke="#141413" stroke-width="7" />
+      <text class="tiny" x="180" y="410" text-anchor="middle">JUN 13</text>
+      <text class="value" x="180" y="462" text-anchor="middle" style="font-size:30px">START</text>
+      <foreignObject x="25" y="560" width="310" height="120">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font:20px/1.45 Arial;color:#b0aea5;text-align:center">I began with almost no mini-game experience.</div>
+      </foreignObject>
+
+      <circle cx="590" cy="510" r="17" fill="#8ab82f" stroke="#141413" stroke-width="7" />
+      <text class="tiny" x="590" y="410" text-anchor="middle">JUN 14</text>
+      <text class="value" x="590" y="462" text-anchor="middle" style="font-size:30px">PLAYABLE</text>
+      <foreignObject x="435" y="560" width="310" height="120">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font:20px/1.45 Arial;color:#b0aea5;text-align:center">The first version was already playable.</div>
+      </foreignObject>
+
+      <circle cx="1000" cy="510" r="17" fill="#d97757" stroke="#141413" stroke-width="7" />
+      <text class="tiny" x="1000" y="410" text-anchor="middle">JUN 29</text>
+      <text class="value" x="1000" y="462" text-anchor="middle" style="font-size:30px">REVIEW</text>
+      <foreignObject x="845" y="560" width="310" height="120">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font:20px/1.45 Arial;color:#b0aea5;text-align:center">The game went into platform review.</div>
+      </foreignObject>
+
+      <circle cx="1400" cy="510" r="17" fill="#8ab82f" stroke="#141413" stroke-width="7" />
+      <text class="tiny" x="1400" y="410" text-anchor="middle">JUL 7</text>
+      <text class="value" x="1400" y="462" text-anchor="middle" style="font-size:30px">LIVE</text>
+      <foreignObject x="1245" y="560" width="310" height="120">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="font:20px/1.45 Arial;color:#b0aea5;text-align:center">The release build went live with 500 levels.</div>
+      </foreignObject>
+
+    <rect class="panel" x="92" y="748" width="1416" height="86" rx="22" />
+    <text class="body" x="800" y="802" text-anchor="middle">AI made the first build fast. Shipping took another 23 days.</text>
+
+  </svg>

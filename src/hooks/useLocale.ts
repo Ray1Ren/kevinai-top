@@ -60,6 +60,8 @@ function getAlternatePath(pathname: string, locale: Locale) {
     '/en/articles': '/notes',
     '/notes/kimi-k3-subscription-review': '/en/articles/kimi-k3-review',
     '/en/articles/kimi-k3-review': '/notes/kimi-k3-subscription-review',
+    '/notes/ai-game-24-days': '/en/articles/ai-game-24-days',
+    '/en/articles/ai-game-24-days': '/notes/ai-game-24-days',
     '/en/notes': '/notes',
     '/en/notes/kimi-k3-subscription-review': '/notes/kimi-k3-subscription-review',
   }

@@ -153,8 +153,8 @@ function ScheduledArticle() {
   return (
     <>
       <SEOHead
-        title={isEnglish ? 'First article publishes at 08:00' : '第一篇文章 08:00 发布'}
-        description={isEnglish ? 'The first Kevin AI局 article will be published at 08:00 on July 19.' : 'Kevin AI局第一篇文章将于 7 月 19 日 08:00 发布。'}
+        title={isEnglish ? 'Next article publishes at 08:00' : '下一篇文章 08:00 发布'}
+        description={isEnglish ? 'The next Kevin AI局 article will be published at 08:00 on July 19.' : 'Kevin AI局下一篇文章将于 7 月 19 日 08:00 发布。'}
       />
       <section className="flex min-h-[78dvh] items-center pb-20 pt-28">
         <div className="mx-auto w-full max-w-3xl px-4 md:px-6">
@@ -162,7 +162,7 @@ function ScheduledArticle() {
             {isEnglish ? 'Scheduled · July 19' : '定时发布 · 7 月 19 日'}
           </span>
           <h1 className="max-w-2xl text-4xl font-semibold tracking-tight text-white md:text-6xl">
-            {isEnglish ? 'The first article goes live at 08:00.' : '第一篇文章，早上 8 点见。'}
+            {isEnglish ? 'The next article goes live at 08:00.' : '下一篇文章，早上 8 点见。'}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-graphite-300 md:text-lg">
             {isEnglish

@@ -3,6 +3,8 @@ import SEOHead from '../components/SEOHead'
 import { useLocale } from '../hooks/useLocale'
 import { FIRST_ARTICLE_PATH, useFirstArticleRelease } from '../lib/article-release'
 
+const INTRO_ARTICLE_PATH = '/notes/ai-game-24-days'
+
 export default function Notes() {
   const { isEnglish, path } = useLocale()
   const released = useFirstArticleRelease()
@@ -87,7 +89,7 @@ export default function Notes() {
                         {isEnglish ? 'Scheduled · July 19' : '定时发布 · 7 月 19 日'}
                       </p>
                       <h2 className="text-2xl font-semibold text-white">
-                        {isEnglish ? 'The first article goes live at 08:00.' : '第一篇文章，早上 8 点见。'}
+                        {isEnglish ? 'The next article goes live at 08:00.' : '下一篇文章，早上 8 点见。'}
                       </h2>
                       <p className="mt-3 max-w-xl text-sm leading-relaxed text-graphite-400">
                         {isEnglish
@@ -98,6 +100,29 @@ export default function Notes() {
                   </div>
                 </div>
               )}
+
+              <article className="mt-8 border-y border-white/10 py-7 md:py-9">
+                <Link to={INTRO_ARTICLE_PATH} className="group grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+                  <div>
+                    <div className="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-xs uppercase tracking-[0.16em] text-graphite-500">
+                      <span className="text-pitch-500">独立开发日记</span>
+                      <span>2026 年 7 月 15 日</span>
+                      <span>约 10 分钟</span>
+                    </div>
+                    <h2 className="max-w-3xl text-2xl font-semibold leading-tight tracking-tight text-white transition-colors group-hover:text-pitch-300 md:text-4xl">
+                      AI 做小游戏：1 天能玩，24 天上线
+                    </h2>
+                    <p className="mt-4 max-w-[62ch] text-sm leading-relaxed text-graphite-300 md:text-base">
+                      第一次做微信小游戏，第二天初版已经能玩。真正把它交给别人之前，我又改了 23 天。
+                    </p>
+                  </div>
+                  <dl className="grid grid-cols-3 gap-4 text-right md:grid-cols-1 md:text-left">
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">可玩</dt><dd className="mt-1 text-xl font-semibold text-white">1 天</dd></div>
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">上线</dt><dd className="mt-1 text-xl font-semibold text-pitch-400">24 天</dd></div>
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">正式版</dt><dd className="mt-1 text-xl font-semibold text-white">500 关</dd></div>
+                  </dl>
+                </Link>
+              </article>
 
               <div className="mt-8 border-t border-white/10 pt-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

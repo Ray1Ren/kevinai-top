@@ -18,6 +18,7 @@ const mimeTypes = {
   '.jpeg': 'image/jpeg',
   '.js': 'text/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.mp3': 'audio/mpeg',
   '.png': 'image/png',
   '.svg': 'image/svg+xml; charset=utf-8',
   '.txt': 'text/plain; charset=utf-8',
@@ -117,9 +118,11 @@ async function testStaticDeepLinks(browser, base) {
     ['/links', '链接'],
     ['/notes', '文章与动态'],
     ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
+    ['/notes/ai-game-24-days', 'AI 做小游戏'],
     ['/en/lab/2d', '2D Web Game Test'],
     ['/en/articles', 'Articles'],
     ['/en/articles/kimi-k3-review', 'I tested Kimi K3'],
+    ['/en/articles/ai-game-24-days', 'AI made my first game playable'],
   ]
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
   await context.addInitScript(() => {
@@ -147,12 +150,22 @@ async function testStaticDeepLinks(browser, base) {
 }
 
 async function loadLazyArticleMedia(page) {
-  const height = await page.evaluate(() => document.documentElement.scrollHeight)
-  for (let y = 0; y < height; y += 720) {
-    await page.evaluate((top) => window.scrollTo(0, top), y)
-    await page.waitForTimeout(70)
+  let previousHeight = 0
+  for (let pass = 0; pass < 8; pass += 1) {
+    const height = await page.evaluate(() => document.documentElement.scrollHeight)
+    for (let y = 0; y <= height; y += 720) {
+      await page.evaluate((top) => window.scrollTo(0, top), y)
+      await page.waitForTimeout(70)
+    }
+    await page.waitForLoadState('networkidle')
+    if (height === previousHeight) break
+    previousHeight = height
   }
-  await page.waitForLoadState('networkidle')
+  await page.waitForFunction(
+    () => Array.from(document.querySelectorAll('article img')).every((image) => image.complete && image.naturalWidth > 0),
+    undefined,
+    { timeout: 15000 },
+  )
   await page.evaluate(() => window.scrollTo(0, 0))
   await page.waitForTimeout(250)
 }
@@ -166,11 +179,15 @@ async function testArticleReleaseGate(browser, base) {
   const finishMonitoring = monitorPage(page, 'article release gate', { allowDocument404: true })
 
   await page.goto(`${base}/notes`, { waitUntil: 'networkidle' })
-  assert.match(await page.locator('main').innerText(), /第一篇文章，早上 8 点见/)
+  assert.match(await page.locator('main').innerText(), /下一篇文章，早上 8 点见/)
   assert.equal(await page.getByRole('link', { name: '阅读全文' }).count(), 0)
 
+  await page.goto(`${base}/`, { waitUntil: 'networkidle' })
+  assert.match(await page.locator('main').innerText(), /下一篇文章，早上 8 点见/)
+  assert.equal(await page.getByRole('link', { name: '读第一篇文章' }).getAttribute('href'), '/notes/ai-game-24-days')
+
   await page.goto(`${base}/notes/kimi-k3-subscription-review`, { waitUntil: 'networkidle' })
-  assert.match(await page.title(), /第一篇文章 08:00 发布/)
+  assert.match(await page.title(), /下一篇文章 08:00 发布/)
   const body = await page.locator('main').innerText()
   assert(!body.includes('89.8'), 'article score must stay hidden before 08:00')
   finishMonitoring()
@@ -193,7 +210,7 @@ async function testFirstArticle(browser, base) {
   await page.goto(`${base}/notes/kimi-k3-subscription-review`, { waitUntil: 'networkidle' })
   assert.match(await page.title(), /Kimi K3 到底值不值得订阅/)
   assert.equal(await page.locator('html').getAttribute('lang'), 'zh-CN')
-  const zhBody = await page.locator('main').innerText()
+  const zhBody = await page.locator('article').innerText()
   for (const required of ['92.6', '89.8', '77.8', '80.5', '96.0', '54.5', '91.0', '89.2', '83.6', '95.0', '85.0', '96.7', '90.0', '88.0', '49/50', '47/50', '46/50', '1 亿+', '30 亿+']) {
     assert(zhBody.includes(required), `Chinese article must include ${required}`)
   }
@@ -207,7 +224,7 @@ async function testFirstArticle(browser, base) {
   await page.goto(`${base}/en/articles/kimi-k3-review`, { waitUntil: 'networkidle' })
   assert.match(await page.title(), /I tested Kimi K3/)
   assert.equal(await page.locator('html').getAttribute('lang'), 'en')
-  const enBody = await page.locator('main').innerText()
+  const enBody = await page.locator('article').innerText()
   for (const required of ['92.6', '89.8', '77.8', '80.5', '96.0', '54.5', '91.0', '89.2', '83.6', '95.0', '85.0', '96.7', '90.0', '88.0', '49/50', '47/50', '46/50', '100 million-plus', '3 billion-plus']) {
     assert(enBody.includes(required), `English article must include ${required}`)
   }
@@ -233,6 +250,58 @@ async function testFirstArticle(browser, base) {
   log('first article passed: Chinese and English facts, English-only article images, SEO title, and 390px layout')
 }
 
+async function testBuildStoryArticle(browser, base) {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+    locale: 'zh-CN',
+  })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'AI game build story', { allowDocument404: true })
+
+  await page.goto(`${base}/notes/ai-game-24-days`, { waitUntil: 'networkidle' })
+  assert.match(await page.title(), /AI 做小游戏：1 天能玩，24 天上线/)
+  assert.equal(await page.locator('html').getAttribute('lang'), 'zh-CN')
+  const zhBody = await page.locator('article').innerText()
+  for (const required of ['6 月 13 日', '6 月 15 日', '23 天', '500 关', '移动防线', '试听 A', 'Kevin AI局']) {
+    assert(zhBody.includes(required), `Chinese build story must include ${required}`)
+  }
+  assert.equal(await page.locator('img[src^="/assets/first-article/zh/"]').count(), 5)
+  assert.equal(await page.locator('audio').count(), 3)
+  assert.equal(await page.locator('img[data-channel="web_note1"]').getAttribute('src'), '/assets/first-article/one-kick-code-ch_web_note1.png')
+  assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://kevinai.top/notes/ai-game-24-days')
+  const zhWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+  assert(zhWidth <= 392, `Chinese build story must not overflow a 390px viewport, got ${zhWidth}px`)
+  await loadLazyArticleMedia(page)
+  await page.screenshot({ path: join(SCREENSHOTS, 'article-ai-game-24-days-mobile.png'), fullPage: true })
+
+  await page.goto(`${base}/en/articles/ai-game-24-days`, { waitUntil: 'networkidle' })
+  assert.match(await page.title(), /AI made my first game playable in a day/)
+  assert.equal(await page.locator('html').getAttribute('lang'), 'en')
+  const enBody = await page.locator('article').innerText()
+  for (const required of ['June 13', 'June 15', '23 days', '500 levels', 'Moving Defense', 'Voice test A', 'WeChat']) {
+    assert(enBody.includes(required), `English build story must include ${required}`)
+  }
+  assert(enBody.includes('Read in Chinese'), 'English build story must use an English language-switch label')
+  assert(!enBody.includes('中文版'), 'English build story must not expose a Chinese language-switch label')
+  assert.equal(await page.locator('audio').count(), 3)
+  const enImageSources = await page.locator('article img').evaluateAll((images) => images.map((image) => image.getAttribute('src') ?? ''))
+  assert(enImageSources.some((src) => src.startsWith('/assets/first-article/en/')), 'English build story must use English infographic assets')
+  assert(!enImageSources.some((src) => src.startsWith('/assets/first-article/zh/')), 'English build story must not use Chinese infographic assets')
+  assert(enImageSources.every((src) => src.startsWith('/assets/first-article/en/') || src.startsWith('/assets/first-article/shared/') || src === '/assets/first-article/one-kick-code-ch_web_note1.png'), `English build story uses an unexpected image: ${enImageSources.join(', ')}`)
+  assert.equal(await page.locator('img[data-channel="web_note1"]').getAttribute('src'), '/assets/first-article/one-kick-code-ch_web_note1.png')
+  assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://kevinai.top/en/articles/ai-game-24-days')
+  const enWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+  assert(enWidth <= 392, `English build story must not overflow a 390px viewport, got ${enWidth}px`)
+  await loadLazyArticleMedia(page)
+  await page.screenshot({ path: join(SCREENSHOTS, 'article-ai-game-24-days-en-mobile.png'), fullPage: true })
+
+  finishMonitoring()
+  await context.close()
+  log('AI game build story passed: bilingual facts, English infographics, audio, QR channel, SEO, and 390px layout')
+}
+
 async function testBilingualHomepage(browser, base) {
   const mobileContext = await browser.newContext({
     viewport: { width: 390, height: 844 },
@@ -255,6 +324,12 @@ async function testBilingualHomepage(browser, base) {
     const body = await page.locator('main').innerText()
     required.forEach((text) => assert(body.includes(text), `${path} homepage must include ${text}`))
     forbidden.forEach((text) => assert(!body.includes(text), `${path} homepage must remove slogan: ${text}`))
+    const firstArticleLink = page.getByRole('link', { name: path === '/' ? '读第一篇文章' : 'Read the first article' })
+    assert.equal(
+      await firstArticleLink.getAttribute('href'),
+      path === '/' ? '/notes/ai-game-24-days' : '/en/articles/ai-game-24-days',
+      `${path} homepage must point to the original first article`,
+    )
     const hero = page.locator('img[src="/assets/images/kevin-ai-hero.png"]')
     await hero.waitFor({ state: 'visible' })
     assert.equal(await hero.evaluate((image) => image.complete && image.naturalWidth === 1122 && image.naturalHeight === 1402), true)
@@ -847,6 +922,7 @@ async function main() {
     await testStaticDeepLinks(browser, base)
     await testArticleReleaseGate(browser, base)
     await testFirstArticle(browser, base)
+    await testBuildStoryArticle(browser, base)
     await testBilingualHomepage(browser, base)
     await testAutomaticLanguagePreference(browser, base)
     await testBundleMimeAndLoad(browser, base)
