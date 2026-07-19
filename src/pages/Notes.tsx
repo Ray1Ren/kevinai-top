@@ -29,7 +29,7 @@ export default function Notes() {
               </h1>
               <p className="max-w-[60ch] text-base leading-relaxed text-graphite-200 md:text-lg">
                 {isEnglish
-                  ? 'Long-form tests, build notes, mistakes, and the fixes that survived real use.'
+                  ? 'Long-form posts from my WeChat blog, build notes, and hands-on AI tool tests. Each one goes up after I check the text, images, and numbers.'
                   : '公众号长文、开发日记和工具实测，核对好一篇，就放上来一篇。'}
               </p>
             </div>
@@ -44,7 +44,7 @@ export default function Notes() {
                         <div>
                           <p className="text-xs uppercase tracking-widest text-pitch-500">2D · 3D · WEB · VISION</p>
                           <p className="mt-3 max-w-sm text-xl font-semibold leading-snug text-white md:text-2xl">
-                            {isEnglish ? 'Same tasks. Same assets. Four finished results.' : '同一套题，同一批素材，最后看成品。'}
+                            {isEnglish ? 'All three models got the same tasks and the same assets.' : '三家模型做同样的题，用同一批素材。'}
                           </p>
                         </div>
                         <dl className="grid grid-cols-3 gap-4 text-right">
@@ -88,7 +88,7 @@ export default function Notes() {
                       </h2>
                       <p className="mt-3 max-w-xl text-sm leading-relaxed text-graphite-400">
                         {isEnglish
-                          ? 'The Chinese and English editions will unlock together.'
+                          ? 'The Chinese and English versions will go live together.'
                           : '中英文版会同时开放。'}
                       </p>
                     </div>

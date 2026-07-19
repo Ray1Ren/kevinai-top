@@ -7,7 +7,7 @@ import PlayableComparison from '../components/PlayableComparison'
 export default function Lab2D() {
   const { data, loading, error } = useBenchmarks()
   const task = data?.tasks['2d']
-  const { isEnglish } = useLocale()
+  const { isEnglish, bundlePath } = useLocale()
 
   return (
     <>
@@ -34,18 +34,18 @@ export default function Lab2D() {
             description={isEnglish ? 'Codex opens first because it received the highest quality score.' : '默认打开得分最高的 Codex，点上方按钮可切换另外两套。'}
             defaultId="codex"
             entries={[
-              { id: 'kimi', label: 'Kimi K3', src: '/bundles/2d/kimi/', score: 80.5 },
-              { id: 'codex', label: 'Codex', src: '/bundles/2d/codex/', score: 96.0 },
-              { id: 'minimax', label: 'MiniMax M3', src: '/bundles/2d/minimax-m3/', score: 54.5 },
+              { id: 'kimi', label: 'Kimi K3', src: bundlePath('/bundles/2d/kimi/'), score: 80.5 },
+              { id: 'codex', label: 'Codex', src: bundlePath('/bundles/2d/codex/'), score: 96.0 },
+              { id: 'minimax', label: 'MiniMax M3', src: bundlePath('/bundles/2d/minimax-m3/'), score: 54.5 },
             ]}
           />
 
           {data && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-12">
               {[
-                { model: 'kimi' as const, playHref: '/bundles/2d/kimi/' },
-                { model: 'codex' as const, playHref: '/bundles/2d/codex/' },
-                { model: 'minimax' as const, playHref: '/bundles/2d/minimax-m3/' },
+                { model: 'kimi' as const, playHref: bundlePath('/bundles/2d/kimi/') },
+                { model: 'codex' as const, playHref: bundlePath('/bundles/2d/codex/') },
+                { model: 'minimax' as const, playHref: bundlePath('/bundles/2d/minimax-m3/') },
               ].map((item) => (
                 <ModelResult
                   key={item.model}

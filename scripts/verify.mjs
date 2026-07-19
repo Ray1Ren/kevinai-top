@@ -11,6 +11,7 @@ const BUNDLES = join(PUBLIC, 'bundles')
 
 const REQUIRED_PUBLIC_ASSETS = [
   'assets/images/kevin-avatar.png',
+  'assets/images/kevin-ai-hero.png',
   'assets/images/qr-code.png',
   'assets/images/og-image.png',
   'assets/images/apple-touch-icon.png',

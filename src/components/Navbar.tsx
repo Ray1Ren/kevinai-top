@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useMotion } from '../hooks/useMotion'
-import { useLocale } from '../hooks/useLocale'
+import { rememberLocale, useLocale } from '../hooks/useLocale'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -46,6 +46,7 @@ export default function Navbar() {
           </button>
           <Link
             to={alternatePath}
+            onClick={() => rememberLocale(isEnglish ? 'zh' : 'en')}
             className="text-xs text-graphite-400 transition-colors hover:text-white"
             lang={isEnglish ? 'zh-CN' : 'en'}
             aria-label={isEnglish ? '切换到中文版' : 'Switch to English'}
@@ -93,7 +94,10 @@ export default function Navbar() {
           </button>
           <Link
             to={alternatePath}
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              rememberLocale(isEnglish ? 'zh' : 'en')
+              setOpen(false)
+            }}
             className="block text-sm text-graphite-300"
             lang={isEnglish ? 'zh-CN' : 'en'}
           >

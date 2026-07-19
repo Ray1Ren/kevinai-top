@@ -20,11 +20,7 @@ export default function LabVisionReview() {
                 ? 'Every image, question, option, correct answer, and response from the three systems is on this page. Filter by result, category, or difficulty.'
                 : '每道题的图片、题目、选项、标准答案和三家回答都在这里，可以按结果、类别或难度筛选。'}
             </p>
-            {isEnglish && (
-              <p className="mt-3 text-sm text-graphite-400">
-                Questions, options, and correct answers remain in their original Chinese.
-              </p>
-            )}
+            {isEnglish && <p className="mt-3 text-sm text-graphite-400">All questions and answer choices have been translated for this edition. Images and recorded model answers are unchanged.</p>}
           </div>
           <VisionReviewGrid showHeading={false} />
         </div>

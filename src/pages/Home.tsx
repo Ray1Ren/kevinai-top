@@ -18,56 +18,81 @@ export default function Home() {
       <SEOHead
         description={
           isEnglish
-            ? 'Kevin is an Android engineer and independent maker. This is where I share what I build with AI, along with the mistakes and lessons behind it.'
+            ? 'Kevin is an Android engineer and independent developer. One Kick, his first mini game, shipped on WeChat after 24 days of work.'
             : 'Kevin 是一名 Android 工程师，也做独立产品。这里放我做过的东西、开发记录和 AI 工具实测。'
         }
       />
 
-      <section className="relative flex min-h-[88dvh] items-center overflow-hidden border-b border-white/5 md:min-h-[100dvh]">
+      <section className="relative flex min-h-[100dvh] items-center overflow-hidden border-b border-white/5">
         <ParticleOrbit />
-        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 pb-12 pt-20 md:px-6 md:pb-16 md:pt-24">
-          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-6">
-            <div className="max-w-xl lg:col-span-6">
+        <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 pb-10 pt-24 md:px-6 md:pb-14 md:pt-28">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-10">
+            <div className="max-w-xl lg:col-span-5">
               <div className="mb-5 flex items-center gap-3">
                 <span className="h-2 w-2 rounded-full bg-pitch-500 animate-pulse-slow" />
                 <span className="text-xs uppercase tracking-widest text-graphite-400">
-                  {isEnglish ? 'Android Engineer · Independent Maker' : 'Android 工程师 · 独立开发者'}
+                  {isEnglish ? 'Android Engineer · Independent Developer' : 'Android 工程师 · 独立开发者'}
                 </span>
               </div>
-              <h1 className="mb-5 text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-7xl">
+              <h1 className="mb-5 text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl">
                 Kevin <span className="text-pitch-500">AI</span>局
               </h1>
-              <p className="mb-6 text-base leading-relaxed text-graphite-200 md:text-xl">
+              <p className="mb-7 max-w-[58ch] text-base leading-relaxed text-graphite-200 md:text-lg">
                 {isEnglish
-                  ? 'I build independent products with AI and write down what worked, what failed, and what finally shipped.'
-                  : '我用 AI 做独立产品，也把做成了什么、踩过什么坑，如实记在这里。'}
+                  ? "I'm Kevin. I work in Android and make my own products. On June 13, 2026, I started my first mini game. One Kick went live on WeChat 24 days later."
+                  : '我是 Kevin，做 Android 开发，也做自己的产品。2026 年 6 月 13 日，我从零开始做小游戏。24 天后，《一脚晋级》在微信上线。'}
+              </p>
+              <p className="mb-8 max-w-[56ch] text-sm leading-relaxed text-graphite-400 md:text-base">
+                {isEnglish
+                  ? 'I post my work and development notes here. AI tool tests are in the Lab.'
+                  : '这里放作品和开发记录。AI 工具实测单独放在实验室。'}
               </p>
               <div className="flex flex-wrap gap-3">
                 <a
                   href="#work"
                   className="inline-flex items-center justify-center rounded-full bg-pitch-600 px-5 py-2.5 font-medium text-white transition-colors hover:bg-pitch-500"
                 >
-                  {isEnglish ? 'See what I am building' : '看我正在做什么'}
+                  {isEnglish ? 'See One Kick' : '看看《一脚晋级》'}
                 </a>
                 <Link
-                  to={path('/notes')}
+                  to={path(firstArticleReleased ? FIRST_ARTICLE_PATH : '/notes')}
                   className="inline-flex items-center justify-center rounded-full border border-white/10 px-5 py-2.5 font-medium text-white transition-colors hover:border-white/25"
                 >
-                  {isEnglish ? 'Notes & updates' : '文章与动态'}
+                  {firstArticleReleased
+                    ? (isEnglish ? 'Read the first article' : '读第一篇文章')
+                    : (isEnglish ? 'Notes & updates' : '文章与动态')}
                 </Link>
               </div>
             </div>
 
-            <div className="relative flex items-center justify-center lg:col-span-6 lg:justify-end">
-              <div className="relative h-64 w-64 md:h-80 md:w-80 lg:h-[28rem] lg:w-[28rem]">
-                <div className="absolute inset-0 rounded-full border border-pitch-500/10" />
-                <div className="absolute inset-4 rotate-[15deg] rounded-full border border-pitch-500/10" />
-                <div className="absolute inset-0 scale-110 rounded-full bg-pitch-500/5 blur-3xl" />
+            <div className="relative lg:col-span-7">
+              <div className="relative mx-auto w-full max-w-[44rem] overflow-hidden rounded-[2rem] border border-white/10 bg-graphite-900/55 shadow-2xl shadow-black/30 lg:ml-auto">
+                <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-graphite-950 via-transparent to-transparent" aria-hidden="true" />
                 <img
-                  src="/assets/images/kevin-avatar.png"
-                  alt={isEnglish ? 'Portrait of Kevin' : 'Kevin 头像'}
-                  className="absolute left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-graphite-800 object-cover shadow-2xl md:h-40 md:w-40 lg:h-48 lg:w-48"
+                  src="/assets/images/kevin-ai-hero.png"
+                  alt={isEnglish ? 'Illustrated portrait of Kevin, an Android engineer and independent developer' : 'Android 工程师、独立开发者 Kevin 的虚拟人物形象'}
+                  width={1122}
+                  height={1402}
+                  fetchPriority="high"
+                  className="aspect-[4/5] h-auto w-full object-cover"
                 />
+                <div className="absolute left-4 top-4 z-20 rounded-full border border-white/10 bg-graphite-950/70 px-3 py-1.5 text-[10px] uppercase tracking-[0.18em] text-graphite-200 backdrop-blur-md md:left-6 md:top-6">
+                  {isEnglish ? 'First mini game · 2026' : '第一款小游戏 · 2026'}
+                </div>
+                <dl className="absolute inset-x-0 bottom-0 z-20 grid grid-cols-3 divide-x divide-white/10 border-t border-white/10 bg-graphite-950/80 px-2 py-4 backdrop-blur-md md:px-5 md:py-5">
+                  <div className="px-2 md:px-4">
+                    <dt className="text-[9px] uppercase tracking-widest text-graphite-500">{isEnglish ? 'Started' : '开始'}</dt>
+                    <dd className="mt-1 text-sm font-medium tabular-nums text-white md:text-base">06.13</dd>
+                  </div>
+                  <div className="px-2 md:px-4">
+                    <dt className="text-[9px] uppercase tracking-widest text-graphite-500">{isEnglish ? 'To ship' : '上线'}</dt>
+                    <dd className="mt-1 text-sm font-medium tabular-nums text-white md:text-base">24 {isEnglish ? 'days' : '天'}</dd>
+                  </div>
+                  <div className="px-2 md:px-4">
+                    <dt className="text-[9px] uppercase tracking-widest text-graphite-500">{isEnglish ? 'Levels' : '关卡'}</dt>
+                    <dd className="mt-1 text-sm font-medium tabular-nums text-pitch-400 md:text-base">500</dd>
+                  </div>
+                </dl>
               </div>
             </div>
           </div>
@@ -84,27 +109,24 @@ export default function Home() {
                 {isEnglish ? 'About' : '关于我'}
               </span>
               <h2 className="mb-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-                {isEnglish ? 'Build it first. Then talk about the method.' : '先做出来，再谈方法。'}
+                {isEnglish ? 'I had never built a mini game before.' : '我以前没做过小游戏。'}
               </h2>
             </div>
             <div className="space-y-5 leading-relaxed text-graphite-200 md:col-span-8">
               <p>
                 {isEnglish
-                  ? 'I am Kevin, an Android engineer. On June 13, 2026, I knew almost nothing about mini games and decided to build one from scratch with AI.'
-                  : '我是 Kevin，做 Android 开发。2026 年 6 月 13 日，我对小游戏几乎一窍不通，却决定用 AI 从零做一款能上线、有人玩的游戏。'}
+                  ? 'I work in Android. Before June 13, 2026, I had never made a mini game.'
+                  : '我是 Android 工程师。2026 年 6 月 13 日，我第一次动手做小游戏，当时几乎什么都不懂。'}
               </p>
               <p>
                 {isEnglish
-                  ? 'The first demo took one day. The game shipped on day twenty-four. Most of that time went into playing, cutting, fixing, and trying again.'
-                  : '第一天出了能玩的 Demo，第 24 天才上线。中间大部分时间都花在试玩、删改和返工上。'}
-              </p>
-              <p className="font-medium text-pitch-400">
-                {isEnglish ? 'AI makes more. I decide what stays.' : 'AI 负责多做，人负责挑对。'}
+                  ? 'The first playable demo took one day. One Kick went live 24 days later. Most of the time in between went into playtesting and redoing parts that did not work.'
+                  : '第一天出了能玩的 Demo。24 天后，《一脚晋级》上线。中间大部分时间都花在试玩和返工上。'}
               </p>
               <p>
                 {isEnglish
-                  ? 'I keep the whole process here: products, build notes, tool tests, and the mistakes I only understood after redoing the work.'
-                  : '我把这些过程留在「Kevin AI局」：做过的产品、开发日记、工具实测，还有那些返工后才明白的事。'}
+                  ? 'I post finished work and development notes here. AI tool tests are in the Lab, including the ones that went badly.'
+                  : '做好的产品和开发记录都留在这里。AI 工具实测放在实验室，效果不好的也会放出来。'}
               </p>
             </div>
           </div>
@@ -129,7 +151,7 @@ export default function Home() {
 
           <p className="mb-8 max-w-[65ch] leading-relaxed text-graphite-200">
             {isEnglish
-              ? 'Move players and obstacles to clear a route from the ball to the goal. Offside, teammates, keepers, yellow cards, and portals gradually change how each move works. Every level is programmatically verified to have a solution.'
+              ? 'Move players and obstacles to clear a route from the ball to the goal. Offside, teammates, keepers, yellow cards, and portals gradually change how each move works. Every level is checked by code to make sure a solution exists.'
               : '移动球员和障碍，给足球让出一条通往球门的路。越位、队友、守门员、黄牌、传送门会逐层加入，改变每一步的判断。每一关都经过程序验证，保证存在可行解。'}
           </p>
 
@@ -149,10 +171,12 @@ export default function Home() {
             />
             <div>
               <p className="mb-1 font-medium text-white">
-                {isEnglish ? 'Play in WeChat · open the code' : '扫码直接试玩 · 点击放大'}
+                {isEnglish ? 'Play One Kick inside WeChat' : '打开《一脚晋级》小程序码'}
               </p>
               <p className="text-sm text-graphite-400">
-                {isEnglish ? 'Send me the level number if you get stuck.' : '不好玩的地方直接说，卡关也可以把关卡号留给我。'}
+                {isEnglish
+                  ? 'Open WeChat, tap Scan, and point it at this code. The game opens inside WeChat, so there is nothing else to install.'
+                  : '点击放大后，用微信扫一扫就能玩。卡关了，可以把关卡号发给我。'}
               </p>
             </div>
           </button>
@@ -164,19 +188,19 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <span className="mb-2 block text-xs uppercase tracking-widest text-pitch-500">
-                {isEnglish ? 'What is here' : '这里有什么'}
+                {isEnglish ? 'On this site' : '网站内容'}
               </span>
               <h2 className="text-3xl font-semibold tracking-tight text-white md:text-4xl">
-                {isEnglish ? 'Everything I make, in one place.' : '慢慢把做过的事放进来。'}
+                {isEnglish ? 'One Kick is on the homepage. Articles and tool tests have their own pages.' : '《一脚晋级》在首页，文章和实测各有一页。'}
               </h2>
             </div>
             <div className="divide-y divide-white/10 border-y border-white/10 lg:col-span-8">
               <div className="grid gap-3 py-6 sm:grid-cols-[7rem_1fr]">
                 <span className="text-xs uppercase tracking-widest text-graphite-500">01 · Products</span>
                 <div>
-                  <h3 className="font-medium text-white">{isEnglish ? 'Products I have shipped' : '已经上线的产品'}</h3>
+                  <h3 className="font-medium text-white">{isEnglish ? 'One Kick' : '《一脚晋级》'}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'Playable builds, real screenshots, and why I made the choices I did.' : '能玩的版本、实机截图，以及我为什么这样做。'}
+                    {isEnglish ? 'A playable build, real screenshots, and notes from development.' : '能玩的版本、实机截图，还有开发过程。'}
                   </p>
                 </div>
               </div>
@@ -185,13 +209,13 @@ export default function Home() {
                 <div>
                   <h3 className="font-medium text-white">
                     {firstArticleReleased
-                      ? (isEnglish ? 'Kimi K3: two games, one page, and 50 images' : 'Kimi K3 到底值不值得订阅？')
+                      ? (isEnglish ? 'Is Kimi K3 worth paying for?' : 'Kimi K3 到底值不值得订阅？')
                       : (isEnglish ? 'The first article goes live at 08:00' : '第一篇文章，早上 8 点见')}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
                     {firstArticleReleased
-                      ? (isEnglish ? 'A two-day hands-on comparison of Kimi K3, GPT-5.6 Sol, and MiniMax M3.' : '同一套题、同一批素材，连续两天实测 Kimi K3、GPT-5.6 Sol 和 MiniMax M3。')
-                      : (isEnglish ? 'The Chinese and English editions will unlock together on July 19.' : '7 月 19 日，中英文版同时开放。')}
+                      ? (isEnglish ? 'I spent two days running the same four tasks with Kimi K3, GPT-5.6 Sol, and MiniMax M3.' : '我用两天时间，让 Kimi K3、GPT-5.6 Sol 和 MiniMax M3 做了同样的四项任务。')
+                      : (isEnglish ? 'The Chinese and English versions will go live together on July 19.' : '7 月 19 日，中英文版同时开放。')}
                   </p>
                   {firstArticleReleased ? (
                     <Link to={path(FIRST_ARTICLE_PATH)} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
@@ -207,9 +231,9 @@ export default function Home() {
               <div className="grid gap-3 py-6 sm:grid-cols-[7rem_1fr]">
                 <span className="text-xs uppercase tracking-widest text-graphite-500">03 · Lab</span>
                 <div>
-                  <h3 className="font-medium text-white">{isEnglish ? 'Hands-on AI tests' : 'AI 工具实测'}</h3>
+                  <h3 className="font-medium text-white">{isEnglish ? 'AI tool tests' : 'AI 工具实测'}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'Play the 2D and 3D games, open the promotion pages, and inspect all 50 image answers.' : '2D、3D 小游戏能直接玩，宣传页能直接看，50 道识图结果也全部展开。'}
+                    {isEnglish ? 'The 2D and 3D games are playable. The promotion pages and all 50 image-test answers are open as well.' : '2D、3D 小游戏能直接玩。宣传页可以打开，50 道识图结果也全部展开。'}
                   </p>
                   <Link to={path('/lab')} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
                     {isEnglish ? 'See all four tests' : '查看四项实测'} <span className="ml-1">→</span>
@@ -228,7 +252,7 @@ export default function Home() {
               {isEnglish ? 'Find me elsewhere' : '还可以在这些地方找到我'}
             </h2>
             <p className="mb-6 max-w-[60ch] text-sm leading-relaxed text-graphite-400">
-              {isEnglish ? 'The code is on GitHub. Everything else is collected on the links page.' : '代码放在 GitHub，其他入口都在链接页。'}
+              {isEnglish ? 'The code is on GitHub. My other links are on the Links page.' : '代码放在 GitHub，其他入口都在链接页。'}
             </p>
             <div className="flex flex-wrap gap-3">
               <a

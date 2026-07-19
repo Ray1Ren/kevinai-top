@@ -6,7 +6,7 @@ import { useLocale } from '../hooks/useLocale'
 export default function LabPromo() {
   const { data, loading, error } = useBenchmarks()
   const task = data?.tasks['promo']
-  const { isEnglish } = useLocale()
+  const { isEnglish, bundlePath } = useLocale()
 
   return (
     <>
@@ -29,9 +29,9 @@ export default function LabPromo() {
           {data && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-12">
               {[
-                { model: 'kimi' as const, playHref: '/bundles/promo/kimi/' },
-                { model: 'codex' as const, playHref: '/bundles/promo/codex/' },
-                { model: 'minimax' as const, playHref: '/bundles/promo/minimax-m3/' },
+                { model: 'kimi' as const, playHref: bundlePath('/bundles/promo/kimi/') },
+                { model: 'codex' as const, playHref: bundlePath('/bundles/promo/codex/') },
+                { model: 'minimax' as const, playHref: bundlePath('/bundles/promo/minimax-m3/') },
               ].map((item) => (
                 <ModelResult
                   key={item.model}
