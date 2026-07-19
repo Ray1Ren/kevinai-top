@@ -1,7 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useLocale } from './useLocale'
 
-const BENCHMARK_DATA_VERSION = '20260719-public-account'
+const BENCHMARK_DATA_VERSION = '20260719-lab-efficiency-tokens'
+
+export interface TokenUsageValue {
+  new: number
+  cache: number
+}
+
+export interface TokenUsageRow {
+  task: string
+  kimi: TokenUsageValue
+  codex: TokenUsageValue
+  minimax: TokenUsageValue
+}
 
 export interface BenchmarkData {
   metadata: {
@@ -15,6 +27,12 @@ export interface BenchmarkData {
   summary: {
     table: Array<{ task: string; kimi: number; codex: number; minimax: number }>
     speedTable: Array<{ task: string; kimi: string; codex: string; minimax: string }>
+    tokenUsage: {
+      unit: string
+      valueOrderNote: string
+      exclusionNote: string
+      table: TokenUsageRow[]
+    }
     colors: { kimi: string; codex: string; minimax: string }
   }
   tasks: Record<

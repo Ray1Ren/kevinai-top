@@ -219,7 +219,7 @@ export default function KimiK3ReviewEn() {
                 I paid $100 for Kimi K3. Then I gave it two games, a website, and 50 images.
               </h1>
               <p className="mt-7 max-w-[65ch] text-lg leading-relaxed text-graphite-200 md:text-xl">
-                Over two days, I put Kimi K3, GPT-5.6 Sol, and MiniMax M3 through the same work. K3 did especially well on the 3D game and the image questions. Waiting for it was another story.
+                Over two days, I gave Kimi K3, GPT-5.6 Sol, and MiniMax M3 the same four jobs. K3 did especially well on the 3D game and the image questions. Waiting for it was another story.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <a href={SHARE_URL} target="_blank" rel="noreferrer" className="inline-flex rounded-full bg-pitch-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-pitch-500">
@@ -276,11 +276,11 @@ export default function KimiK3ReviewEn() {
                 </div>
                 <div className="grid gap-3 py-6 sm:grid-cols-[2rem_1fr]">
                   <span className="text-sm tabular-nums text-pitch-500">03</span>
-                  <p className="!m-0">The highest Kimi Code tier also felt tighter than I expected on long agent jobs. The quota figures below are estimates from my own two days, not Moonshot's published limits.</p>
+                  <p className="!m-0">Kimi Code's highest tier also felt tighter than I expected on long agent jobs. The quota figures below are estimates from my own two days, not Moonshot's published limits.</p>
                 </div>
               </div>
 
-              <p>Moonshot built Kimi K3 for coding and vision work. I tested it through Kimi Code CLI. GPT-5.6 Sol ran in Codex CLI, while MiniMax M3 ran in mmx.</p>
+              <p>Each model ran in its own agent tool: K3 in Kimi Code CLI, GPT-5.6 Sol in Codex CLI, and MiniMax M3 in mmx.</p>
               <p>I picked those three for a practical reason: I was already paying for all of them. Kimi Code Allegro cost me RMB 699 a month, or about US$100. Codex was roughly US$200, and MiniMax Ultra was RMB 469.</p>
 
               <Figure
@@ -294,8 +294,8 @@ export default function KimiK3ReviewEn() {
             <section id="method" className="scroll-mt-24">
               <h2>How I ran the test</h2>
               <p>All three agents ran on the same Mac. Each got the same brief and local assets, with extra skills disabled. I started the clock when a run began and stopped it when the agent stopped on its own.</p>
-              <p>I capped the 2D game and promotion page. The 3D game ran until completion. For vision, I sent one image and one multiple-choice question in each request.</p>
-              <p>I kept speed out of the quality score. Each of the four tasks counted for 25 percent; the scoring still includes my judgment on visual quality and game feel.</p>
+              <p>I set time limits for the 2D game and promotion page. The 3D game ran until completion. For vision, I sent one image and one multiple-choice question in each request.</p>
+              <p>I kept speed out of the quality score. Each task made up a quarter of the final result. I scored visual quality and game feel myself.</p>
 
               <ResultsTable />
               <SpeedComparison />
@@ -319,7 +319,7 @@ export default function KimiK3ReviewEn() {
               <p>The 40-minute limit expired before K3 finished tuning the physics. In levels two and three, structures moved after a few idle seconds and sometimes collapsed without a shot. More time might have helped, but I scored the build that was on screen at the deadline.</p>
 
               <h3>GPT-5.6 Sol · 96.0</h3>
-              <p>Codex was the one I could simply play. I pulled and released the slingshot twice, and both shots behaved normally. All three levels stayed still while idle, and the mobile layout did not need horizontal scrolling. The agent also noticed that level one needed more launch force, changed it, and tested again.</p>
+              <p>Codex's version was the one that simply worked. I pulled and released the slingshot twice, and both shots behaved normally. All three levels stayed still while idle, and the mobile layout did not need horizontal scrolling. The agent also noticed that level one needed more launch force, changed it, and tested again.</p>
 
               <h3>MiniMax M3 · 54.5</h3>
               <p>M3 had a polished opening, projectile trails, an airborne ability, and working mouse and touch input. Then I tried to aim upward. The controls were reversed, so I could not fire a useful arc. The stone in level one fell short of the enemy, making the level impossible through normal play. A refresh also wiped the progress.</p>
@@ -353,7 +353,7 @@ export default function KimiK3ReviewEn() {
               <p>The weapon occupied too much of the view, and the final device needed better guidance. After clearing the enemies, I had to wander around before I found it.</p>
 
               <h3>MiniMax M3 · 83.6</h3>
-              <p>M3 reached the win screen and included mobile controls. A few more minutes of play made two problems hard to miss. Enemy shots left permanent yellow tracers, and two enemies spawned inside a warehouse whose entrance looked like a solid wall.</p>
+              <p>M3 reached the win screen and included mobile controls. After a few more minutes, I found two problems. Enemy shots left permanent yellow tracers, and two enemies spawned inside a warehouse whose entrance looked like a solid wall.</p>
               <p>The only way I found those two enemies was to walk straight through the gray wall. Without that trick, I could not finish the match. The enemy counter also stayed at four after I killed two.</p>
 
               <SceneStrip scenes={[
@@ -408,7 +408,7 @@ export default function KimiK3ReviewEn() {
                   { name: 'MiniMax', value: 88.0, tone: 'muted' },
                 ]}
               />
-              <p>I often hand coding agents screenshots, design mockups, and error dialogs. If one small detail is misread, everything after it can go wrong. So I ended with 50 questions covering objects, counting, spatial relations, text, documents, charts, scientific diagrams, circuit diagrams, and interfaces.</p>
+              <p>I often hand coding agents screenshots, design mockups, and error dialogs. If one small detail is misread, everything after it can go wrong. I wrote 50 questions covering objects, counting, spatial relations, text, documents, charts, scientific diagrams, circuit diagrams, and interfaces.</p>
               <p>Each request had one image, one question, and four answer choices. The model could use only the attached image, with no network access or other local files.</p>
 
               <div className="my-8 grid gap-5 md:grid-cols-2">
@@ -431,7 +431,7 @@ export default function KimiK3ReviewEn() {
 
             <section id="choice" className="scroll-mt-24">
               <h2>Which subscription I would keep</h2>
-              <p>Scores are only part of renewal. Day to day, I care about how often I run agents, how long I can wait, and whether I need the result immediately.</p>
+              <p>When I pay for a subscription, the score is only part of it. Day to day, I care about how often I run agents, how long I can wait, and whether I need the result immediately.</p>
               <div className="my-8 divide-y divide-white/10 border-y border-white/10">
                 <div className="py-6">
                   <p className="!m-0 text-xs uppercase tracking-widest text-pitch-500">01 · Codex</p>
@@ -449,12 +449,12 @@ export default function KimiK3ReviewEn() {
                   <p>M3 is fast, and I still use it for routine coding and audio. Its finished work ranked third here, but those are not the only jobs I use it for.</p>
                 </div>
               </div>
-              <p>If I could keep only one subscription today, I would keep Codex. For images, charts, or 3D work where finish quality matters more, I would still wait longer for K3.</p>
+              <p>If I could keep only one subscription today, I would keep Codex. For images, charts, or 3D work where the finished result matters more, I would still wait longer for K3.</p>
               <p className="article-note">This choice comes from two days, one Mac, and four tasks. Models, tools, and subscription plans can change quickly.</p>
             </section>
 
             <section id="quota" className="scroll-mt-24">
-              <h2>Where the tokens went, and the quota I hit</h2>
+              <h2>Where the tokens went</h2>
               <p>The test took me roughly a full working day once I counted model runs, waiting, recording, bug checks, and scoring. Across the three coding jobs, the agents generated about 2.18 million new tokens. Cache reads are listed separately.</p>
 
               <div className="my-8 overflow-x-auto rounded-2xl border border-white/10">
@@ -484,15 +484,15 @@ export default function KimiK3ReviewEn() {
               <p className="article-note">Each cell shows new tokens first and cache reads second. Vision usage was incomplete and is excluded.</p>
 
               <h3>My weekly estimate was close to 30:1</h3>
-              <p>On July 18, my local Codex record showed 3.02 billion tokens, including 2.86 billion cache reads, with six percent of the weekly allowance remaining. Extrapolating that usage suggests roughly 3 billion-plus tokens for a full week.</p>
-              <p>For Kimi, I made about 600 agent calls over 34 hours. The dashboard reached 50 percent of the weekly allowance and 100 percent of the five-hour limit. My local record ended around 55.3 million tokens, which suggests roughly 100 million-plus for a full week at my usage pattern.</p>
+              <p>On July 18, my local Codex record showed 3.02 billion tokens, including 2.86 billion cache reads, with six percent of the weekly allowance remaining. At that pace, a full week would be roughly 3 billion-plus tokens.</p>
+              <p>For Kimi, I made about 600 agent calls over 34 hours. The dashboard reached 50 percent of the weekly allowance and 100 percent of the five-hour limit. My local record ended around 55.3 million tokens. At roughly the same pace, a full week would be about 100 million-plus.</p>
 
               <div className="my-8 grid gap-5 md:grid-cols-2">
                 <EvidenceCard label="Codex plan · about $200/month" value="~3B+ / week" detail="Personal estimate from 3.02B recorded tokens with 6% of the weekly allowance left." ratio={94} />
                 <EvidenceCard label="Kimi Allegro · about $100/month" value="~100M+ / week" detail="Personal estimate after 600 calls, 50% weekly usage, and a fully used five-hour window." ratio={50} />
               </div>
 
-              <p>The workloads were not identical, and both totals include large cache reads. These are my usage records, not company promises. Even with that caveat, the gap matters if you run long agent jobs every day.</p>
+              <p>The workloads were not identical, and both totals include large cache reads. These are my usage records, not company promises. If you run long agent jobs every day, the gap is hard to ignore.</p>
               <p>M3's 3D cache number looks unusually large because the run made 220 agent calls and repeatedly read the same context. It should not be treated as 29.244 million tokens of new output.</p>
             </section>
 
@@ -512,7 +512,7 @@ export default function KimiK3ReviewEn() {
             </section>
 
             <footer className="mt-12 border-t border-white/10 pt-8 text-sm text-graphite-500">
-              <p>Kevin AI Lab · July 19, 2026</p>
+              <p>Kevin AI Observatory · July 19, 2026</p>
               <div className="mt-3 flex flex-wrap gap-5">
                 <Link to="/en/articles" className="text-graphite-400 hover:text-white">All English articles <span className="ml-1">→</span></Link>
                 <a href={zhArticleUrl} target="_blank" rel="noreferrer" className="text-graphite-400 hover:text-white">Chinese original <span className="ml-1">↗</span></a>

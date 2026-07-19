@@ -49,6 +49,28 @@ const REQUIRED_PUBLIC_ASSETS = [
   'assets/article-kimi-k3-en/3d-minimax-scene.png',
   'assets/article-kimi-k3-en/vision-arrow-crop.png',
   'assets/article-kimi-k3-en/og-kimi-k3-review.png',
+  'assets/first-article/one-kick-code-ch_web_note1.png',
+  'assets/first-article/zh/timeline-zh.png',
+  'assets/first-article/zh/comparison-zh.png',
+  'assets/first-article/zh/seven-demos-zh.png',
+  'assets/first-article/zh/ai-judgment-zh.png',
+  'assets/first-article/zh/levels-zh.png',
+  'assets/first-article/zh/og-ai-game-24-days-zh.png',
+  'assets/first-article/en/timeline-en.png',
+  'assets/first-article/en/comparison-en.png',
+  'assets/first-article/en/seven-demos-en.png',
+  'assets/first-article/en/ai-judgment-en.png',
+  'assets/first-article/en/levels-en.png',
+  'assets/first-article/en/og-ai-game-24-days-en.png',
+  'assets/first-article/shared/game-home.png',
+  'assets/first-article/shared/level-100.png',
+  'assets/first-article/shared/global-rank.png',
+  'assets/first-article/shared/rank-promotion.png',
+  'assets/first-article/shared/animal-event.png',
+  'assets/first-article/shared/reward-bank.png',
+  'assets/first-article/shared/voice-a.mp3',
+  'assets/first-article/shared/voice-b.mp3',
+  'assets/first-article/shared/voice-c.mp3',
   'assets/gifs/2d-k3.gif',
   'assets/gifs/2d-codex.gif',
   'assets/gifs/2d-m3.gif',
@@ -80,8 +102,8 @@ const BUNDLE_REQUIRED = {
 }
 
 const SHARED_BASE_ROUTES = ['/', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/links']
-const CHINESE_ARTICLE_ROUTES = ['/notes', '/notes/kimi-k3-subscription-review']
-const ENGLISH_ARTICLE_ROUTES = ['/en/articles', '/en/articles/kimi-k3-review']
+const CHINESE_ARTICLE_ROUTES = ['/notes', '/notes/kimi-k3-subscription-review', '/notes/ai-game-24-days']
+const ENGLISH_ARTICLE_ROUTES = ['/en/articles', '/en/articles/kimi-k3-review', '/en/articles/ai-game-24-days']
 const LEGACY_ENGLISH_ARTICLE_ROUTES = ['/en/notes', '/en/notes/kimi-k3-subscription-review']
 const SITEMAP_ROUTES = [
   ...SHARED_BASE_ROUTES,

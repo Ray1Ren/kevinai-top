@@ -25,7 +25,7 @@ export default function SEOHead({
 }: SEOHeadProps) {
   const { pathname } = useLocation()
   const { isEnglish } = useLocale()
-  const brand = isEnglish ? 'Kevin AI Lab' : 'Kevin AI局'
+  const brand = isEnglish ? 'Kevin AI Observatory' : 'Kevin AI局'
   const resolvedDescription = description ?? (isEnglish
     ? 'Kevin builds independent products with AI and shares the work, mistakes, and tool tests behind them.'
     : 'Kevin 的个人主页，放独立产品、开发日记和 AI 工具实测。')

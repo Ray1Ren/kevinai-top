@@ -11,9 +11,10 @@ import { FIRST_ARTICLE_PATH, useFirstArticleRelease } from '../lib/article-relea
 export default function Home() {
   const [qrOpen, setQrOpen] = useState(false)
   const { isEnglish, path } = useLocale()
-  const firstArticleReleased = useFirstArticleRelease()
+  const kimiArticleReleased = useFirstArticleRelease()
   const articlesPath = isEnglish ? '/en/articles' : '/notes'
-  const firstArticlePath = isEnglish ? '/en/articles/kimi-k3-review' : FIRST_ARTICLE_PATH
+  const firstArticlePath = isEnglish ? '/en/articles/ai-game-24-days' : '/notes/ai-game-24-days'
+  const kimiArticlePath = isEnglish ? '/en/articles/kimi-k3-review' : FIRST_ARTICLE_PATH
 
   return (
     <>
@@ -40,7 +41,7 @@ export default function Home() {
                 {isEnglish ? (
                   <>
                     Kevin <span className="text-pitch-500">AI</span>
-                    <span className="block">Lab</span>
+                    <span className="block">Observatory</span>
                   </>
                 ) : (
                   <>Kevin <span className="text-pitch-500">AI</span>局</>
@@ -64,12 +65,10 @@ export default function Home() {
                   {isEnglish ? 'See One Kick' : '看看《一脚晋级》'}
                 </a>
                 <Link
-                  to={firstArticleReleased ? firstArticlePath : articlesPath}
+                  to={firstArticlePath}
                   className="inline-flex items-center justify-center rounded-full border border-white/10 px-5 py-2.5 font-medium text-white transition-colors hover:border-white/25"
                 >
-                  {firstArticleReleased
-                    ? (isEnglish ? 'Read the first article' : '读第一篇文章')
-                    : (isEnglish ? 'Notes & updates' : '文章与动态')}
+                  {isEnglish ? 'Read the first article' : '读第一篇文章'}
                 </Link>
               </div>
             </div>
@@ -217,17 +216,17 @@ export default function Home() {
                 <span className="text-xs uppercase tracking-widest text-graphite-500">02 · Notes</span>
                 <div>
                   <h3 className="font-medium text-white">
-                    {firstArticleReleased
+                    {kimiArticleReleased
                       ? (isEnglish ? 'Is Kimi K3 worth paying for?' : 'Kimi K3 到底值不值得订阅？')
-                      : (isEnglish ? 'The first article goes live at 08:00' : '第一篇文章，早上 8 点见')}
+                      : (isEnglish ? 'The next article goes live at 08:00' : '下一篇文章，早上 8 点见')}
                   </h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {firstArticleReleased
+                    {kimiArticleReleased
                       ? (isEnglish ? 'I spent two days running the same four tasks with Kimi K3, GPT-5.6 Sol, and MiniMax M3.' : '我用两天时间，让 Kimi K3、GPT-5.6 Sol 和 MiniMax M3 做了同样的四项任务。')
                       : (isEnglish ? 'The Chinese and English versions will go live together on July 19.' : '7 月 19 日，中英文版同时开放。')}
                   </p>
-                  {firstArticleReleased ? (
-                    <Link to={firstArticlePath} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
+                  {kimiArticleReleased ? (
+                    <Link to={kimiArticlePath} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
                       {isEnglish ? 'Read the full test' : '阅读全文'} <span className="ml-1">→</span>
                     </Link>
                   ) : (
@@ -256,28 +255,58 @@ export default function Home() {
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-[1400px] px-4 md:px-6">
-          <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-8 md:p-12">
-            <h2 className="mb-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-              {isEnglish ? 'Find me elsewhere' : '还可以在这些地方找到我'}
-            </h2>
-            <p className="mb-6 max-w-[60ch] text-sm leading-relaxed text-graphite-400">
-              {isEnglish ? 'The code is on GitHub. My other links are on the Links page.' : '代码放在 GitHub，其他入口都在链接页。'}
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <a
-                href="https://github.com/Ray1Ren"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-graphite-200 transition-colors hover:border-white/25 hover:text-white"
-              >
-                GitHub
-              </a>
-              <Link
-                to={path('/links')}
-                className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-graphite-200 transition-colors hover:border-white/25 hover:text-white"
-              >
-                {isEnglish ? 'All links' : '全部链接'}
-              </Link>
+          <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-12">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:items-center md:gap-10">
+              <div className="md:col-span-7">
+                <h2 className="mb-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
+                  {isEnglish ? 'Want to talk? Email me or add me on WeChat.' : '想聊点什么，可以发邮件，也可以加微信。'}
+                </h2>
+                <p className="mb-6 max-w-[60ch] text-sm leading-relaxed text-graphite-400">
+                  {isEnglish
+                    ? 'Stuck on a level, curious about an article, or want to know how a test was run — just ask.'
+                    : '游戏卡关了，文章有问题，或者想了解实测细节，都可以直接问我。'}
+                </p>
+                <a
+                  href="mailto:qingzhuzhifeng@gmail.com"
+                  className="inline-block max-w-full break-all rounded-full border border-pitch-500/40 px-5 py-2.5 text-sm font-medium text-pitch-400 transition-colors hover:border-pitch-500 hover:text-pitch-300"
+                >
+                  qingzhuzhifeng@gmail.com
+                </a>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <span className="text-xs uppercase tracking-widest text-graphite-500">
+                    {isEnglish ? 'Also' : '其他入口'}
+                  </span>
+                  <a
+                    href="https://github.com/Ray1Ren"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full border border-white/10 px-4 py-2 text-xs text-graphite-300 transition-colors hover:border-white/25 hover:text-white"
+                  >
+                    GitHub
+                  </a>
+                  <Link
+                    to={path('/links')}
+                    className="rounded-full border border-white/10 px-4 py-2 text-xs text-graphite-300 transition-colors hover:border-white/25 hover:text-white"
+                  >
+                    {isEnglish ? 'All links' : '全部链接'}
+                  </Link>
+                </div>
+              </div>
+              <div className="md:col-span-5">
+                <div className="mx-auto w-full max-w-[15rem]">
+                  <img
+                    src="/assets/images/wechat-contact-rayn.jpg"
+                    alt={isEnglish ? "Kevin's WeChat QR code" : 'Kevin 的微信二维码'}
+                    width={888}
+                    height={1131}
+                    loading="lazy"
+                    className="h-auto w-full rounded-xl border border-white/10"
+                  />
+                  <p className="mt-3 text-center text-xs text-graphite-500">
+                    {isEnglish ? 'Scan with WeChat to add me.' : '用微信扫一扫，加我好友。'}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
