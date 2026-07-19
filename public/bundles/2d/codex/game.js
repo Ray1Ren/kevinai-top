@@ -908,7 +908,7 @@
     ctx.fillStyle = "rgba(13,35,39,.78)"; roundedRect(78, 404, 200, 22, 11); ctx.fill();
     const meter = ctx.createLinearGradient(80, 0, 275, 0); meter.addColorStop(0, "#55bcae"); meter.addColorStop(.65, "#efc15f"); meter.addColorStop(1, "#e16e52");
     ctx.fillStyle = meter; roundedRect(81, 407, 194 * power, 16, 8); ctx.fill();
-    ctx.fillStyle = "#f8edcf"; ctx.font = "800 13px Trebuchet MS"; ctx.textAlign = "center"; ctx.fillText(`力度 ${Math.round(power * 100)}%`, 178, 394);
+    ctx.fillStyle = "#f8edcf"; ctx.font = "800 13px Trebuchet MS"; ctx.textAlign = "center"; ctx.fillText(`${new URLSearchParams(location.search).get('lang') === 'en' ? 'Power' : '力度'} ${Math.round(power * 100)}%`, 178, 394);
   }
 
   function drawProjectile() {

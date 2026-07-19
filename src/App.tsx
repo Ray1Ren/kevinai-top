@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Lab from './pages/Lab'
 import Links from './pages/Links'
 import RedirectHandler from './components/RedirectHandler'
+import LanguageRedirect from './components/LanguageRedirect'
 import Notes from './pages/Notes'
 import { useLocale } from './hooks/useLocale'
 import './index.css'
@@ -23,6 +24,7 @@ function App() {
       <BrowserRouter>
         <Layout>
           <RedirectHandler />
+          <LanguageRedirect />
           <Routes>
             {renderLocalizedRoutes('')}
             {renderLocalizedRoutes('/en')}

@@ -4,14 +4,14 @@ import { useLocale } from '../hooks/useLocale'
 
 const phaseCopy = {
   zh: [
-    { title: '想法', body: 'AI 可以很快把一个念头变成能玩的 Demo，也能一次做出很多版本。' },
-    { title: '实验', body: '接下来就是一遍遍试玩：留下好用的，删掉多余的，哪里不对就返工。' },
-    { title: '作品', body: '等它真的有人能玩、我也愿意继续维护，才算做完。' },
+    { label: '第 1 天', title: '能玩了', body: '第一版已经能拖动、能进球，也能从头玩到结算。' },
+    { label: '第 24 天', title: '上线了', body: '关卡和界面改了很多遍，《一脚晋级》最后在微信上线。' },
+    { label: '现在', title: '还在改', body: '游戏已经有 500 关，我还在继续调关卡，改不好用的地方。' },
   ],
   en: [
-    { title: 'Idea', body: 'AI can turn a thought into a playable demo quickly, then make several more versions.' },
-    { title: 'Experiment', body: 'Then I play them: keep what works, cut what does not, and redo the parts that feel wrong.' },
-    { title: 'Work', body: 'It is finished when other people can use it and I am willing to keep maintaining it.' },
+    { label: 'Day 1', title: 'A playable build', body: 'By the end of the first day, I could drag players, score, and play through a full round.' },
+    { label: 'Day 24', title: 'Live on WeChat', body: 'I changed the levels and interface many times before One Kick went live on WeChat.' },
+    { label: 'Now', title: 'Still working on it', body: 'The game now has 500 levels. I am still tuning them and fixing the parts that get in the way.' },
   ],
 }
 
@@ -107,9 +107,10 @@ export default function ScrollNarrative() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {phases.map((p) => (
               <div key={p.title} className="p-6 rounded-2xl border border-white/5 bg-graphite-900/30">
+                <span className="mb-3 block text-xs uppercase tracking-widest text-pitch-500">{p.label}</span>
                 <h3 className="text-xl font-semibold text-white mb-2">{p.title}</h3>
                 <p className="text-graphite-300 leading-relaxed">{p.body}</p>
-                {p.title === (isEnglish ? 'Work' : '作品') && (
+                {p.title === (isEnglish ? 'Still working on it' : '还在改') && (
                   <img
                     src="/assets/images/game-level-100.png"
                     alt={isEnglish ? 'A real level from One Kick' : '《一脚晋级》第 100 关真实画面'}
@@ -137,7 +138,7 @@ export default function ScrollNarrative() {
               className="narrative-text absolute inset-0 flex flex-col justify-center"
               style={{ opacity: i === 0 ? 1 : 0 }}
             >
-              <span className="text-xs uppercase tracking-widest text-pitch-500 mb-3">{isEnglish ? 'Phase' : '阶段'} 0{i + 1}</span>
+              <span className="mb-3 text-xs uppercase tracking-widest text-pitch-500">{p.label}</span>
               <h2 className="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-4">
                 {p.title}
               </h2>
@@ -188,7 +189,7 @@ export default function ScrollNarrative() {
                     <span className="text-xs uppercase tracking-widest text-pitch-500">{isEnglish ? 'Shipped product' : '已上线'}</span>
                     <p className="mt-3 text-2xl font-semibold text-white">《一脚晋级》</p>
                     <p className="mt-2 text-sm leading-relaxed text-graphite-300">
-                      {isEnglish ? 'From a one-day demo to a product shipped in twenty-four.' : '从一天能玩，到二十四天上线。'}
+                      {isEnglish ? 'The first demo took one day. The game shipped twenty-four days later.' : '第一天能玩，二十四天后上线。'}
                     </p>
                   </div>
                   <div className="border-t border-white/10 pt-5">

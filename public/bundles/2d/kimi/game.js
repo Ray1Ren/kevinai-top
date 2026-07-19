@@ -9,6 +9,7 @@
 /* ---------------- 常量配置 ---------------- */
 var WORLD_W = 1280;
 var WORLD_H = 720;
+var IS_EN = new URLSearchParams(window.location.search).get('lang') === 'en';
 var GROUND_Y = 640;              // 地面表面 y
 var GRAVITY = 1500;              // px/s^2
 var FIXED_DT = 1 / 120;          // 物理固定步长
@@ -684,9 +685,9 @@ function guard(x, y) {
 
 var LEVELS = [
   {
-    name: '木栅哨站',
+    name: IS_EN ? 'Timber Outpost' : '木栅哨站',
     shots: 3,
-    hint: '直接轰，或者掀了屋顶',
+    hint: IS_EN ? 'Hit it head-on or lift the roof' : '直接轰，或者掀了屋顶',
     build: function () {
       var g = GROUND_Y;
       return [
@@ -701,9 +702,9 @@ var LEVELS = [
     }
   },
   {
-    name: '双塔仓库',
+    name: IS_EN ? 'Twin-Tower Depot' : '双塔仓库',
     shots: 4,
-    hint: '先拆木塔，小心石梁',
+    hint: IS_EN ? 'Break the timber tower first; mind the stone beam' : '先拆木塔，小心石梁',
     build: function () {
       var g = GROUND_Y;
       return [
@@ -728,9 +729,9 @@ var LEVELS = [
     }
   },
   {
-    name: '石垒王座',
+    name: IS_EN ? 'Stone Throne' : '石垒王座',
     shots: 4,
-    hint: '石基很硬，攻木梁或震晕他们',
+    hint: IS_EN ? 'The stone base is tough. Hit the timber beams or stun the guards' : '石基很硬，攻木梁或震晕他们',
     build: function () {
       var g = GROUND_Y;
       return [
@@ -2137,7 +2138,7 @@ var Render = (function () {
     ctx.stroke();
     ctx.fillStyle = '#ffd35c';
     ctx.font = '900 34px "PingFang SC", "Microsoft YaHei", sans-serif';
-    ctx.fillText('第 ' + (Game.getLevelIndex() + 1) + ' 关 · ' + banner.title, WORLD_W / 2, 138);
+    ctx.fillText((IS_EN ? 'Level ' : '第 ') + (Game.getLevelIndex() + 1) + (IS_EN ? ' · ' : ' 关 · ') + banner.title, WORLD_W / 2, 138);
     ctx.fillStyle = '#e8dcf5';
     ctx.font = '400 20px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.fillText(banner.hint, WORLD_W / 2, 176);
@@ -2168,7 +2169,7 @@ var Render = (function () {
     ctx.font = '700 22px "PingFang SC", "Microsoft YaHei", sans-serif';
     ctx.strokeStyle = 'rgba(0,0,0,0.6)';
     ctx.lineWidth = 4;
-    var msg = '点击 / 空格 · 雷霆震荡！';
+    var msg = IS_EN ? 'Click / Space · Shockwave!' : '点击 / 空格 · 雷霆震荡！';
     ctx.strokeText(msg, WORLD_W / 2, 66);
     ctx.fillStyle = '#ffe9a0';
     ctx.fillText(msg, WORLD_W / 2, 66);

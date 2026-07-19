@@ -222,6 +222,47 @@ async function testFirstArticle(browser, base) {
   log('first article passed: Chinese and English facts, local assets, SEO title, and 390px layout')
 }
 
+async function testBilingualHomepage(browser, base) {
+  const mobileContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+  })
+  await mobileContext.addInitScript(() => {
+    Date.now = () => Date.parse('2026-07-19T00:01:00Z')
+  })
+  const page = await mobileContext.newPage()
+  const finishMonitoring = monitorPage(page, 'bilingual homepage', { allowDocument404: true })
+
+  for (const [path, language, required, forbidden, screenshot] of [
+    ['/', 'zh-CN', ['2026 年 6 月 13 日', '24 天后', '我以前没做过小游戏', '读第一篇文章'], ['先做出来，再谈方法', 'AI 负责多做，人负责挑对'], 'home-zh-mobile.png'],
+    ['/en', 'en', ['June 13, 2026', '24 days later', 'I had never built a mini game before', 'Play One Kick inside WeChat'], ['Build it first. Then talk about the method.', 'AI makes more. I decide what stays.'], 'home-en-mobile.png'],
+  ]) {
+    await page.goto(`${base}${path}`, { waitUntil: 'networkidle' })
+    assert.equal(await page.locator('html').getAttribute('lang'), language)
+    const body = await page.locator('main').innerText()
+    required.forEach((text) => assert(body.includes(text), `${path} homepage must include ${text}`))
+    forbidden.forEach((text) => assert(!body.includes(text), `${path} homepage must remove slogan: ${text}`))
+    const hero = page.locator('img[src="/assets/images/kevin-ai-hero.png"]')
+    await hero.waitFor({ state: 'visible' })
+    assert.equal(await hero.evaluate((image) => image.complete && image.naturalWidth === 1122 && image.naturalHeight === 1402), true)
+    const width = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+    assert(width <= 392, `${path} homepage must not overflow a 390px viewport, got ${width}px`)
+    await loadLazyArticleMedia(page)
+    await page.screenshot({ path: join(SCREENSHOTS, screenshot), fullPage: true })
+  }
+  finishMonitoring()
+  await mobileContext.close()
+
+  const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  const desktopPage = await desktopContext.newPage()
+  await desktopPage.goto(`${base}/en`, { waitUntil: 'networkidle' })
+  await desktopPage.locator('img[src="/assets/images/kevin-ai-hero.png"]').waitFor({ state: 'visible' })
+  await desktopPage.screenshot({ path: join(SCREENSHOTS, 'home-en-desktop.png') })
+  await desktopContext.close()
+  log('homepage passed: generated hero, natural bilingual copy, WeChat context, and 390px layout')
+}
+
 const bundleKinds = {
   '2d': { files: ['index.html', 'styles.css', 'game.js'], ready: 'canvas' },
   '3d': { files: ['index.html', 'styles.css', 'game.js', 'vendor/three.min.js'], ready: 'canvas' },
@@ -482,7 +523,7 @@ async function testVisionReview(browser, base) {
   await page.goto(`${base}/en/lab/vision/review`, { waitUntil: 'networkidle' })
   assert.equal(await page.locator('html').getAttribute('lang'), 'en')
   assert.equal(await page.locator('article[data-case-id]').count(), 50)
-  assert.match(await page.locator('body').innerText(), /original Chinese/)
+  assert.match(await page.locator('body').innerText(), /translated for this edition/)
   finishMonitoring()
   await context.close()
   log(`vision review passed: 50 direct results, result/category/difficulty filters, English source-language notice`)
@@ -556,7 +597,7 @@ async function testMotionModes(browser, base) {
   const reducedPage = await reducedContext.newPage()
   await reducedPage.goto(`${base}/`, { waitUntil: 'networkidle' })
   await reducedPage.waitForFunction(() => !document.querySelector('canvas') && !document.querySelector('.pin-spacer'))
-  assert.equal(await reducedPage.locator('h3').filter({ hasText: /想法|实验|作品/ }).count(), 3)
+  assert.equal(await reducedPage.locator('h3').filter({ hasText: /能玩了|上线了|还在改/ }).count(), 3)
   await reducedContext.close()
 
   const coarseContext = await browser.newContext({
@@ -614,6 +655,7 @@ async function main() {
     await testStaticDeepLinks(browser, base)
     await testArticleReleaseGate(browser, base)
     await testFirstArticle(browser, base)
+    await testBilingualHomepage(browser, base)
     await testBundleMimeAndLoad(browser, base)
     await test2DInteraction(browser, base)
     await test3DInteraction(browser, base)

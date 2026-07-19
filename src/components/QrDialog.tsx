@@ -97,7 +97,9 @@ export default function QrDialog({ open, onClose }: QrDialogProps) {
           className="h-auto w-full"
         />
         <p className="mt-3 text-center text-sm text-graphite-800">
-          {isEnglish ? 'Scan with WeChat to play One Kick.' : '使用微信扫一扫，直接试玩《一脚晋级》'}
+          {isEnglish
+            ? 'Open WeChat, tap Scan, and point it at this code. One Kick will open inside WeChat.'
+            : '用微信扫这个码，就能直接玩《一脚晋级》。'}
         </p>
       </div>
     </div>

@@ -1,1 +1,240 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#1c3a24"><title>《一脚晋级》｜一滑到底，三步破门</title><link rel="stylesheet" href="styles.css"><script src="app.js" defer></script></head><body><a class="skip" href="#demo-board">跳到路线挑战</a><header class="nav"><a href="#play" class="mini-brand" aria-label="回到《一脚晋级》首页"><img src="assets/brand-lockup.png" alt="《一脚晋级》"></a><nav aria-label="主导航"><a href="#journey">500关</a><a href="#proof">真实关卡</a><a href="#play-now">立即开踢</a></nav><button id="motion-toggle" class="motion" type="button" aria-pressed="false">暂停动效</button></header><main><section id="play" class="hero section"><div class="hero-bg" aria-hidden="true"></div><div class="hero-copy reveal"><span class="eyebrow">路线足球 · 三步破门挑战</span><img class="brand" src="assets/brand-lockup.png" alt="《一脚晋级》正式标志"><h1>先看路线，<br><strong>再动这一脚。</strong></h1><p>足球会一滑到底。判断阻挡、利用落点，用标准路线 <b>右 → 上 → 右</b> 把球送进门。</p><div class="hero-actions"><a class="primary" href="#demo-board">现在试一脚</a><a class="text-link" href="#journey">看看规则如何升级</a></div><ul class="facts"><li><b>6×6</b><span>小场大判断</span></li><li><b>3 步</b><span>本关标准解</span></li><li><b>500 关</b><span>每关验证有解</span></li></ul></div><div class="challenge reveal"><div class="challenge-head"><div><span class="kicker">热身赛 · 路线 01</span><h2>三步送球入网</h2></div><div class="move-count"><span>已用</span><b id="moves">0</b><span>步</span></div></div><div id="demo-board" class="board" tabindex="0" role="application" aria-label="6乘6足球路线挑战。可拖动、滑动或使用方向按钮。"><div id="route-preview" class="route-preview" aria-hidden="true"></div><div id="goal" class="goal" aria-label="球门"><span></span></div><div class="obstacle teammate" data-r="4" data-c="5"><img src="assets/player.png" alt=""><span>队友</span></div><div class="obstacle keeper" data-r="0" data-c="4"><img src="assets/keeper.png" alt=""><span>对手门将</span></div><div id="ball" class="ball" aria-label="足球"></div><div id="celebration" class="celebration" aria-hidden="true"><span>晋级</span><b>三步破门</b><button id="again" type="button">重新挑战</button></div></div><div class="challenge-foot"><p id="status" aria-live="polite">按住足球向右拖，或使用方向键。</p><div class="controls" aria-label="方向控制"><button data-dir="up" aria-label="向上">↑</button><button data-dir="left" aria-label="向左">←</button><button data-dir="down" aria-label="向下">↓</button><button data-dir="right" aria-label="向右">→</button></div></div></div><div class="scroll-cue" aria-hidden="true"><span></span>下半场继续</div></section><section id="journey" class="journey section"><div class="section-intro reveal"><span class="eyebrow">一场不断改写的赛季</span><h2>500 关，<br>不是重复堆量。</h2><p>基础动作只需一滑；随后每一批规则加入，都在改变你对路线、落点和先后手的判断。每关都由程序验证有解。</p></div><div class="rule-stage reveal"><div class="rule-index" aria-hidden="true"><span id="rule-no">01</span><small>/ 08</small></div><div class="rule-copy"><span id="rule-era">开场哨</span><h3 id="rule-title">基础移动</h3><p id="rule-desc">上下左右，一滑到底。边界和角色决定落点，先读场再动脚。</p><div class="rule-visual" id="rule-visual" aria-hidden="true"><i></i><i></i><i></i><b></b></div></div><div class="rule-tabs" role="tablist" aria-label="关卡规则"><button class="active" role="tab" aria-selected="true" data-rule="0">基础移动</button><button role="tab" aria-selected="false" data-rule="1">泥地</button><button role="tab" aria-selected="false" data-rule="2">转向箭头</button><button role="tab" aria-selected="false" data-rule="3">越位</button><button role="tab" aria-selected="false" data-rule="4">队友 / 对手</button><button role="tab" aria-selected="false" data-rule="5">对手门将</button><button role="tab" aria-selected="false" data-rule="6">黄牌</button><button role="tab" aria-selected="false" data-rule="7">传送门</button></div></div></section><section id="proof" class="proof section"><div class="proof-head reveal"><div><span class="eyebrow">一关，三次判断</span><h2>真实关卡，不靠反应。<br>看你先让谁动。</h2></div><p>拖动下方进度，查看从读局、传递到三星晋级的完整过程。</p></div><div class="phone-stage reveal"><div class="proof-label"><b id="proof-step">01 · 先读局</b><span id="proof-caption">观察角色与球门，预判每次滑行的落点。</span></div><div class="phones"><figure><img src="assets/gameplay-start.png" alt="真实关卡开始状态"><figcaption>开局</figcaption></figure><figure><img src="assets/gameplay-pass.png" alt="足球移动后的真实关卡状态"><figcaption>传递</figcaption></figure><figure><img src="assets/gameplay-win.png" alt="三星晋级的真实关卡状态"><figcaption>晋级</figcaption></figure></div><div class="proof-controls"><button id="proof-prev" aria-label="上一步">←</button><input id="proof-range" type="range" min="0" max="2" value="0" step="1" aria-label="关卡过程"><button id="proof-next" aria-label="下一步">→</button></div></div></section><section class="manifesto section"><p class="reveal">路线卡帮你看清下一步，保连卡留住赛场节奏。真正决定晋级的，仍是你对这片 6×6 球场的判断。</p><img class="float-card route-card" src="assets/route-card.png" alt="路线卡道具"><img class="float-card revive-card" src="assets/revive-card.png" alt="保连卡道具"></section><section id="play-now" class="play-now section"><div class="cta-copy reveal"><span class="eyebrow">终场哨响之前</span><h2>下一脚，<br>由你决定路线。</h2><p>无需拼手速。看清阻挡、算准落点，在不断加入的新规则里找到唯一的破门方式。</p><a class="primary large" href="#qr-panel">微信搜《一脚晋级》</a></div><div id="qr-panel" class="qr-panel reveal"><div class="qr-wrap"><img src="assets/qr.png" alt="《一脚晋级》正式小程序码"><span class="scan-line" aria-hidden="true"></span></div><h3>微信搜《一脚晋级》</h3><p>打开微信，搜索游戏名称或扫描小程序码。</p><small>本地原型展示，发布前需微信实扫确认</small></div></section></main><footer><img src="assets/brand-lockup.png" alt="《一脚晋级》"><p>一滑到底，路线决定胜负。</p><a href="#play">回到开球点 ↑</a></footer></body></html>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1c3a24" />
+    <title>《一脚晋级》｜一滑到底，三步破门</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+    <script src="/bundles/i18n.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#demo-board">跳到路线挑战</a>
+    <header class="nav">
+      <a href="#play" class="mini-brand" aria-label="回到《一脚晋级》首页"
+        ><img src="assets/brand-lockup.png" alt="《一脚晋级》"
+      /></a>
+      <nav aria-label="主导航">
+        <a href="#journey">500关</a><a href="#proof">真实关卡</a
+        ><a href="#play-now">立即开踢</a>
+      </nav>
+      <button
+        id="motion-toggle"
+        class="motion"
+        type="button"
+        aria-pressed="false"
+      >
+        暂停动效
+      </button>
+    </header>
+    <main>
+      <section id="play" class="hero section">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-copy reveal">
+          <span class="eyebrow">路线足球 · 三步破门挑战</span
+          ><img
+            class="brand"
+            src="assets/brand-lockup.png"
+            alt="《一脚晋级》正式标志"
+          />
+          <h1>先看路线，<br /><strong>再动这一脚。</strong></h1>
+          <p>
+            足球会一滑到底。判断阻挡、利用落点，用标准路线
+            <b>右 → 上 → 右</b> 把球送进门。
+          </p>
+          <div class="hero-actions">
+            <a class="primary" href="#demo-board">现在试一脚</a
+            ><a class="text-link" href="#journey">看看规则如何升级</a>
+          </div>
+          <ul class="facts">
+            <li><b>6×6</b><span>小场大判断</span></li>
+            <li><b>3 步</b><span>本关标准解</span></li>
+            <li><b>500 关</b><span>每关验证有解</span></li>
+          </ul>
+        </div>
+        <div class="challenge reveal">
+          <div class="challenge-head">
+            <div>
+              <span class="kicker">热身赛 · 路线 01</span>
+              <h2>三步送球入网</h2>
+            </div>
+            <div class="move-count">
+              <span>已用</span><b id="moves">0</b><span>步</span>
+            </div>
+          </div>
+          <div
+            id="demo-board"
+            class="board"
+            tabindex="0"
+            role="application"
+            aria-label="6乘6足球路线挑战。可拖动、滑动或使用方向按钮。"
+          >
+            <div
+              id="route-preview"
+              class="route-preview"
+              aria-hidden="true"
+            ></div>
+            <div id="goal" class="goal" aria-label="球门"><span></span></div>
+            <div class="obstacle teammate" data-r="4" data-c="5">
+              <img src="assets/player.png" alt="" /><span>队友</span>
+            </div>
+            <div class="obstacle keeper" data-r="0" data-c="4">
+              <img src="assets/keeper.png" alt="" /><span>对手门将</span>
+            </div>
+            <div id="ball" class="ball" aria-label="足球"></div>
+            <div id="celebration" class="celebration" aria-hidden="true">
+              <span>晋级</span><b>三步破门</b
+              ><button id="again" type="button">重新挑战</button>
+            </div>
+          </div>
+          <div class="challenge-foot">
+            <p id="status" aria-live="polite">按住足球向右拖，或使用方向键。</p>
+            <div class="controls" aria-label="方向控制">
+              <button data-dir="up" aria-label="向上">↑</button
+              ><button data-dir="left" aria-label="向左">←</button
+              ><button data-dir="down" aria-label="向下">↓</button
+              ><button data-dir="right" aria-label="向右">→</button>
+            </div>
+          </div>
+        </div>
+        <div class="scroll-cue" aria-hidden="true"><span></span>下半场继续</div>
+      </section>
+      <section id="journey" class="journey section">
+        <div class="section-intro reveal">
+          <span class="eyebrow">一场不断改写的赛季</span>
+          <h2>500 关，<br />不是重复堆量。</h2>
+          <p>
+            基础动作只需一滑；随后每一批规则加入，都在改变你对路线、落点和先后手的判断。每关都由程序验证有解。
+          </p>
+        </div>
+        <div class="rule-stage reveal">
+          <div class="rule-index" aria-hidden="true">
+            <span id="rule-no">01</span><small>/ 08</small>
+          </div>
+          <div class="rule-copy">
+            <span id="rule-era">开场哨</span>
+            <h3 id="rule-title">基础移动</h3>
+            <p id="rule-desc">
+              上下左右，一滑到底。边界和角色决定落点，先读场再动脚。
+            </p>
+            <div class="rule-visual" id="rule-visual" aria-hidden="true">
+              <i></i><i></i><i></i><b></b>
+            </div>
+          </div>
+          <div class="rule-tabs" role="tablist" aria-label="关卡规则">
+            <button
+              class="active"
+              role="tab"
+              aria-selected="true"
+              data-rule="0"
+            >
+              基础移动</button
+            ><button role="tab" aria-selected="false" data-rule="1">泥地</button
+            ><button role="tab" aria-selected="false" data-rule="2">
+              转向箭头</button
+            ><button role="tab" aria-selected="false" data-rule="3">越位</button
+            ><button role="tab" aria-selected="false" data-rule="4">
+              队友 / 对手</button
+            ><button role="tab" aria-selected="false" data-rule="5">
+              对手门将</button
+            ><button role="tab" aria-selected="false" data-rule="6">黄牌</button
+            ><button role="tab" aria-selected="false" data-rule="7">
+              传送门
+            </button>
+          </div>
+        </div>
+      </section>
+      <section id="proof" class="proof section">
+        <div class="proof-head reveal">
+          <div>
+            <span class="eyebrow">一关，三次判断</span>
+            <h2>真实关卡，不靠反应。<br />看你先让谁动。</h2>
+          </div>
+          <p>拖动下方进度，查看从读局、传递到三星晋级的完整过程。</p>
+        </div>
+        <div class="phone-stage reveal">
+          <div class="proof-label">
+            <b id="proof-step">01 · 先读局</b
+            ><span id="proof-caption"
+              >观察角色与球门，预判每次滑行的落点。</span
+            >
+          </div>
+          <div class="phones">
+            <figure>
+              <img src="assets/gameplay-start.png" alt="真实关卡开始状态" />
+              <figcaption>开局</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="assets/gameplay-pass.png"
+                alt="足球移动后的真实关卡状态"
+              />
+              <figcaption>传递</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/gameplay-win.png" alt="三星晋级的真实关卡状态" />
+              <figcaption>晋级</figcaption>
+            </figure>
+          </div>
+          <div class="proof-controls">
+            <button id="proof-prev" aria-label="上一步">←</button
+            ><input
+              id="proof-range"
+              type="range"
+              min="0"
+              max="2"
+              value="0"
+              step="1"
+              aria-label="关卡过程"
+            /><button id="proof-next" aria-label="下一步">→</button>
+          </div>
+        </div>
+      </section>
+      <section class="manifesto section">
+        <p class="reveal">
+          路线卡帮你看清下一步，保连卡留住赛场节奏。真正决定晋级的，仍是你对这片
+          6×6 球场的判断。
+        </p>
+        <img
+          class="float-card route-card"
+          src="assets/route-card.png"
+          alt="路线卡道具"
+        /><img
+          class="float-card revive-card"
+          src="assets/revive-card.png"
+          alt="保连卡道具"
+        />
+      </section>
+      <section id="play-now" class="play-now section">
+        <div class="cta-copy reveal">
+          <span class="eyebrow">终场哨响之前</span>
+          <h2>下一脚，<br />由你决定路线。</h2>
+          <p>
+            无需拼手速。看清阻挡、算准落点，在不断加入的新规则里找到唯一的破门方式。
+          </p>
+          <a class="primary large" href="#qr-panel">微信搜《一脚晋级》</a>
+        </div>
+        <div id="qr-panel" class="qr-panel reveal">
+          <div class="qr-wrap">
+            <img src="assets/qr.png" alt="《一脚晋级》正式小程序码" /><span
+              class="scan-line"
+              aria-hidden="true"
+            ></span>
+          </div>
+          <h3>微信搜《一脚晋级》</h3>
+          <p>打开微信，搜索游戏名称或扫描小程序码。</p>
+          <small>本地原型展示，发布前需微信实扫确认</small>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <img src="assets/brand-lockup.png" alt="《一脚晋级》" />
+      <p>一滑到底，路线决定胜负。</p>
+      <a href="#play">回到开球点 ↑</a>
+    </footer>
+  </body>
+</html>

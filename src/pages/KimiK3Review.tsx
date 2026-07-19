@@ -165,7 +165,7 @@ function ScheduledArticle() {
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-graphite-300 md:text-lg">
             {isEnglish
-              ? 'Two games, one promotion page, and 50 image-recognition questions. The Chinese and English editions will unlock together.'
+              ? 'Two games, one promotion page, and 50 image-recognition questions. The Chinese and English versions will go live together.'
               : '两个游戏、一个宣传页，再加 50 道看图题。中英文版会同时开放。'}
           </p>
           <Link to={path('/notes')} className="mt-8 inline-flex text-sm text-pitch-400 hover:text-pitch-300">

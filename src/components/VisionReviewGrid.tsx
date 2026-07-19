@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useLocale } from '../hooks/useLocale'
+import { localizeVisionCase } from '../data/visionEnglish'
 
 interface CaseResult {
   answer: string
@@ -73,14 +74,14 @@ export default function VisionReviewGrid({ showHeading = true }: VisionReviewGri
         return res.json()
       })
       .then((json: VisionData) => {
-        setData(json)
+        setData(isEnglish ? { ...json, cases: json.cases.map(localizeVisionCase) } : json)
         setLoading(false)
       })
       .catch((err) => {
         setError(err instanceof Error ? err.message : String(err))
         setLoading(false)
       })
-  }, [])
+  }, [isEnglish])
 
   useEffect(() => {
     if (!lightbox) return
