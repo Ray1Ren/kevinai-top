@@ -8,6 +8,7 @@ import Links from './pages/Links'
 import RedirectHandler from './components/RedirectHandler'
 import LanguageRedirect from './components/LanguageRedirect'
 import Notes from './pages/Notes'
+import EnglishArticles from './pages/EnglishArticles'
 import { useLocale } from './hooks/useLocale'
 import './index.css'
 
@@ -17,6 +18,7 @@ const LabPromo = lazy(() => import('./pages/LabPromo'))
 const LabVision = lazy(() => import('./pages/LabVision'))
 const LabVisionReview = lazy(() => import('./pages/LabVisionReview'))
 const KimiK3Review = lazy(() => import('./pages/KimiK3Review'))
+const KimiK3ReviewEn = lazy(() => import('./pages/KimiK3ReviewEn'))
 
 function App() {
   return (
@@ -38,10 +40,8 @@ function App() {
 
 function renderLocalizedRoutes(prefix: '' | '/en') {
   const route = (path: string) => (path === '/' ? (prefix || '/') : `${prefix}${path}`)
-  return [
+  const sharedRoutes = [
     <Route key={route('/')} path={route('/')} element={<Home />} />,
-    <Route key={route('/notes')} path={route('/notes')} element={<Notes />} />,
-    <Route key={route('/notes/kimi-k3-subscription-review')} path={route('/notes/kimi-k3-subscription-review')} element={<Suspense fallback={<PageFallback />}><KimiK3Review /></Suspense>} />,
     <Route key={route('/lab')} path={route('/lab')} element={<Lab />} />,
     <Route key={route('/lab/2d')} path={route('/lab/2d')} element={<Suspense fallback={<PageFallback />}><Lab2D /></Suspense>} />,
     <Route key={route('/lab/3d')} path={route('/lab/3d')} element={<Suspense fallback={<PageFallback />}><Lab3D /></Suspense>} />,
@@ -49,6 +49,22 @@ function renderLocalizedRoutes(prefix: '' | '/en') {
     <Route key={route('/lab/vision')} path={route('/lab/vision')} element={<Suspense fallback={<PageFallback />}><LabVision /></Suspense>} />,
     <Route key={route('/lab/vision/review')} path={route('/lab/vision/review')} element={<Suspense fallback={<PageFallback />}><LabVisionReview /></Suspense>} />,
     <Route key={route('/links')} path={route('/links')} element={<Links />} />,
+  ]
+
+  if (prefix === '/en') {
+    return [
+      ...sharedRoutes,
+      <Route key="/en/articles" path="/en/articles" element={<EnglishArticles />} />,
+      <Route key="/en/articles/kimi-k3-review" path="/en/articles/kimi-k3-review" element={<Suspense fallback={<PageFallback />}><KimiK3ReviewEn /></Suspense>} />,
+      <Route key="/en/notes" path="/en/notes" element={<Navigate to="/en/articles" replace />} />,
+      <Route key="/en/notes/kimi-k3-subscription-review" path="/en/notes/kimi-k3-subscription-review" element={<Navigate to="/en/articles/kimi-k3-review" replace />} />,
+    ]
+  }
+
+  return [
+    ...sharedRoutes,
+    <Route key="/notes" path="/notes" element={<Notes />} />,
+    <Route key="/notes/kimi-k3-subscription-review" path="/notes/kimi-k3-subscription-review" element={<Suspense fallback={<PageFallback />}><KimiK3Review /></Suspense>} />,
   ]
 }
 

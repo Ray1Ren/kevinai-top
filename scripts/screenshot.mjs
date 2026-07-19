@@ -21,10 +21,9 @@ const routes = [
   { path: '/lab/vision', name: 'lab-vision', title: '50 图识别实测' },
   { path: '/lab/vision/review', name: 'lab-vision-review', title: '50 题识图结果' },
   { path: '/links', name: 'links', title: '链接' },
-  { path: '/en', name: 'en-home', title: 'Kevin AI局' },
-  { path: '/en/notes', name: 'en-notes', title: 'Notes & Updates' },
-  { path: '/en/notes?preview=article', name: 'en-notes-released', title: 'Notes & Updates' },
-  { path: '/en/notes/kimi-k3-subscription-review?preview=article', name: 'en-article-kimi-k3', title: 'Is Kimi K3 Worth Paying For' },
+  { path: '/en', name: 'en-home', title: 'Kevin AI Lab' },
+  { path: '/en/articles', name: 'en-articles', title: 'Articles' },
+  { path: '/en/articles/kimi-k3-review', name: 'en-article-kimi-k3', title: 'I tested Kimi K3' },
   { path: '/en/lab', name: 'en-lab', title: 'Four AI Tests' },
   { path: '/en/lab/2d', name: 'en-lab-2d', title: '2D Web Game Test' },
   { path: '/en/lab/3d', name: 'en-lab-3d', title: '3D Web Game Test' },
@@ -139,7 +138,7 @@ async function main() {
         if (bodyWidth > vpWidth + 2) {
           allErrors.push({ type: 'horizontal-overflow', viewport: vp.name, path: route.path, bodyWidth, vpWidth })
         }
-        if (route.path.includes('kimi-k3-subscription-review')) {
+        if (route.path.includes('kimi-k3-subscription-review') || route.path.includes('kimi-k3-review')) {
           await loadLazyMedia(page)
         } else {
           await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))

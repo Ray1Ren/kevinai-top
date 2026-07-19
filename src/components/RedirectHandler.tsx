@@ -15,6 +15,8 @@ const VALID_PATHS = [
   '/en',
   '/en/notes',
   '/en/notes/kimi-k3-subscription-review',
+  '/en/articles',
+  '/en/articles/kimi-k3-review',
   '/en/lab',
   '/en/lab/2d',
   '/en/lab/3d',

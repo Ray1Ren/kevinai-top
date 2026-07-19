@@ -8,9 +8,10 @@ export default function Navbar() {
   const { pathname } = useLocation()
   const { motionPaused, setMotionPaused } = useMotion()
   const { isEnglish, path, alternatePath } = useLocale()
+  const articlesPath = isEnglish ? '/en/articles' : '/notes'
   const navItems = [
     { to: path('/'), label: isEnglish ? 'Home' : '首页' },
-    { to: path('/notes'), label: isEnglish ? 'Notes' : '文章' },
+    { to: articlesPath, label: isEnglish ? 'Articles' : '文章' },
     { to: path('/lab'), label: isEnglish ? 'Lab' : '实验室' },
     { to: path('/links'), label: isEnglish ? 'Links' : '链接' },
   ]
@@ -20,7 +21,7 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         <Link to={path('/')} className="flex items-center gap-3 group">
           <span className="w-2 h-2 rounded-full bg-pitch-500 group-hover:scale-125 transition-transform" />
-          <span className="text-lg font-semibold tracking-tight text-white">Kevin AI局</span>
+          <span className="text-lg font-semibold tracking-tight text-white">{isEnglish ? 'Kevin AI Lab' : 'Kevin AI局'}</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">

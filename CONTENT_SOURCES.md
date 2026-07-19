@@ -48,11 +48,12 @@
 - 公开文件：`public/data/vision-cases.json`、`public/assets/vision-images/`
 - 仅公开题面、冻结图片、选项、真值与三家最终答案；原始运行日志、stdout、stderr、raw 目录和私有 manifest 不公开。
 
-### 第一篇双语文章
+### 第一篇中英文文章
 
-- 中文事实源：`弹弓攻城三方同题实测_20260718/03_KimiCode公众号稿.md`。
-- 网站路由：`/notes/kimi-k3-subscription-review` 与 `/en/notes/kimi-k3-subscription-review`。
-- 文章配图复制到 `public/assets/article-kimi-k3/`；已有实机 GIF、题库拼图和小程序码直接复用网站现有文件，不重复存储。
+- 中文事实源：新版公众号文章 `https://mp.weixin.qq.com/s/EO2wmTxd4vbCi1bjsKWgUw`，本地底稿为 `弹弓攻城三方同题实测_20260718/03_KimiCode公众号稿.md`。
+- 网站路由：中文 `/notes/kimi-k3-subscription-review`；英文文章目录 `/en/articles`，英文正文 `/en/articles/kimi-k3-review`。
+- 中文文章素材在 `public/assets/article-kimi-k3/`。英文正文只使用已核对为英文或无文字的共享图，以及 `public/assets/article-kimi-k3-en/` 下的英文专属裁切图和分享图；方向题使用从原始街景裁出的 `vision-arrow-crop.png`，模型仍然看到未裁切原图。
+- 英文旧路由 `/en/notes` 与 `/en/notes/kimi-k3-subscription-review` 保留兼容跳转，不再作为 canonical。
 - 发布时刻：`2026-07-19T00:00:00Z`，即北京时间 / 新加坡时间 08:00；中英文同时开放。
 
 ## 文案与数据来源

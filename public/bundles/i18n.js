@@ -205,6 +205,8 @@
     [/^步数 (\d+)$/u, 'Moves $1'], [/^第 (\d+) 关 · (.+)$/u, 'Level $1 · $2'],
     [/^力度 (\d+)%$/u, 'Power $1%'], [/^第 (\d+) 步/u, 'Move $1'],
     [/^(\d+) 步完成路线$/u, 'Route complete in $1 moves'], [/^进球！(\d+) 步完成挑战。$/u, 'Goal! Challenge complete in $1 moves.'],
+    [/^进球！(\d+) 步完成挑战，已经晋级。$/u, 'Goal! Promoted in $1 moves.'],
+    [/^标准路线完成 · (\d+) 步$/u, 'Target route complete · $1 moves'],
     [/^正在展示：(.+)$/u, 'Showing: $1'], [/^第 (\d+) 张：(.+)$/u, 'Image $1: $2'],
   ]
 

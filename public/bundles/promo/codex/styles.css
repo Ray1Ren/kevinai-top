@@ -27,18 +27,28 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: calc(var(--header-height) + 14px);
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--cream);
 }
 
 body {
   margin: 0;
   min-width: 280px;
+  max-width: 100%;
   overflow-x: hidden;
   color: var(--ink);
   background: var(--cream);
   font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+@supports (overflow: clip) {
+  html,
+  body {
+    overflow-x: clip;
+  }
 }
 
 button,
@@ -270,6 +280,7 @@ figure {
   display: grid;
   min-height: 100svh;
   overflow: hidden;
+  overflow: clip;
   background: var(--soft-green);
 }
 

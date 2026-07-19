@@ -41,6 +41,14 @@ const REQUIRED_PUBLIC_ASSETS = [
   'assets/article-kimi-k3/kimi-token-ledger.png',
   'assets/article-kimi-k3/kimi-week-quota.png',
   'assets/article-kimi-k3/k3-official-benchmark.png',
+  'assets/article-kimi-k3-en/2d-kimi-scene.png',
+  'assets/article-kimi-k3-en/2d-codex-scene.png',
+  'assets/article-kimi-k3-en/2d-minimax-scene.png',
+  'assets/article-kimi-k3-en/3d-kimi-scene.png',
+  'assets/article-kimi-k3-en/3d-codex-scene.png',
+  'assets/article-kimi-k3-en/3d-minimax-scene.png',
+  'assets/article-kimi-k3-en/vision-arrow-crop.png',
+  'assets/article-kimi-k3-en/og-kimi-k3-review.png',
   'assets/gifs/2d-k3.gif',
   'assets/gifs/2d-codex.gif',
   'assets/gifs/2d-m3.gif',
@@ -53,6 +61,7 @@ const REQUIRED_PUBLIC_ASSETS = [
   'data/benchmarks.json',
   'data/benchmarks.en.json',
   'data/vision-cases.json',
+  'bundles/i18n.js',
   'favicon.svg',
   'CNAME',
   'robots.txt',
@@ -70,11 +79,17 @@ const BUNDLE_REQUIRED = {
   'promo': ['index.html', 'styles.css', 'app.js'],
 }
 
-const BASE_ROUTES = ['/', '/notes', '/notes/kimi-k3-subscription-review', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/links']
-const ROUTES = [
-  ...BASE_ROUTES,
-  ...BASE_ROUTES.map((route) => (route === '/' ? '/en' : `/en${route}`)),
+const SHARED_BASE_ROUTES = ['/', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/links']
+const CHINESE_ARTICLE_ROUTES = ['/notes', '/notes/kimi-k3-subscription-review']
+const ENGLISH_ARTICLE_ROUTES = ['/en/articles', '/en/articles/kimi-k3-review']
+const LEGACY_ENGLISH_ARTICLE_ROUTES = ['/en/notes', '/en/notes/kimi-k3-subscription-review']
+const SITEMAP_ROUTES = [
+  ...SHARED_BASE_ROUTES,
+  ...CHINESE_ARTICLE_ROUTES,
+  ...SHARED_BASE_ROUTES.map((route) => (route === '/' ? '/en' : `/en${route}`)),
+  ...ENGLISH_ARTICLE_ROUTES,
 ]
+const ROUTES = [...SITEMAP_ROUTES, ...LEGACY_ENGLISH_ARTICLE_ROUTES]
 
 const BAD_EXTENSIONS = ['.jsonl', '.stderr', '.stdout', '.log']
 const PUBLIC_BAD_SUBSTRINGS = [
@@ -165,6 +180,10 @@ async function checkBundles() {
         if (!(await fileExists(join(dir, required)))) {
           errors.push(`Missing required bundle file: ${kind}/${model}/${required}`)
         }
+      }
+      const index = await readFile(join(dir, 'index.html'), 'utf8')
+      if (!index.includes('/bundles/i18n.js')) {
+        errors.push(`Bundle does not load the shared locale adapter: ${kind}/${model}`)
       }
       await walk(dir, async (path, name) => {
         const rel = path.replace(dir + '/', '')
@@ -259,8 +278,11 @@ async function checkRouteManifest() {
   if (!appFile.includes("renderLocalizedRoutes('')") || !appFile.includes("renderLocalizedRoutes('/en')")) {
     errors.push('App.tsx does not mount both localized route sets')
   }
-  for (const route of BASE_ROUTES) {
+  for (const route of SHARED_BASE_ROUTES) {
     if (!appFile.includes(`route('${route}')`)) errors.push(`Base route ${route} not declared in App.tsx`)
+  }
+  for (const route of [...CHINESE_ARTICLE_ROUTES, ...ENGLISH_ARTICLE_ROUTES, ...LEGACY_ENGLISH_ARTICLE_ROUTES]) {
+    if (!appFile.includes(`path="${route}"`)) errors.push(`Explicit route ${route} not declared in App.tsx`)
   }
 
   const redirectFile = await readFile(join(SRC, 'components/RedirectHandler.tsx'), 'utf8')
@@ -269,7 +291,7 @@ async function checkRouteManifest() {
   }
 
   const sitemap = await readFile(join(PUBLIC, 'sitemap.xml'), 'utf8')
-  for (const route of ROUTES) {
+  for (const route of SITEMAP_ROUTES) {
     const url = `https://kevinai.top${route === '/' ? '/' : route}`
     if (!sitemap.includes(`<loc>${url}</loc>`)) errors.push(`Route ${route} missing from sitemap.xml`)
   }
@@ -322,6 +344,23 @@ async function checkVisionDataset() {
     if (!(await fileExists(join(PUBLIC, item.image.slice(1))))) {
       errors.push(`Missing public vision image: ${item.id}`)
     }
+  }
+
+  const englishPath = join(SRC, 'data/visionEnglish.ts')
+  if (!(await fileExists(englishPath))) {
+    errors.push('Missing English vision question map: src/data/visionEnglish.ts')
+    return
+  }
+  const englishSource = await readFile(englishPath, 'utf8')
+  const englishIds = new Set(Array.from(englishSource.matchAll(/^\s*(V\d{3}):\s*\{/gm), (match) => match[1]))
+  for (const id of ids) {
+    if (!englishIds.has(id)) errors.push(`Missing English vision question: ${id}`)
+  }
+  for (const id of englishIds) {
+    if (!ids.has(id)) errors.push(`English vision question has no source case: ${id}`)
+  }
+  if (!englishSource.includes('localizeVisionCase')) {
+    errors.push('English vision question map does not export localizeVisionCase')
   }
 }
 

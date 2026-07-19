@@ -12,6 +12,8 @@ export default function Home() {
   const [qrOpen, setQrOpen] = useState(false)
   const { isEnglish, path } = useLocale()
   const firstArticleReleased = useFirstArticleRelease()
+  const articlesPath = isEnglish ? '/en/articles' : '/notes'
+  const firstArticlePath = isEnglish ? '/en/articles/kimi-k3-review' : FIRST_ARTICLE_PATH
 
   return (
     <>
@@ -35,7 +37,14 @@ export default function Home() {
                 </span>
               </div>
               <h1 className="mb-5 text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl">
-                Kevin <span className="text-pitch-500">AI</span>局
+                {isEnglish ? (
+                  <>
+                    Kevin <span className="text-pitch-500">AI</span>
+                    <span className="block">Lab</span>
+                  </>
+                ) : (
+                  <>Kevin <span className="text-pitch-500">AI</span>局</>
+                )}
               </h1>
               <p className="mb-7 max-w-[58ch] text-base leading-relaxed text-graphite-200 md:text-lg">
                 {isEnglish
@@ -55,7 +64,7 @@ export default function Home() {
                   {isEnglish ? 'See One Kick' : '看看《一脚晋级》'}
                 </a>
                 <Link
-                  to={path(firstArticleReleased ? FIRST_ARTICLE_PATH : '/notes')}
+                  to={firstArticleReleased ? firstArticlePath : articlesPath}
                   className="inline-flex items-center justify-center rounded-full border border-white/10 px-5 py-2.5 font-medium text-white transition-colors hover:border-white/25"
                 >
                   {firstArticleReleased
@@ -218,11 +227,11 @@ export default function Home() {
                       : (isEnglish ? 'The Chinese and English versions will go live together on July 19.' : '7 月 19 日，中英文版同时开放。')}
                   </p>
                   {firstArticleReleased ? (
-                    <Link to={path(FIRST_ARTICLE_PATH)} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
+                    <Link to={firstArticlePath} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
                       {isEnglish ? 'Read the full test' : '阅读全文'} <span className="ml-1">→</span>
                     </Link>
                   ) : (
-                    <Link to={path('/notes')} className="mt-3 inline-flex text-sm text-graphite-400 hover:text-white">
+                    <Link to={articlesPath} className="mt-3 inline-flex text-sm text-graphite-400 hover:text-white">
                       {isEnglish ? 'Open notes' : '去文章页'} <span className="ml-1">→</span>
                     </Link>
                   )}

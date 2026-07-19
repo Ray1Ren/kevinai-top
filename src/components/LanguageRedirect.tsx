@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { detectBrowserLocale, getSavedLocale, rememberLocale } from '../hooks/useLocale'
+import { detectBrowserLocale, getSavedLocale } from '../hooks/useLocale'
 
 export default function LanguageRedirect() {
   const { pathname, search } = useLocation()
@@ -10,7 +10,6 @@ export default function LanguageRedirect() {
     if (pathname !== '/' || new URLSearchParams(search).has('redirect')) return
 
     const preferred = getSavedLocale() ?? detectBrowserLocale()
-    rememberLocale(preferred)
     if (preferred === 'en') navigate('/en', { replace: true })
   }, [navigate, pathname, search])
 

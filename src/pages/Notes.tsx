@@ -16,6 +16,9 @@ export default function Notes() {
             ? 'Kevin\'s build notes, AI tool tests, and independent product updates.'
             : 'Kevin 的开发日记、AI 工具实测和独立产品更新。'
         }
+        canonicalPath="/notes"
+        alternateZhPath="/notes"
+        alternateEnPath="/en/articles"
       />
       <section className="min-h-[75dvh] pb-24 pt-28 md:pb-32 md:pt-36">
         <div className="mx-auto max-w-[1400px] px-4 md:px-6">
@@ -63,7 +66,7 @@ export default function Notes() {
                       <h2 className="text-2xl font-semibold tracking-tight text-white transition-colors group-hover:text-pitch-300 md:text-3xl">
                         {isEnglish
                           ? 'Is Kimi K3 worth paying for? Two games, one web page, and 50 images'
-                          : 'Kimi K3 到底值不值得订阅？6000 字真实大评测'}
+                          : '国产之光！Kimi K3 到底值不值得订阅？6000 字真实大评测'}
                       </h2>
                       <p className="mt-4 text-sm leading-relaxed text-graphite-300 md:text-base">
                         {isEnglish

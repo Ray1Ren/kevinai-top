@@ -19,6 +19,7 @@ type FigureProps = {
 }
 
 const asset = (name: string) => `/assets/article-kimi-k3/${name}`
+const englishScene = (name: string) => `/assets/article-kimi-k3-en/${name}`
 
 function ArticleFigure({ src, alt, caption, contain = false }: FigureProps) {
   return (
@@ -204,7 +205,7 @@ export default function KimiK3Review() {
   return (
     <>
       <SEOHead
-        title={t('Kimi K3 到底值不值得订阅？6000 字真实大评测', 'Is Kimi K3 Worth Paying For? Two Games, One Web Page, and 50 Images')}
+        title={t('国产之光！Kimi K3 到底值不值得订阅？6000 字真实大评测', 'Is Kimi K3 Worth Paying For? Two Games, One Web Page, and 50 Images')}
         description={t(
           '我用同一套题实测 Kimi K3、GPT-5.6 Sol 和 MiniMax M3：两个游戏、一个宣传页、50 道图片题，以及真实额度记录。',
           'A hands-on comparison of Kimi K3, GPT-5.6 Sol, and MiniMax M3 across two games, one promotion page, 50 image questions, and real quota records.',
@@ -212,13 +213,21 @@ export default function KimiK3Review() {
         image="https://kevinai.top/assets/images/kevin-avatar.png"
         type="article"
         publishedTime="2026-07-19T00:00:00.000Z"
+        canonicalPath="/notes/kimi-k3-subscription-review"
+        alternateZhPath="/notes/kimi-k3-subscription-review"
+        alternateEnPath="/en/articles/kimi-k3-review"
       />
 
       <article className="pb-24 pt-24 md:pb-32 md:pt-32">
         <header className="mx-auto max-w-[1400px] px-4 md:px-6">
-          <Link to={path('/notes')} className="inline-flex text-sm text-graphite-400 transition-colors hover:text-white">
-            <span className="mr-2" aria-hidden="true">←</span>{t('返回文章列表', 'Back to notes')}
-          </Link>
+          <div className="flex flex-wrap items-center gap-5">
+            <Link to={path('/notes')} className="inline-flex text-sm text-graphite-400 transition-colors hover:text-white">
+              <span className="mr-2" aria-hidden="true">←</span>{t('返回文章列表', 'Back to notes')}
+            </Link>
+            <a href="https://mp.weixin.qq.com/s/EO2wmTxd4vbCi1bjsKWgUw" target="_blank" rel="noreferrer" className="inline-flex text-sm text-pitch-500 transition-colors hover:text-pitch-400">
+              公众号原文 <span className="ml-1" aria-hidden="true">↗</span>
+            </a>
+          </div>
 
           <div className="mt-10 grid grid-cols-1 gap-10 border-b border-white/10 pb-12 lg:grid-cols-12 lg:items-end md:pb-16">
             <div className="lg:col-span-8">
@@ -228,7 +237,7 @@ export default function KimiK3Review() {
                 <span>{t('约 20 分钟', 'About 20 min')}</span>
               </div>
               <h1 className="max-w-5xl text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-                {t('Kimi K3 到底值不值得订阅？6000 字真实大评测', 'Is Kimi K3 worth paying for? Two games, one web page, and 50 images')}
+                {t('国产之光！Kimi K3 到底值不值得订阅？6000 字真实大评测', 'Is Kimi K3 worth paying for? Two games, one web page, and 50 images')}
               </h1>
               <p className="mt-6 max-w-[65ch] text-lg leading-relaxed text-graphite-200 md:text-xl">
                 {t(
@@ -298,7 +307,7 @@ export default function KimiK3Review() {
                 caption={<>{t('蓝色是 Kimi K3。图片来自 ', 'Kimi K3 is shown in blue. Image from the ')}<a href="https://www.kimi.com/blog/kimi-k3" target="_blank" rel="noreferrer" className="text-pitch-400 hover:text-pitch-300">{t('Kimi K3 技术博客', 'Kimi K3 technical blog')}</a>{t('。', '.')}</>}
               />
 
-              <p>{t('这次 Kimi 用的是 699 元/月的 Kimi Code Allegro，约 100 美元。Codex 是我一直在续的约 200 美元/月方案。MiniMax 则是 469 元/月的 Ultra。选这三个没有什么高深理由，因为我都已经订了。', 'For this test, Kimi ran on the RMB 699-per-month Kimi Code Allegro plan, roughly US$100. Codex was the roughly US$200 plan I already use, and MiniMax was the RMB 469 Ultra plan. The selection method was simple: I was already paying for all three.')}</p>
+              <p>{t('这次 Kimi 用的是 699 元/月的 Kimi Code Allegro，约 100 美元。Codex 是我一直在续的约 200 美元/月方案。MiniMax 则是 469 元/月的 Ultra，平时写代码和做音频我也会用。选这三个没有什么高深理由，因为我都已经订了。GLM-5.2 原本也想测，但订阅一直没抢到，只能先缺席。', 'For this test, Kimi ran on the RMB 699-per-month Kimi Code Allegro plan, roughly US$100. Codex was the roughly US$200 plan I already use, and MiniMax was the RMB 469 Ultra plan. The selection method was simple: I was already paying for all three.')}</p>
               <p>{t('三家也没有硬塞进同一个 CLI。Kimi K3 用 Kimi Code CLI，GPT-5.6 Sol 用 Codex CLI，MiniMax M3 用 mmx CLI。额外 Skills 全部关闭，三边拿到同一道题和同一批素材，计时从开始干活一直算到它们自己停手。', 'I did not force the models through one shared CLI. Kimi K3 used Kimi Code CLI, GPT-5.6 Sol used Codex CLI, and MiniMax M3 used mmx CLI. Extra skills were disabled. Each agent received the same task and the same local assets, and the clock ran until the agent stopped working on its own.')}</p>
               <p>{t('分数是我的实际使用判断。游戏和网页难免带主观成分，所以速度单独列，不往质量分里塞。四项各按 100 分算，最后各占 25%。', 'The scores reflect my hands-on judgment, and visual quality and game feel inevitably involve some subjectivity. Speed is reported separately and does not inflate or reduce the quality score. Each of the four tasks is scored out of 100 and contributes 25 percent to the total.')}</p>
 
@@ -339,9 +348,9 @@ export default function KimiK3Review() {
               <h3>MiniMax M3 · 54.5</h3>
               <p>{t('M3 的卖相不差。首屏、弹道拖尾和空中技能都有，鼠标和触摸也都能发射。可上下瞄准是反的，根本发不出向上的弧线。第一关的石头还没碰到敌人就先落地，正常操作过不了关，刷新后进度也不会保存。', 'M3 looked respectable. It had a finished start screen, projectile trails, an airborne ability, and working mouse and touch input. But vertical aiming was inverted, so I could not launch an upward arc. The stone dropped before reaching the enemy in level one, making the level impossible through normal play, and progress disappeared after refresh.')}</p>
               <div className="grid gap-5 sm:grid-cols-3">
-                <ArticleFigure src="/assets/gifs/2d-k3.gif" alt={t('K3 2D 游戏演示', 'K3 2D gameplay')} caption="Kimi K3" />
-                <ArticleFigure src="/assets/gifs/2d-codex.gif" alt={t('Codex 2D 游戏演示', 'Codex 2D gameplay')} caption="GPT-5.6 Sol" />
-                <ArticleFigure src="/assets/gifs/2d-m3.gif" alt={t('MiniMax 2D 游戏演示', 'MiniMax 2D gameplay')} caption="MiniMax M3" />
+                <ArticleFigure src={isEnglish ? englishScene('2d-kimi-scene.png') : '/assets/gifs/2d-k3.gif'} alt={t('K3 2D 游戏演示', 'K3 2D gameplay')} caption="Kimi K3" />
+                <ArticleFigure src={isEnglish ? englishScene('2d-codex-scene.png') : '/assets/gifs/2d-codex.gif'} alt={t('Codex 2D 游戏演示', 'Codex 2D gameplay')} caption="GPT-5.6 Sol" />
+                <ArticleFigure src={isEnglish ? englishScene('2d-minimax-scene.png') : '/assets/gifs/2d-m3.gif'} alt={t('MiniMax 2D 游戏演示', 'MiniMax 2D gameplay')} caption="MiniMax M3" />
               </div>
               <LabLink to={path('/lab/2d')}>{t('直接玩三款 2D 游戏', 'Play all three 2D builds')}</LabLink>
             </section>
@@ -383,9 +392,9 @@ export default function KimiK3Review() {
               <p>{t('我最后才试出来：正对灰墙一直往前走，角色会直接穿进去，里面左右各站着一名敌人。不主动穿墙，永远清不完四个人。左下角的存活敌人还一直显示 4，打死两个也不更新。', 'Eventually I discovered that walking straight into the gray wall let the player pass through it, revealing one enemy on each side. A normal player would never clear all four enemies without deliberately walking through what looked like a wall. The enemy counter also stayed at four even after two kills.')}</p>
               <ArticleFigure src={asset('3d-m3-hidden-enemies.gif')} alt={t('MiniMax M3 把仓库入口画成实墙', 'MiniMax M3 rendered the warehouse entrance as a solid wall')} caption={t('画面看着是实墙，却必须穿进去才能找到另外两名敌人。', 'The entrance looks solid, but the player must walk through it to find the other two enemies.')} />
               <div className="grid gap-5 sm:grid-cols-3">
-                <ArticleFigure src="/assets/gifs/3d-k3.gif" alt={t('K3 3D 游戏演示', 'K3 3D gameplay')} caption="Kimi K3" />
-                <ArticleFigure src="/assets/gifs/3d-codex.gif" alt={t('Codex 3D 游戏演示', 'Codex 3D gameplay')} caption="GPT-5.6 Sol" />
-                <ArticleFigure src="/assets/gifs/3d-m3.gif" alt={t('MiniMax 3D 游戏演示', 'MiniMax 3D gameplay')} caption="MiniMax M3" />
+                <ArticleFigure src={isEnglish ? englishScene('3d-kimi-scene.png') : '/assets/gifs/3d-k3.gif'} alt={t('K3 3D 游戏演示', 'K3 3D gameplay')} caption="Kimi K3" />
+                <ArticleFigure src={isEnglish ? englishScene('3d-codex-scene.png') : '/assets/gifs/3d-codex.gif'} alt={t('Codex 3D 游戏演示', 'Codex 3D gameplay')} caption="GPT-5.6 Sol" />
+                <ArticleFigure src={isEnglish ? englishScene('3d-minimax-scene.png') : '/assets/gifs/3d-m3.gif'} alt={t('MiniMax 3D 游戏演示', 'MiniMax 3D gameplay')} caption="MiniMax M3" />
               </div>
               <LabLink to={path('/lab/3d')}>{t('直接玩三款 3D 游戏', 'Play all three 3D builds')}</LabLink>
             </section>
@@ -411,6 +420,7 @@ export default function KimiK3Review() {
               />
 
               <h3>Kimi K3 · 91.0</h3>
+              <p>{t('做这题之前，我看过 Kimi 的官方帖子，也看了几篇其他人的评测，对 K3 的前端能力期待很高。结果页面一打开，我没有被惊到，反而有点失望。这个 case 不能把它的前端能力说死，但这次确实没有超过我的预期。', 'K3 was the model I expected to win here. I had seen Moonshot’s own front-end examples and several positive reviews. The result was good, but it did not exceed my expectations. One task cannot settle its front-end ability.')}</p>
               <p>{t('K3 的功能最齐。路径格高亮、规则列表、实机叠卡、提示和重置都很好找，45 分钟用满后也没有缺东西。可首屏文案偏长，Logo、角色和球场没有完全融到一起。单看不差，和 Codex 放在一起时，第一眼还是弱了一点。', 'K3 delivered the fullest feature set. Route highlighting, rules, layered gameplay shots, hints, and reset were all easy to find, and nothing was missing when the 45 minutes expired. Its first screen carried too much copy, though, and the logo, character, and stadium did not feel fully integrated. It looked fine alone, but weaker beside the Codex page.')}</p>
 
               <h3>GPT-5.6 Sol · 95.0</h3>

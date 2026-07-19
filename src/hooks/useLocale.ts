@@ -23,7 +23,8 @@ export function getSavedLocale(): Locale | null {
 
 export function detectBrowserLocale(): Locale {
   const languages = navigator.languages?.length ? navigator.languages : [navigator.language]
-  return languages.some((language) => /^zh(?:-|$)/i.test(language)) ? 'zh' : 'en'
+  const primaryLanguage = languages.find(Boolean) ?? ''
+  return /^zh(?:-|$)/i.test(primaryLanguage) ? 'zh' : 'en'
 }
 
 export function stripLocalePath(pathname: string) {
@@ -49,6 +50,18 @@ export function useLocale() {
     basePath,
     path: (target: string) => localizePath(target, locale),
     bundlePath: (target: string) => (locale === 'en' ? `${target}${target.includes('?') ? '&' : '?'}lang=en` : target),
-    alternatePath: localizePath(basePath, locale === 'en' ? 'zh' : 'en'),
+    alternatePath: getAlternatePath(pathname, locale),
   }
+}
+
+function getAlternatePath(pathname: string, locale: Locale) {
+  const pairedPaths: Record<string, string> = {
+    '/notes': '/en/articles',
+    '/en/articles': '/notes',
+    '/notes/kimi-k3-subscription-review': '/en/articles/kimi-k3-review',
+    '/en/articles/kimi-k3-review': '/notes/kimi-k3-subscription-review',
+    '/en/notes': '/notes',
+    '/en/notes/kimi-k3-subscription-review': '/notes/kimi-k3-subscription-review',
+  }
+  return pairedPaths[pathname] ?? localizePath(stripLocalePath(pathname), locale === 'en' ? 'zh' : 'en')
 }

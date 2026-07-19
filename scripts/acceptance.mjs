@@ -118,8 +118,8 @@ async function testStaticDeepLinks(browser, base) {
     ['/notes', '文章与动态'],
     ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
     ['/en/lab/2d', '2D Web Game Test'],
-    ['/en/notes', 'Notes & Updates'],
-    ['/en/notes/kimi-k3-subscription-review', 'Is Kimi K3 Worth Paying For'],
+    ['/en/articles', 'Articles'],
+    ['/en/articles/kimi-k3-review', 'I tested Kimi K3'],
   ]
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
   await context.addInitScript(() => {
@@ -204,14 +204,25 @@ async function testFirstArticle(browser, base) {
   await loadLazyArticleMedia(page)
   await page.screenshot({ path: join(SCREENSHOTS, 'article-kimi-k3-mobile.png'), fullPage: true })
 
-  await page.goto(`${base}/en/notes/kimi-k3-subscription-review`, { waitUntil: 'networkidle' })
-  assert.match(await page.title(), /Is Kimi K3 Worth Paying For/)
+  await page.goto(`${base}/en/articles/kimi-k3-review`, { waitUntil: 'networkidle' })
+  assert.match(await page.title(), /I tested Kimi K3/)
   assert.equal(await page.locator('html').getAttribute('lang'), 'en')
   const enBody = await page.locator('main').innerText()
   for (const required of ['92.6', '89.8', '77.8', '80.5', '96.0', '54.5', '91.0', '89.2', '83.6', '95.0', '85.0', '96.7', '90.0', '88.0', '49/50', '47/50', '46/50', '100 million-plus', '3 billion-plus']) {
     assert(enBody.includes(required), `English article must include ${required}`)
   }
   assert(!enBody.includes('tempkey'), 'English article must not expose an expiring WeChat preview URL')
+  const englishImageSources = await page.locator('article img').evaluateAll((images) => images.map((image) => image.getAttribute('src') ?? ''))
+  const allowedSharedImages = new Set([
+    '/assets/article-kimi-k3/k3-official-benchmark.png',
+    '/assets/article-kimi-k3/vision-count-snow.png',
+    '/assets/article-kimi-k3/vision-count-party.png',
+    '/assets/article-kimi-k3/vision-ocr.png',
+    '/assets/images/qr-code.png',
+  ])
+  for (const src of englishImageSources) {
+    assert(src.startsWith('/assets/article-kimi-k3-en/') || allowedSharedImages.has(src), `English article uses an unreviewed image: ${src}`)
+  }
   const enWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
   assert(enWidth <= 392, `English article must not overflow a 390px viewport, got ${enWidth}px`)
   await loadLazyArticleMedia(page)
@@ -219,7 +230,7 @@ async function testFirstArticle(browser, base) {
 
   finishMonitoring()
   await context.close()
-  log('first article passed: Chinese and English facts, local assets, SEO title, and 390px layout')
+  log('first article passed: Chinese and English facts, English-only article images, SEO title, and 390px layout')
 }
 
 async function testBilingualHomepage(browser, base) {
@@ -227,6 +238,7 @@ async function testBilingualHomepage(browser, base) {
     viewport: { width: 390, height: 844 },
     hasTouch: true,
     isMobile: true,
+    locale: 'zh-CN',
   })
   await mobileContext.addInitScript(() => {
     Date.now = () => Date.parse('2026-07-19T00:01:00Z')
@@ -261,6 +273,58 @@ async function testBilingualHomepage(browser, base) {
   await desktopPage.screenshot({ path: join(SCREENSHOTS, 'home-en-desktop.png') })
   await desktopContext.close()
   log('homepage passed: generated hero, natural bilingual copy, WeChat context, and 390px layout')
+}
+
+async function testAutomaticLanguagePreference(browser, base) {
+  const englishContext = await browser.newContext({
+    viewport: { width: 1280, height: 800 },
+    locale: 'en-US',
+  })
+  const englishPage = await englishContext.newPage()
+  const finishEnglishMonitoring = monitorPage(englishPage, 'automatic English language preference')
+  await englishPage.goto(`${base}/`, { waitUntil: 'networkidle' })
+  await englishPage.waitForURL(`${base}/en`)
+  assert.equal(await englishPage.locator('html').getAttribute('lang'), 'en')
+  assert.equal(await englishPage.evaluate(() => localStorage.getItem('kevinai.locale')), null, 'automatic detection must not become a permanent preference')
+
+  await englishPage.getByRole('link', { name: '切换到中文版' }).click()
+  await englishPage.waitForURL(`${base}/`)
+  assert.equal(await englishPage.locator('html').getAttribute('lang'), 'zh-CN')
+  assert.equal(await englishPage.evaluate(() => localStorage.getItem('kevinai.locale')), 'zh')
+  await englishPage.reload({ waitUntil: 'networkidle' })
+  assert.equal(englishPage.url(), `${base}/`, 'manual Chinese preference must survive reload on an English browser')
+  assert.equal(await englishPage.locator('html').getAttribute('lang'), 'zh-CN')
+  finishEnglishMonitoring()
+  await englishContext.close()
+
+  const chineseContext = await browser.newContext({
+    viewport: { width: 1280, height: 800 },
+    locale: 'zh-CN',
+  })
+  const chinesePage = await chineseContext.newPage()
+  const finishChineseMonitoring = monitorPage(chinesePage, 'automatic Chinese language preference')
+  await chinesePage.goto(`${base}/`, { waitUntil: 'networkidle' })
+  assert.equal(chinesePage.url(), `${base}/`)
+  assert.equal(await chinesePage.locator('html').getAttribute('lang'), 'zh-CN')
+  assert.equal(await chinesePage.evaluate(() => localStorage.getItem('kevinai.locale')), null, 'automatic detection must not become a permanent preference')
+  finishChineseMonitoring()
+  await chineseContext.close()
+
+  const deepLinkContext = await browser.newContext({
+    viewport: { width: 1280, height: 800 },
+    locale: 'en-US',
+  })
+  const deepLinkPage = await deepLinkContext.newPage()
+  const finishDeepLinkMonitoring = monitorPage(deepLinkPage, 'locale-specific deep links', { allowDocument404: true })
+  await deepLinkPage.goto(`${base}/lab/2d`, { waitUntil: 'networkidle' })
+  assert.equal(new URL(deepLinkPage.url()).pathname, '/lab/2d', 'an explicit Chinese deep link must not be rewritten')
+  assert.equal(await deepLinkPage.locator('html').getAttribute('lang'), 'zh-CN')
+  await deepLinkPage.goto(`${base}/en/lab/2d`, { waitUntil: 'networkidle' })
+  assert.equal(new URL(deepLinkPage.url()).pathname, '/en/lab/2d', 'an explicit English deep link must not be rewritten')
+  assert.equal(await deepLinkPage.locator('html').getAttribute('lang'), 'en')
+  finishDeepLinkMonitoring()
+  await deepLinkContext.close()
+  log('language preference passed: browser default, explicit routes, and manual override persistence')
 }
 
 const bundleKinds = {
@@ -430,13 +494,15 @@ async function testPromoInteraction(browser, base) {
   const finishMonitoring = monitorPage(page, 'promotion page interaction')
   await page.goto(`${base}/bundles/promo/codex/`, { waitUntil: 'networkidle' })
 
-  for (const direction of ['right', 'up', 'right']) {
+  for (const [index, direction] of ['right', 'up', 'right'].entries()) {
     await page.locator(`[data-direction="${direction}"]`).click()
-    await page.waitForFunction(() => {
+    await page.waitForFunction((expectedMoves) => {
       const phase = window.__ONEKICK_TEST__.snapshot().phase
-      return phase === 'ready' || phase === 'won'
-    })
+      const moves = Number(document.querySelector('#move-count')?.textContent ?? '-1')
+      return moves === expectedMoves && (phase === 'ready' || phase === 'won')
+    }, index + 1)
   }
+  await page.waitForTimeout(600)
 
   assert.equal(await page.locator('#move-count').innerText(), '3')
   assert.equal(await page.locator('#victory-panel').getAttribute('aria-hidden'), 'false')
@@ -445,6 +511,78 @@ async function testPromoInteraction(browser, base) {
   finishMonitoring()
   await context.close()
   log('promotion page operation passed: right, up, right, victory')
+}
+
+async function assertNoChineseInterface(page, label) {
+  const leaks = await page.evaluate(() => {
+    const chinese = /[\u3400-\u9fff]/u
+    const text = document.body.innerText
+      .split('\n')
+      .map((line) => line.trim())
+      .filter((line) => chinese.test(line))
+    const attributes = Array.from(document.querySelectorAll('[aria-label], [title], [alt], [placeholder]'))
+      .flatMap((element) => ['aria-label', 'title', 'alt', 'placeholder'].map((name) => ({
+        name,
+        value: element.getAttribute(name) ?? '',
+      })))
+      .filter((item) => chinese.test(item.value))
+    return { text, attributes }
+  })
+  assert.deepEqual(leaks, { text: [], attributes: [] }, `${label} must not expose Chinese UI copy`)
+}
+
+async function testEnglishBundleLocalization(browser, base) {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+    locale: 'en-US',
+  })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'English playable bundles')
+
+  for (const [kind, config] of Object.entries(bundleKinds)) {
+    for (const model of ['kimi', 'codex', 'minimax-m3']) {
+      const label = `${kind}/${model}`
+      await page.goto(`${base}/bundles/${label}/?lang=en`, { waitUntil: 'networkidle', timeout: 30000 })
+      await page.locator(config.ready).first().waitFor({ state: 'visible', timeout: 15000 })
+      await page.waitForFunction(() => document.documentElement.lang === 'en')
+      assert(!/[\u3400-\u9fff]/u.test(await page.title()), `${label} title must be English`)
+      await assertNoChineseInterface(page, `${label} initial screen`)
+      const width = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+      assert(width <= 392, `${label} must not overflow a 390px portrait viewport, got ${width}px`)
+    }
+  }
+
+  await page.goto(`${base}/bundles/promo/codex/?lang=en`, { waitUntil: 'networkidle' })
+  for (const [index, direction] of ['right', 'up', 'right'].entries()) {
+    await page.locator(`[data-direction="${direction}"]`).click()
+    await page.waitForFunction((expectedMoves) => {
+      const phase = window.__ONEKICK_TEST__.snapshot().phase
+      const moves = Number(document.querySelector('#move-count')?.textContent ?? '-1')
+      return moves === expectedMoves && (phase === 'ready' || phase === 'won')
+    }, index + 1)
+  }
+  await page.waitForTimeout(600)
+  assert.match(await page.locator('#demo-status').innerText(), /Goal|clear|promot/i)
+  await assertNoChineseInterface(page, 'English promotion win state')
+  const mobileWinLayout = await page.evaluate(() => ({
+    scrollX: window.scrollX,
+    heroScrollLeft: document.querySelector('.hero')?.scrollLeft ?? -1,
+    pageWidth: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
+    consoleRect: (() => {
+      const rect = document.querySelector('.demo-console')?.getBoundingClientRect()
+      return rect ? { left: rect.left, right: rect.right } : null
+    })(),
+  }))
+  assert.equal(mobileWinLayout.scrollX, 0, 'English promotion page must not drift horizontally after touch controls')
+  assert.equal(mobileWinLayout.heroScrollLeft, 0, 'English promotion hero must not become a hidden horizontal scroll container')
+  assert(mobileWinLayout.pageWidth <= 392, `English promotion page must fit a 390px viewport, got ${mobileWinLayout.pageWidth}px`)
+  assert(mobileWinLayout.consoleRect && mobileWinLayout.consoleRect.left >= 0 && mobileWinLayout.consoleRect.right <= 390, 'English promotion console must stay fully inside the portrait viewport')
+  await page.screenshot({ path: join(SCREENSHOTS, 'promo-codex-en-mobile-win.png') })
+  finishMonitoring()
+  await context.close()
+  log('English bundles passed: nine initial screens and the dynamic promotion win state')
 }
 
 async function testPublishedBenchmarkScores(browser, base) {
@@ -524,9 +662,17 @@ async function testVisionReview(browser, base) {
   assert.equal(await page.locator('html').getAttribute('lang'), 'en')
   assert.equal(await page.locator('article[data-case-id]').count(), 50)
   assert.match(await page.locator('body').innerText(), /translated for this edition/)
+  const firstEnglishCase = page.locator('article[data-case-id="V001"]')
+  await firstEnglishCase.waitFor({ state: 'visible' })
+  const firstEnglishCaseText = await firstEnglishCase.innerText()
+  assert.match(firstEnglishCaseText, /What piece of sports equipment is under the child’s feet\?/)
+  for (const option of ['Snowboard', 'Surfboard', 'Sled', 'Skateboard']) {
+    assert(firstEnglishCaseText.includes(option), `V001 must include English option ${option}`)
+  }
+  assert(!/[\u3400-\u9fff]/u.test(firstEnglishCaseText), 'V001 card must not contain Chinese UI copy')
   finishMonitoring()
   await context.close()
-  log(`vision review passed: 50 direct results, result/category/difficulty filters, English source-language notice`)
+  log('vision review passed: 50 direct results, filters, and fully translated English question cards')
 }
 
 async function testEmbeddedPlayableBuilds(browser, base) {
@@ -546,13 +692,25 @@ async function testEmbeddedPlayableBuilds(browser, base) {
   assert.equal(await frame.getAttribute('src'), '/bundles/3d/kimi/')
   await page.locator('button[data-playable-id="minimax"]').click()
   assert.equal(await frame.getAttribute('src'), '/bundles/3d/minimax-m3/')
+
+  await page.goto(`${base}/en/lab/2d`, { waitUntil: 'networkidle' })
+  await frame.waitFor({ state: 'visible' })
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/codex/?lang=en')
+  await page.locator('button[data-playable-id="kimi"]').click()
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/kimi/?lang=en')
+
+  await page.goto(`${base}/en/lab/3d`, { waitUntil: 'networkidle' })
+  await frame.waitFor({ state: 'visible' })
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/kimi/?lang=en')
+  await page.locator('button[data-playable-id="minimax"]').click()
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/minimax-m3/?lang=en')
   finishMonitoring()
   await context.close()
-  log('embedded playable builds passed: 2D and 3D model switching')
+  log('embedded playable builds passed: Chinese and English 2D/3D model switching')
 }
 
 async function testMotionModes(browser, base) {
-  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' })
   const page = await context.newPage()
   const finishMonitoring = monitorPage(page, 'motion controls')
   await page.goto(`${base}/`, { waitUntil: 'networkidle' })
@@ -593,6 +751,7 @@ async function testMotionModes(browser, base) {
   const reducedContext = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     reducedMotion: 'reduce',
+    locale: 'zh-CN',
   })
   const reducedPage = await reducedContext.newPage()
   await reducedPage.goto(`${base}/`, { waitUntil: 'networkidle' })
@@ -604,6 +763,7 @@ async function testMotionModes(browser, base) {
     viewport: { width: 700, height: 900 },
     hasTouch: true,
     isMobile: true,
+    locale: 'zh-CN',
   })
   const coarsePage = await coarseContext.newPage()
   await coarsePage.goto(`${base}/`, { waitUntil: 'networkidle' })
@@ -613,7 +773,7 @@ async function testMotionModes(browser, base) {
 }
 
 async function testQrKeyboardAndLocale(browser, base) {
-  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'zh-CN' })
   const page = await context.newPage()
   const finishMonitoring = monitorPage(page, 'QR and locale controls', { allowDocument404: true })
 
@@ -656,12 +816,14 @@ async function main() {
     await testArticleReleaseGate(browser, base)
     await testFirstArticle(browser, base)
     await testBilingualHomepage(browser, base)
+    await testAutomaticLanguagePreference(browser, base)
     await testBundleMimeAndLoad(browser, base)
     await test2DInteraction(browser, base)
     await test3DInteraction(browser, base)
     await testM3DesktopShooting(browser, base)
     await testM3MobileShooting(browser, base)
     await testPromoInteraction(browser, base)
+    await testEnglishBundleLocalization(browser, base)
     await testPublishedBenchmarkScores(browser, base)
     await testVisionReview(browser, base)
     await testEmbeddedPlayableBuilds(browser, base)
