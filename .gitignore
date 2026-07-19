@@ -20,6 +20,9 @@ Thumbs.db
 KIMI_HANDOFF.md
 KIMI_REVIEW_ROUND1.md
 
+# Local source and unused image-generation candidates
+source-assets/
+
 # Local-only asset/bundle preparation scripts with absolute paths
 scripts/import-assets.py
 scripts/copy-bundles.py

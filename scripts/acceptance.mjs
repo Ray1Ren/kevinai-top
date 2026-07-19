@@ -120,8 +120,8 @@ async function testStaticDeepLinks(browser, base) {
     ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
     ['/notes/ai-game-24-days', 'AI 做小游戏'],
     ['/en/lab/2d', '2D Web Game Test'],
-    ['/en/articles', 'Articles'],
-    ['/en/articles/kimi-k3-review', 'I tested Kimi K3'],
+    ['/en/articles', 'Notes & Updates'],
+    ['/en/articles/kimi-k3-review', 'Is Kimi K3'],
     ['/en/articles/ai-game-24-days', 'AI made my first game playable'],
   ]
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
@@ -170,6 +170,73 @@ async function loadLazyArticleMedia(page) {
   await page.waitForTimeout(250)
 }
 
+async function captureMirrorSnapshot(page, rootSelector = 'article') {
+  return page.locator(rootSelector).evaluate((root) => {
+    const normalizeMediaName = (src) => {
+      const raw = src?.split('?')[0].split('/').pop() ?? ''
+      return raw.replace(/-(?:zh|en)(?=\.[^.]+$)/, '')
+    }
+    const structure = (element) => {
+      const className = typeof element.className === 'string' ? element.className.trim() : ''
+      const node = className ? `${element.tagName.toLowerCase()}.${className}` : element.tagName.toLowerCase()
+      return `${node}[${Array.from(element.children).map(structure).join(',')}]`
+    }
+    const images = Array.from(root.querySelectorAll('img'))
+    const figures = Array.from(root.querySelectorAll('figure'))
+    const audio = Array.from(root.querySelectorAll('audio'))
+    const gridLayouts = Array.from(root.querySelectorAll('*'))
+      .filter((element) => getComputedStyle(element).display === 'grid')
+      .map((element) => ({
+        className: typeof element.className === 'string' ? element.className.trim() : '',
+        columnCount: getComputedStyle(element).gridTemplateColumns.split(/\s+/).filter(Boolean).length,
+      }))
+
+    return {
+      sectionIds: Array.from(root.querySelectorAll('section[id]')).map((section) => section.id),
+      figureCount: figures.length,
+      imageCount: images.length,
+      gifCount: images.filter((image) => /\.gif(?:$|\?)/i.test(image.getAttribute('src') ?? '')).length,
+      audioCount: audio.length,
+      textCounts: Object.fromEntries(['p', 'h2', 'h3', 'li', 'blockquote'].map((tag) => [tag, root.querySelectorAll(tag).length])),
+      imageOrder: images.map((image) => normalizeMediaName(image.getAttribute('src'))),
+      figureOrder: figures.map((figure) => normalizeMediaName(figure.querySelector('img')?.getAttribute('src'))),
+      mediaOrder: Array.from(root.querySelectorAll('section[id], figure, audio')).map((element) => {
+        if (element.matches('section[id]')) return `section:${element.id}`
+        if (element.matches('figure')) return `figure:${normalizeMediaName(element.querySelector('img')?.getAttribute('src'))}`
+        return `audio:${normalizeMediaName(element.querySelector('source')?.getAttribute('src') ?? element.getAttribute('src'))}`
+      }),
+      gridLayouts,
+      structure: structure(root),
+    }
+  })
+}
+
+function assertMirrorSnapshots(chinese, english, label) {
+  for (const key of ['sectionIds', 'figureCount', 'imageCount', 'gifCount', 'audioCount', 'textCounts', 'imageOrder', 'figureOrder', 'mediaOrder', 'gridLayouts', 'structure']) {
+    assert.deepEqual(english[key], chinese[key], `${label} must mirror Chinese ${key}`)
+  }
+}
+
+async function testArticleLightbox(page, label) {
+  const articleImages = page.locator('.article-body img:not([data-no-lightbox])')
+  const imageCount = await articleImages.count()
+  assert(imageCount > 0, `${label} must contain article images`)
+  assert.equal(
+    await page.locator('.article-body img.article-zoomable-image').count(),
+    imageCount,
+    `${label} must make every article image zoomable`,
+  )
+
+  const firstImage = articleImages.first()
+  await firstImage.scrollIntoViewIfNeeded()
+  await firstImage.click()
+  const dialog = page.getByRole('dialog', { name: /文章大图预览|Full-size article image/ })
+  await dialog.waitFor({ state: 'visible' })
+  assert.equal(await page.locator('body').evaluate((body) => body.style.overflow), 'hidden')
+  await dialog.getByRole('button', { name: /关闭大图|Close image/ }).click()
+  await dialog.waitFor({ state: 'hidden' })
+}
+
 async function testArticleReleaseGate(browser, base) {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } })
   await context.addInitScript(() => {
@@ -216,13 +283,19 @@ async function testFirstArticle(browser, base) {
   }
   assert(!zhBody.includes('tempkey'), 'Chinese article must not expose an expiring WeChat preview URL')
   assert.equal(await page.locator('img[src^="/assets/article-kimi-k3/"]').count() >= 10, true)
+  for (const src of ['overall-total.png', 'overall-detail.png', '3d-total.png', 'token-total.png', 'token-detail.png']) {
+    assert.equal(await page.locator(`img[src="/assets/article-kimi-k3/${src}"]`).count(), 1, `Chinese article must use ${src}`)
+  }
+  assert.equal(await page.locator('article table').count(), 0, 'Chinese article must use score images instead of visible HTML tables')
   const zhWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
   assert(zhWidth <= 392, `Chinese article must not overflow a 390px viewport, got ${zhWidth}px`)
   await loadLazyArticleMedia(page)
+  const zhMirror = await captureMirrorSnapshot(page)
+  await testArticleLightbox(page, 'Chinese Kimi K3 article')
   await page.screenshot({ path: join(SCREENSHOTS, 'article-kimi-k3-mobile.png'), fullPage: true })
 
   await page.goto(`${base}/en/articles/kimi-k3-review`, { waitUntil: 'networkidle' })
-  assert.match(await page.title(), /I tested Kimi K3/)
+  assert.match(await page.title(), /Is Kimi K3/)
   assert.equal(await page.locator('html').getAttribute('lang'), 'en')
   const enBody = await page.locator('article').innerText()
   for (const required of ['92.6', '89.8', '77.8', '80.5', '96.0', '54.5', '91.0', '89.2', '83.6', '95.0', '85.0', '96.7', '90.0', '88.0', '49/50', '47/50', '46/50', '100 million-plus', '3 billion-plus']) {
@@ -231,18 +304,20 @@ async function testFirstArticle(browser, base) {
   assert(!enBody.includes('tempkey'), 'English article must not expose an expiring WeChat preview URL')
   const englishImageSources = await page.locator('article img').evaluateAll((images) => images.map((image) => image.getAttribute('src') ?? ''))
   const allowedSharedImages = new Set([
-    '/assets/article-kimi-k3/k3-official-benchmark.png',
-    '/assets/article-kimi-k3/vision-count-snow.png',
-    '/assets/article-kimi-k3/vision-count-party.png',
-    '/assets/article-kimi-k3/vision-ocr.png',
+    '/assets/images/image-recognition-dataset-1.jpg',
+    '/assets/images/image-recognition-dataset-2.jpg',
     '/assets/images/qr-code.png',
   ])
   for (const src of englishImageSources) {
-    assert(src.startsWith('/assets/article-kimi-k3-en/') || allowedSharedImages.has(src), `English article uses an unreviewed image: ${src}`)
+    assert(src.startsWith('/assets/article-kimi-k3-en/') || src.startsWith('/assets/gifs-en/') || allowedSharedImages.has(src), `English article uses an unreviewed image: ${src}`)
   }
+  assert.equal(await page.locator('article table').count(), 0, 'English article must use score images instead of visible HTML tables')
   const enWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
   assert(enWidth <= 392, `English article must not overflow a 390px viewport, got ${enWidth}px`)
   await loadLazyArticleMedia(page)
+  const enMirror = await captureMirrorSnapshot(page)
+  assertMirrorSnapshots(zhMirror, enMirror, 'Kimi K3 article at 390px')
+  await testArticleLightbox(page, 'English Kimi K3 article')
   await page.screenshot({ path: join(SCREENSHOTS, 'article-kimi-k3-en-mobile.png'), fullPage: true })
 
   finishMonitoring()
@@ -274,6 +349,8 @@ async function testBuildStoryArticle(browser, base) {
   const zhWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
   assert(zhWidth <= 392, `Chinese build story must not overflow a 390px viewport, got ${zhWidth}px`)
   await loadLazyArticleMedia(page)
+  const zhMirror = await captureMirrorSnapshot(page)
+  await testArticleLightbox(page, 'Chinese AI game build story')
   await page.screenshot({ path: join(SCREENSHOTS, 'article-ai-game-24-days-mobile.png'), fullPage: true })
 
   await page.goto(`${base}/en/articles/ai-game-24-days`, { waitUntil: 'networkidle' })
@@ -295,11 +372,76 @@ async function testBuildStoryArticle(browser, base) {
   const enWidth = await page.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
   assert(enWidth <= 392, `English build story must not overflow a 390px viewport, got ${enWidth}px`)
   await loadLazyArticleMedia(page)
+  const enMirror = await captureMirrorSnapshot(page)
+  assertMirrorSnapshots(zhMirror, enMirror, 'AI game build story at 390px')
+  await testArticleLightbox(page, 'English AI game build story')
   await page.screenshot({ path: join(SCREENSHOTS, 'article-ai-game-24-days-en-mobile.png'), fullPage: true })
 
   finishMonitoring()
   await context.close()
   log('AI game build story passed: bilingual facts, English infographics, audio, QR channel, SEO, and 390px layout')
+}
+
+async function testBilingualMirrorLayouts(browser, base) {
+  const articlePairs = [
+    {
+      label: 'Kimi K3 article',
+      zh: '/notes/kimi-k3-subscription-review',
+      en: '/en/articles/kimi-k3-review',
+      screenshot: 'article-kimi-k3',
+    },
+    {
+      label: 'AI game build story',
+      zh: '/notes/ai-game-24-days',
+      en: '/en/articles/ai-game-24-days',
+      screenshot: 'article-ai-game-24-days',
+    },
+  ]
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  await context.addInitScript(() => {
+    Date.now = () => Date.parse('2026-07-19T00:01:00Z')
+  })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'desktop bilingual mirror layouts', { allowDocument404: true })
+
+  for (const pair of articlePairs) {
+    await page.goto(`${base}${pair.zh}`, { waitUntil: 'networkidle' })
+    await loadLazyArticleMedia(page)
+    const chinese = await captureMirrorSnapshot(page)
+    await page.screenshot({ path: join(SCREENSHOTS, `${pair.screenshot}-desktop.png`), fullPage: true })
+
+    await page.goto(`${base}${pair.en}`, { waitUntil: 'networkidle' })
+    await loadLazyArticleMedia(page)
+    const english = await captureMirrorSnapshot(page)
+    assertMirrorSnapshots(chinese, english, `${pair.label} at 1440px`)
+    await page.screenshot({ path: join(SCREENSHOTS, `${pair.screenshot}-en-desktop.png`), fullPage: true })
+  }
+
+  finishMonitoring()
+  await context.close()
+
+  for (const viewport of [
+    { width: 390, height: 844, suffix: 'mobile' },
+    { width: 1440, height: 900, suffix: 'desktop' },
+  ]) {
+    const listContext = await browser.newContext({ viewport })
+    await listContext.addInitScript(() => {
+      Date.now = () => Date.parse('2026-07-19T00:01:00Z')
+    })
+    const listPage = await listContext.newPage()
+    const finishListMonitoring = monitorPage(listPage, `article lists at ${viewport.width}px`, { allowDocument404: true })
+    await listPage.goto(`${base}/notes`, { waitUntil: 'networkidle' })
+    const chineseList = await captureMirrorSnapshot(listPage, 'main')
+    await listPage.screenshot({ path: join(SCREENSHOTS, `articles-list-zh-${viewport.suffix}.png`), fullPage: true })
+    await listPage.goto(`${base}/en/articles`, { waitUntil: 'networkidle' })
+    const englishList = await captureMirrorSnapshot(listPage, 'main')
+    assertMirrorSnapshots(chineseList, englishList, `article list at ${viewport.width}px`)
+    await listPage.screenshot({ path: join(SCREENSHOTS, `articles-list-en-${viewport.suffix}.png`), fullPage: true })
+    finishListMonitoring()
+    await listContext.close()
+  }
+
+  log('bilingual mirror layouts passed: matching structure, media order, grid columns, and mobile stacking')
 }
 
 async function testBilingualHomepage(browser, base) {
@@ -1020,6 +1162,7 @@ async function main() {
     await testArticleReleaseGate(browser, base)
     await testFirstArticle(browser, base)
     await testBuildStoryArticle(browser, base)
+    await testBilingualMirrorLayouts(browser, base)
     await testBilingualHomepage(browser, base)
     await testAutomaticLanguagePreference(browser, base)
     await testBundleMimeAndLoad(browser, base)

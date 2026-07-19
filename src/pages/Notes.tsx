@@ -8,6 +8,8 @@ const INTRO_ARTICLE_PATH = '/notes/ai-game-24-days'
 export default function Notes() {
   const { isEnglish, path } = useLocale()
   const released = useFirstArticleRelease()
+  const reviewPath = isEnglish ? '/en/articles/kimi-k3-review' : FIRST_ARTICLE_PATH
+  const introPath = isEnglish ? '/en/articles/ai-game-24-days' : INTRO_ARTICLE_PATH
 
   return (
     <>
@@ -18,7 +20,7 @@ export default function Notes() {
             ? 'Kevin\'s build notes, AI tool tests, and independent product updates.'
             : 'Kevin 的开发日记、AI 工具实测和独立产品更新。'
         }
-        canonicalPath="/notes"
+        canonicalPath={isEnglish ? '/en/articles' : '/notes'}
         alternateZhPath="/notes"
         alternateEnPath="/en/articles"
       />
@@ -42,7 +44,7 @@ export default function Notes() {
             <div className="lg:col-span-7 lg:pt-8">
               {released ? (
                 <article className="overflow-hidden rounded-2xl border border-white/10 bg-graphite-900/35">
-                  <Link to={path(FIRST_ARTICLE_PATH)} className="group block">
+                  <Link to={reviewPath} className="group block">
                     <div className="relative overflow-hidden border-b border-white/10 bg-graphite-950 p-5 md:p-7">
                       <div className="absolute -right-12 -top-20 h-56 w-56 rounded-full border border-pitch-500/15 transition-transform duration-500 group-hover:scale-105" aria-hidden="true" />
                       <div className="relative grid gap-5 sm:grid-cols-[1fr_auto] sm:items-end">
@@ -102,24 +104,26 @@ export default function Notes() {
               )}
 
               <article className="mt-8 border-y border-white/10 py-7 md:py-9">
-                <Link to={INTRO_ARTICLE_PATH} className="group grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
+                <Link to={introPath} className="group grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
                   <div>
                     <div className="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-xs uppercase tracking-[0.16em] text-graphite-500">
-                      <span className="text-pitch-500">独立开发日记</span>
-                      <span>2026 年 7 月 15 日</span>
-                      <span>约 10 分钟</span>
+                      <span className="text-pitch-500">{isEnglish ? 'Independent build notes' : '独立开发日记'}</span>
+                      <span>{isEnglish ? 'July 15, 2026' : '2026 年 7 月 15 日'}</span>
+                      <span>{isEnglish ? 'About 10 min' : '约 10 分钟'}</span>
                     </div>
                     <h2 className="max-w-3xl text-2xl font-semibold leading-tight tracking-tight text-white transition-colors group-hover:text-pitch-300 md:text-4xl">
-                      AI 做小游戏：1 天能玩，24 天上线
+                      {isEnglish ? 'AI made my first game playable in a day. Shipping it took 24.' : 'AI 做小游戏：1 天能玩，24 天上线'}
                     </h2>
                     <p className="mt-4 max-w-[62ch] text-sm leading-relaxed text-graphite-300 md:text-base">
-                      第一次做微信小游戏，第二天初版已经能玩。真正把它交给别人之前，我又改了 23 天。
+                      {isEnglish
+                        ? 'It was my first WeChat mini game. The first build worked on day two; getting it ready for other people took another 23 days.'
+                        : '第一次做微信小游戏，第二天初版已经能玩。真正把它交给别人之前，我又改了 23 天。'}
                     </p>
                   </div>
                   <dl className="grid grid-cols-3 gap-4 text-right md:grid-cols-1 md:text-left">
-                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">可玩</dt><dd className="mt-1 text-xl font-semibold text-white">1 天</dd></div>
-                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">上线</dt><dd className="mt-1 text-xl font-semibold text-pitch-400">24 天</dd></div>
-                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">正式版</dt><dd className="mt-1 text-xl font-semibold text-white">500 关</dd></div>
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">{isEnglish ? 'Playable' : '可玩'}</dt><dd className="mt-1 text-xl font-semibold text-white">{isEnglish ? '1 day' : '1 天'}</dd></div>
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">{isEnglish ? 'Released' : '上线'}</dt><dd className="mt-1 text-xl font-semibold text-pitch-400">{isEnglish ? '24 days' : '24 天'}</dd></div>
+                    <div className="border-t border-white/10 pt-3"><dt className="text-[10px] uppercase tracking-widest text-graphite-500">{isEnglish ? 'Release build' : '正式版'}</dt><dd className="mt-1 text-xl font-semibold text-white">{isEnglish ? '500 levels' : '500 关'}</dd></div>
                   </dl>
                 </Link>
               </article>
