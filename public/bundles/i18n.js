@@ -16,6 +16,16 @@
     ['移动', 'Move'], ['观察', 'Look'], ['瞄准', 'Aim'], ['左键', 'Left click'], ['鼠标', 'Mouse'],
     ['拖拽观察', 'Drag to look'], ['任务目标', 'Objective'], ['当前目标', 'Current objective'],
     ['任务暂停', 'Mission paused'], ['任务完成', 'Mission complete'], ['开始任务', 'Start mission'],
+    ['最终目标', 'Final objective'], ['行动终止', 'Mission ended'],
+    ['区域安全 · 前往黄色装置并长按拆除', 'Area secure · Go to the yellow device and hold to defuse'],
+    ['保持操作 · 正在切断脉冲链路', 'Keep holding · Cutting the pulse link'],
+    ['按住拆除键 · 解除脉冲装置', 'Hold Defuse · Disable the pulse device'],
+    ['长按 E · 解除脉冲装置', 'Hold E · Disable the pulse device'],
+    ['长按交互解除装置', 'Hold interact to disable the device'],
+    ['前往北侧黄色脉冲装置', 'Go to the yellow pulse device to the north'],
+    ['脉冲装置已安全解除', 'Pulse device safely disabled'],
+    ['浏览器拒绝了鼠标锁定：按住左键拖拽观察，单击射击', 'Pointer lock was blocked: hold left mouse to look, click to fire'],
+    ['鼠标锁定不可用：按住左键拖拽观察，单击射击', 'Pointer lock unavailable: hold left mouse to look, click to fire'],
 
     ['弹弓攻城', 'Sling Siege'], ['原创物理攻城游戏', 'Original physics siege game'],
     ['橡果工坊的星火石，对抗齿轮哨兵的废铁堡垒', 'Launch spark stones from the acorn workshop and bring down the gear guards’ scrap forts.'],
@@ -89,6 +99,11 @@
     ['微信搜《一脚晋级》', 'Search “One Kick” in WeChat'], ['看 500 关怎么升级', 'See how the rules evolve'],
     ['试玩 · 迷你球场', 'Playable mini pitch'], ['三步破门挑战', 'Three-move goal challenge'], ['步数 0', 'Moves 0'],
     ['三星目标 · 3 步内', 'Three-star goal · within 3 moves'], ['球进了！', 'Goal!'], ['三步破门，完美晋级。', 'Goal in three. Perfect clear.'],
+    ['标准解法就是 right → up → right。', 'The target route is Right → Up → Right.'],
+    ['落点正确。现在向上滑。', 'Correct stop. Now slide up.'],
+    ['球门就在右侧，完成最后一脚。', 'The goal is on the right. Take the final move.'],
+    ['继续观察路线与阻挡。', 'Keep reading the route and blockers.'],
+    ['这个方向被挡住了，换条路线。', 'That direction is blocked. Try another route.'],
     ['重新挑战', 'Try again'], ['看看 500 关怎么升级', 'See how the rules evolve'],
     ['拖动足球、在球场上滑动，或按方向键：朝球门滑出这一脚。路线会在你拖动时提前亮出来。', 'Drag the ball, swipe across the pitch, or use the arrow keys. The route lights up while you aim.'],
     ['提示路线', 'Show route'], ['关卡设计', 'Level design'], ['500 关，不是重复堆量', '500 levels with changing rules'],
@@ -202,9 +217,12 @@
     [/^最高分 (\d+) · 已解锁 (\d+) 关$/u, 'Best $1 · $2 levels unlocked'],
     [/^剩余弹药奖励 \+(\d+)$/u, 'Ammo bonus +$1'], [/^历史最高 (\d+)$/u, 'Best score $1'],
     [/^剩余敌人 (\d+)$/u, 'Enemies left $1'], [/^存活敌人 (\d+)$/u, 'Enemies alive $1'],
+    [/^消灭剩余 (\d+) 名训练守卫$/u, 'Defeat the remaining $1 training guards'],
+    [/^肃清守卫（(\d+)名）→ 拆除北侧仓库的发光装置$/u, 'Clear $1 guards → Defuse the glowing device in the north warehouse'],
     [/^步数 (\d+)$/u, 'Moves $1'], [/^第 (\d+) 关 · (.+)$/u, 'Level $1 · $2'],
     [/^力度 (\d+)%$/u, 'Power $1%'], [/^第 (\d+) 步/u, 'Move $1'],
     [/^(\d+) 步完成路线$/u, 'Route complete in $1 moves'], [/^进球！(\d+) 步完成挑战。$/u, 'Goal! Challenge complete in $1 moves.'],
+    [/^进球！(\d+)步完成挑战。$/u, 'Goal! Challenge complete in $1 moves.'],
     [/^进球！(\d+) 步完成挑战，已经晋级。$/u, 'Goal! Promoted in $1 moves.'],
     [/^标准路线完成 · (\d+) 步$/u, 'Target route complete · $1 moves'],
     [/^正在展示：(.+)$/u, 'Showing: $1'], [/^第 (\d+) 张：(.+)$/u, 'Image $1: $2'],
@@ -217,6 +235,8 @@
     ['开球前', 'Before kickoff'], ['一脚之后', 'After one move'], ['三星晋级', 'Three-star clear'], ['开局，先读路线', 'Kickoff, read the route'],
     ['路线卡帮你看清下一步，保连卡留住赛场节奏。真正决定晋级的，仍是你对这片', 'A route card reveals the next move, while a streak card preserves momentum. You still decide how to solve the'],
     ['6×6 球场的判断。', '6×6 pitch.'],
+    ['三步破门，完美晋级。', 'Goal in three. Perfect clear.'],
+    ['标准解法就是 right → up → right。', 'The target route is Right → Up → Right.'],
     ['肃清全部守卫', 'clear every guard'], ['发光装置', 'glowing device'], ['向上', 'up'], ['向下', 'down'], ['向左', 'left'], ['向右', 'right'],
   ]
 
@@ -232,6 +252,24 @@
       for (const [from, to] of phraseReplacements) next = next.replaceAll(from, to)
     }
     return `${leading}${next}${trailing}`
+  }
+
+  // Game loops can overwrite live HUD copy every frame. Translate textContent
+  // synchronously at assignment time so English pages never flash Chinese copy
+  // between MutationObserver callbacks.
+  const textContentDescriptor = Object.getOwnPropertyDescriptor(Node.prototype, 'textContent')
+  if (textContentDescriptor?.get && textContentDescriptor?.set) {
+    Object.defineProperty(Node.prototype, 'textContent', {
+      configurable: true,
+      enumerable: textContentDescriptor.enumerable,
+      get() {
+        return textContentDescriptor.get.call(this)
+      },
+      set(value) {
+        const next = typeof value === 'string' ? translate(value) : value
+        textContentDescriptor.set.call(this, next)
+      },
+    })
   }
 
   function translateElement(element) {
@@ -270,6 +308,25 @@
   }
 
   const path = window.location.pathname
+  if (path.includes('/3d/kimi/')) {
+    const compactEnglishStart = document.createElement('style')
+    compactEnglishStart.textContent = `
+      @media (max-height: 520px) {
+        #start-screen .start-panel { max-width: 520px; padding: 14px 22px; }
+        #start-screen .game-logo { margin-bottom: 8px; }
+        #start-screen .logo-zh { margin: 2px 0 3px 8px; font-size: 34px; letter-spacing: 8px; }
+        #start-screen .logo-sub { font-size: 10px; letter-spacing: 2px; }
+        #start-screen .brief { margin: 7px 0; font-size: 11px; line-height: 1.45; }
+        #start-screen .controls-grid { gap: 3px 12px; margin-bottom: 6px; font-size: 10px; }
+        #start-screen .controls-grid.touch-help { display: none; }
+        #start-screen kbd { padding: 0 4px; font-size: 9px; }
+        #start-screen #btn-start { margin-top: 2px; padding: 8px 0; font-size: 14px; }
+        #start-screen #best-record { margin-top: 4px; min-height: 12px; font-size: 9px; }
+        #start-screen .footnote { margin-top: 3px; font-size: 9px; line-height: 1.3; }
+      }
+    `
+    document.head.appendChild(compactEnglishStart)
+  }
   if (path.includes('/2d/')) document.title = 'Sling Siege · Playable benchmark build'
   if (path.includes('/3d/')) document.title = 'Breach Point · Playable benchmark build'
   if (path.includes('/promo/')) document.title = 'One Kick · Interactive promotion page'

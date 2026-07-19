@@ -9,7 +9,7 @@ export default function Links() {
   const { isEnglish, path } = useLocale()
   const articlesPath = isEnglish ? '/en/articles' : '/notes'
   const links = [
-    { label: isEnglish ? 'Home' : '个人主页', to: path('/'), desc: isEnglish ? 'Kevin AI Observatory' : 'Kevin AI局' },
+    { label: isEnglish ? 'Home' : '个人主页', to: path('/'), desc: isEnglish ? 'Kevin AI Lab' : 'Kevin AI局' },
     { label: isEnglish ? 'Articles' : '文章与动态', to: articlesPath, desc: isEnglish ? 'Long-form tests and build notes' : '归档整理中' },
     { label: isEnglish ? 'Four AI tests' : '四项 AI 实测', to: path('/lab'), desc: isEnglish ? 'Play the games and inspect every image answer' : '小游戏直接玩，识图结果直接看' },
     { label: 'GitHub', href: 'https://github.com/Ray1Ren', desc: '@Ray1Ren' },
@@ -26,7 +26,7 @@ export default function Links() {
               alt={isEnglish ? 'Portrait of Kevin' : 'Kevin 头像'}
               className="w-24 h-24 rounded-full border-4 border-graphite-800 shadow-xl mb-4"
             />
-            <h1 className="text-2xl font-semibold text-white">{isEnglish ? 'Kevin AI Observatory' : 'Kevin AI局'}</h1>
+            <h1 className="text-2xl font-semibold text-white">{isEnglish ? 'Kevin AI Lab' : 'Kevin AI局'}</h1>
             <p className="text-sm text-graphite-400 mt-1">
               {isEnglish ? 'Products, notes, and hands-on AI tests' : '产品、文章，还有四项 AI 实测'}
             </p>
@@ -73,7 +73,7 @@ export default function Links() {
             <img
               src="/assets/images/qr-code.png"
               alt={isEnglish ? 'One Kick WeChat mini program code' : '《一脚晋级》小程序码'}
-              className="w-40 h-40 rounded-lg bg-white p-1 mb-4"
+              className="w-40 h-40 rounded-lg bg-paper p-1 mb-4"
             />
             <p className="text-white font-medium">{isEnglish ? 'Play One Kick in WeChat' : '扫码试玩《一脚晋级》'}</p>
             <p className="text-xs text-graphite-400 mt-1">{isEnglish ? '500 levels, each verified to have a solution' : '500 关，每一关都有可行解'}</p>

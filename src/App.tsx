@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { MotionProvider } from './context/MotionContext'
+import { ThemeProvider } from './context/ThemeContext'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Lab from './pages/Lab'
@@ -18,25 +19,26 @@ const LabPromo = lazy(() => import('./pages/LabPromo'))
 const LabVision = lazy(() => import('./pages/LabVision'))
 const LabVisionReview = lazy(() => import('./pages/LabVisionReview'))
 const KimiK3Review = lazy(() => import('./pages/KimiK3Review'))
-const KimiK3ReviewEn = lazy(() => import('./pages/KimiK3ReviewEn'))
 const AiGame24Days = lazy(() => import('./pages/AiGame24Days'))
 const AiGame24DaysEn = lazy(() => import('./pages/AiGame24DaysEn'))
 
 function App() {
   return (
-    <MotionProvider>
-      <BrowserRouter>
-        <Layout>
-          <RedirectHandler />
-          <LanguageRedirect />
-          <Routes>
-            {renderLocalizedRoutes('')}
-            {renderLocalizedRoutes('/en')}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </MotionProvider>
+    <ThemeProvider>
+      <MotionProvider>
+        <BrowserRouter>
+          <Layout>
+            <RedirectHandler />
+            <LanguageRedirect />
+            <Routes>
+              {renderLocalizedRoutes('')}
+              {renderLocalizedRoutes('/en')}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </MotionProvider>
+    </ThemeProvider>
   )
 }
 
@@ -57,7 +59,7 @@ function renderLocalizedRoutes(prefix: '' | '/en') {
     return [
       ...sharedRoutes,
       <Route key="/en/articles" path="/en/articles" element={<EnglishArticles />} />,
-      <Route key="/en/articles/kimi-k3-review" path="/en/articles/kimi-k3-review" element={<Suspense fallback={<PageFallback />}><KimiK3ReviewEn /></Suspense>} />,
+      <Route key="/en/articles/kimi-k3-review" path="/en/articles/kimi-k3-review" element={<Suspense fallback={<PageFallback />}><KimiK3Review /></Suspense>} />,
       <Route key="/en/articles/ai-game-24-days" path="/en/articles/ai-game-24-days" element={<Suspense fallback={<PageFallback />}><AiGame24DaysEn /></Suspense>} />,
       <Route key="/en/notes" path="/en/notes" element={<Navigate to="/en/articles" replace />} />,
       <Route key="/en/notes/kimi-k3-subscription-review" path="/en/notes/kimi-k3-subscription-review" element={<Navigate to="/en/articles/kimi-k3-review" replace />} />,

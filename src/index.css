@@ -3,7 +3,43 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
+  --color-strong: 24 24 22;
+  --graphite-50: 24 24 22;
+  --graphite-100: 34 34 31;
+  --graphite-200: 51 51 47;
+  --graphite-300: 72 72 67;
+  --graphite-400: 98 98 91;
+  --graphite-500: 118 118 110;
+  --graphite-600: 162 162 154;
+  --graphite-700: 198 197 189;
+  --graphite-800: 222 221 213;
+  --graphite-900: 241 240 234;
+  --graphite-950: 250 249 245;
+  --pitch-300: 102 137 38;
+  --pitch-400: 83 116 29;
+  --pitch-500: 91 126 31;
+  --pitch-600: 76 106 24;
+}
+
+html[data-theme='dark'] {
   color-scheme: dark;
+  --color-strong: 250 250 247;
+  --graphite-50: 246 246 245;
+  --graphite-100: 231 231 230;
+  --graphite-200: 209 209 207;
+  --graphite-300: 176 176 173;
+  --graphite-400: 136 136 133;
+  --graphite-500: 109 109 106;
+  --graphite-600: 93 93 90;
+  --graphite-700: 79 79 76;
+  --graphite-800: 61 61 59;
+  --graphite-900: 42 42 40;
+  --graphite-950: 20 20 19;
+  --pitch-300: 184 217 110;
+  --pitch-400: 163 207 74;
+  --pitch-500: 138 184 47;
+  --pitch-600: 108 147 36;
 }
 
 html {
@@ -13,6 +49,7 @@ html {
 body {
   @apply bg-graphite-950 text-graphite-100 antialiased;
   overflow-x: hidden;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 /* Focus rings for keyboard navigation */
@@ -58,16 +95,16 @@ body[data-motion-paused] *::after {
 }
 
 ::-webkit-scrollbar-track {
-  background: #141413;
+  background: rgb(var(--graphite-950));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3d3d3b;
+  background: rgb(var(--graphite-800));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4f4f4c;
+  background: rgb(var(--graphite-700));
 }
 
 /* Typography */
@@ -85,23 +122,23 @@ body[data-motion-paused] *::after {
 
 @layer components {
   .article-body > section + section {
-    @apply mt-16 border-t border-white/10 pt-12 md:mt-24 md:pt-16;
+    @apply mt-14 border-t border-white/10 pt-11 md:mt-20 md:pt-14;
   }
 
   .article-body h2 {
-    @apply mb-6 text-3xl font-semibold tracking-tight text-white md:text-4xl;
+    @apply mb-5 text-[1.75rem] font-semibold leading-tight tracking-tight text-white md:text-[2rem];
   }
 
   .article-body h3 {
-    @apply mb-3 mt-10 text-xl font-semibold tracking-tight text-white md:text-2xl;
+    @apply mb-3 mt-9 text-xl font-semibold leading-snug tracking-tight text-white md:text-[1.375rem];
   }
 
   .article-body p {
-    @apply max-w-[65ch] text-base leading-[1.85] text-graphite-200 md:text-lg;
+    @apply max-w-none text-[17px] leading-[1.9] text-graphite-200;
   }
 
   .article-body p + p {
-    @apply mt-5;
+    @apply mt-4;
   }
 
   .article-body .article-note {
@@ -110,5 +147,13 @@ body[data-motion-paused] *::after {
 
   .article-body .article-note a {
     @apply text-pitch-400 underline decoration-pitch-500/30 underline-offset-4 hover:text-pitch-300;
+  }
+
+  .article-zoomable-image {
+    @apply cursor-zoom-in transition-[filter,opacity] duration-200 hover:brightness-105;
+  }
+
+  .article-zoomable-image:focus-visible {
+    outline-offset: 4px;
   }
 }

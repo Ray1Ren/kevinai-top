@@ -11,8 +11,8 @@ type FigureProps = {
 
 export function ArticleFigure({ src, alt, caption, contain = false }: FigureProps) {
   return (
-    <figure className="my-8 overflow-hidden rounded-2xl border border-white/10 bg-graphite-900/40 md:my-10">
-      <div className={contain ? 'flex justify-center bg-graphite-950 p-2 md:p-4' : 'bg-graphite-950'}>
+    <figure className="my-7 md:my-9">
+      <div className={`overflow-hidden rounded-xl border border-white/10 ${contain ? 'flex justify-center bg-graphite-950 p-2 md:p-3' : 'bg-graphite-950'}`}>
         <img
           src={src}
           alt={alt}
@@ -21,7 +21,7 @@ export function ArticleFigure({ src, alt, caption, contain = false }: FigureProp
           className={`h-auto w-full ${contain ? 'max-h-[50rem] object-contain' : 'object-cover'}`}
         />
       </div>
-      <figcaption className="border-t border-white/10 px-4 py-3 text-sm leading-relaxed text-graphite-400 md:px-5">
+      <figcaption className="px-1 pt-3 text-[13px] leading-6 text-graphite-400 md:text-sm">
         {caption}
       </figcaption>
     </figure>
@@ -57,15 +57,17 @@ export function GameScreenshotGrid({ english = false }: { english?: boolean }) {
   return (
     <div className="my-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {screenshots.map(([file, zh, en]) => (
-        <figure key={file} className="overflow-hidden rounded-xl border border-white/10 bg-graphite-900/40">
-          <img
-            src={`/assets/first-article/shared/${file}`}
-            alt={english ? en : zh}
-            loading="lazy"
-            decoding="async"
-            className="h-auto w-full object-contain"
-          />
-          <figcaption className="border-t border-white/10 px-4 py-3 text-sm leading-relaxed text-graphite-400">
+        <figure key={file}>
+          <div className="overflow-hidden rounded-xl border border-white/10 bg-graphite-900/40">
+            <img
+              src={`/assets/first-article/shared/${file}`}
+              alt={english ? en : zh}
+              loading="lazy"
+              decoding="async"
+              className="h-auto w-full object-contain"
+            />
+          </div>
+          <figcaption className="px-1 pt-2.5 text-[13px] leading-5 text-graphite-400">
             {english ? en : zh}
           </figcaption>
         </figure>
@@ -83,7 +85,7 @@ export function ArticleQrCta({ english = false }: { english?: boolean }) {
         loading="lazy"
         decoding="async"
         data-channel="web_note1"
-        className="mx-auto h-44 w-44 rounded-xl bg-white p-1 sm:mx-0"
+        className="mx-auto h-44 w-44 rounded-xl bg-paper p-1 sm:mx-0"
       />
       <div>
         <p className="text-xs uppercase tracking-[0.18em] text-pitch-500">
