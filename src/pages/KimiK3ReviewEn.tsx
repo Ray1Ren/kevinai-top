@@ -222,7 +222,7 @@ export default function KimiK3ReviewEn() {
                 Over two days, I gave Kimi K3, GPT-5.6 Sol, and MiniMax M3 the same four jobs. K3 did especially well on the 3D game and the image questions. Waiting for it was another story.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <a href={SHARE_URL} target="_blank" rel="noreferrer" className="inline-flex rounded-full bg-pitch-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-pitch-500">
+                <a href={SHARE_URL} target="_blank" rel="noreferrer" className="inline-flex rounded-full bg-pitch-600 px-5 py-2.5 text-sm font-medium text-paper transition-colors hover:bg-pitch-500">
                   Share on X / Twitter
                 </a>
                 <a href={zhArticleUrl} target="_blank" rel="noreferrer" className="inline-flex rounded-full border border-white/10 px-5 py-2.5 text-sm font-medium text-graphite-200 transition-colors hover:border-white/25 hover:text-white">
@@ -498,7 +498,7 @@ export default function KimiK3ReviewEn() {
 
             <section className="mt-16 border-t border-white/10 pt-10 md:mt-20">
               <div className="grid items-center gap-8 rounded-2xl border border-white/10 bg-graphite-900/45 p-5 sm:grid-cols-[9rem_1fr] md:p-8">
-                <img src="/assets/images/qr-code.png" alt="One Kick WeChat mini-program code" loading="lazy" className="h-36 w-36 rounded-xl bg-white p-1" />
+                <img src="/assets/images/qr-code.png" alt="One Kick WeChat mini-program code" loading="lazy" className="h-36 w-36 rounded-xl bg-paper p-1" />
                 <div>
                   <p className="text-xs uppercase tracking-widest text-pitch-500">My first shipped mini game</p>
                   <h2 className="mt-2 text-2xl font-semibold text-white">One Kick</h2>

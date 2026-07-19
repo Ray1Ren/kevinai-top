@@ -3,9 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
   <title>Redirecting…</title>
   <script>
     (function () {
+      var theme = 'light';
+      try {
+        if (window.localStorage.getItem('kevinai.theme') === 'dark') theme = 'dark';
+      } catch (_) {
+        // Keep the light default when storage is unavailable.
+      }
+      document.documentElement.style.colorScheme = theme;
+      document.documentElement.style.background = theme === 'dark' ? '#141413' : '#faf9f5';
       const path = window.location.pathname + window.location.search + window.location.hash;
       window.location.replace('/?redirect=' + encodeURIComponent(path));
     })();
