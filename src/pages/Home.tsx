@@ -41,7 +41,7 @@ export default function Home() {
                 {isEnglish ? (
                   <>
                     Kevin <span className="text-pitch-500">AI</span>
-                    <span className="block">Observatory</span>
+                    <span className="block">Lab</span>
                   </>
                 ) : (
                   <>Kevin <span className="text-pitch-500">AI</span>局</>
@@ -246,65 +246,6 @@ export default function Home() {
                   <Link to={path('/lab')} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
                     {isEnglish ? 'See all four tests' : '查看四项实测'} <span className="ml-1">→</span>
                   </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-[1400px] px-4 md:px-6">
-          <div className="rounded-2xl border border-white/5 bg-graphite-900/30 p-6 md:p-12">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:items-center md:gap-10">
-              <div className="md:col-span-7">
-                <h2 className="mb-3 text-2xl font-semibold tracking-tight text-white md:text-3xl">
-                  {isEnglish ? 'Want to talk? Email me or add me on WeChat.' : '想聊点什么，可以发邮件，也可以加微信。'}
-                </h2>
-                <p className="mb-6 max-w-[60ch] text-sm leading-relaxed text-graphite-400">
-                  {isEnglish
-                    ? 'Stuck on a level, curious about an article, or want to know how a test was run — just ask.'
-                    : '游戏卡关了，文章有问题，或者想了解实测细节，都可以直接问我。'}
-                </p>
-                <a
-                  href="mailto:qingzhuzhifeng@gmail.com"
-                  className="inline-block max-w-full break-all rounded-full border border-pitch-500/40 px-5 py-2.5 text-sm font-medium text-pitch-400 transition-colors hover:border-pitch-500 hover:text-pitch-300"
-                >
-                  qingzhuzhifeng@gmail.com
-                </a>
-                <div className="mt-6 flex flex-wrap items-center gap-3">
-                  <span className="text-xs uppercase tracking-widest text-graphite-500">
-                    {isEnglish ? 'Also' : '其他入口'}
-                  </span>
-                  <a
-                    href="https://github.com/Ray1Ren"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full border border-white/10 px-4 py-2 text-xs text-graphite-300 transition-colors hover:border-white/25 hover:text-white"
-                  >
-                    GitHub
-                  </a>
-                  <Link
-                    to={path('/links')}
-                    className="rounded-full border border-white/10 px-4 py-2 text-xs text-graphite-300 transition-colors hover:border-white/25 hover:text-white"
-                  >
-                    {isEnglish ? 'All links' : '全部链接'}
-                  </Link>
-                </div>
-              </div>
-              <div className="md:col-span-5">
-                <div className="mx-auto w-full max-w-[15rem]">
-                  <img
-                    src="/assets/images/wechat-contact-rayn.jpg"
-                    alt={isEnglish ? "Kevin's WeChat QR code" : 'Kevin 的微信二维码'}
-                    width={888}
-                    height={1131}
-                    loading="lazy"
-                    className="h-auto w-full rounded-xl border border-white/10"
-                  />
-                  <p className="mt-3 text-center text-xs text-graphite-500">
-                    {isEnglish ? 'Scan with WeChat to add me.' : '用微信扫一扫，加我好友。'}
-                  </p>
                 </div>
               </div>
             </div>

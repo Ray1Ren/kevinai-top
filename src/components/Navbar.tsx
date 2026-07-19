@@ -46,7 +46,7 @@ export default function Navbar() {
       <div className="max-w-[1400px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
         <Link to={path('/')} className="flex items-center gap-3 group">
           <span className="w-2 h-2 rounded-full bg-pitch-500 group-hover:scale-125 transition-transform" />
-          <span className="text-lg font-semibold tracking-tight text-white">{isEnglish ? 'Kevin AI Observatory' : 'Kevin AI局'}</span>
+          <span className="text-lg font-semibold tracking-tight text-white">{isEnglish ? 'Kevin AI Lab' : 'Kevin AI局'}</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-6">

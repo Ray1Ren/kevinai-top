@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ArticleLightbox from '../components/ArticleLightbox'
 import SEOHead from '../components/SEOHead'
 import {
   ArticleFigure,
@@ -35,7 +36,7 @@ export default function AiGame24Days() {
       />
 
       <article className="pb-24 pt-24 md:pb-32 md:pt-32">
-        <header className="mx-auto max-w-[1400px] px-4 md:px-6">
+        <header className="mx-auto max-w-[70rem] px-4 md:px-6">
           <Link to="/notes" className="inline-flex text-sm text-graphite-400 transition-colors hover:text-white">
             <span className="mr-2" aria-hidden="true">←</span>返回文章列表
           </Link>
@@ -47,7 +48,7 @@ export default function AiGame24Days() {
                 <span>2026 年 7 月 15 日</span>
                 <span>约 10 分钟</span>
               </div>
-              <h1 className="max-w-5xl text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl">
                 AI 做小游戏：1 天能玩，24 天上线
               </h1>
               <p className="mt-7 max-w-[65ch] text-lg leading-relaxed text-graphite-200 md:text-xl">
@@ -86,8 +87,8 @@ export default function AiGame24Days() {
           </div>
         </header>
 
-        <div className="mx-auto mt-10 grid max-w-[1400px] grid-cols-1 gap-12 px-4 md:mt-16 md:px-6 lg:grid-cols-12">
-          <aside className="hidden lg:col-span-3 lg:block">
+        <div className="mx-auto mt-10 grid max-w-[70rem] grid-cols-1 gap-12 px-4 md:mt-14 md:px-6 lg:grid-cols-[12rem_minmax(0,43rem)] lg:justify-center lg:gap-12 xl:gap-20">
+          <aside className="hidden lg:block">
             <nav className="sticky top-28 border-l border-white/10 pl-5" aria-label="文章目录">
               <p className="mb-4 text-xs uppercase tracking-[0.18em] text-graphite-500">目录</p>
               <ol className="space-y-3 text-sm text-graphite-400">
@@ -102,7 +103,7 @@ export default function AiGame24Days() {
             </nav>
           </aside>
 
-          <div className="article-body min-w-0 lg:col-span-8 lg:col-start-5">
+          <ArticleLightbox className="article-body min-w-0">
             <section id="playable">
               <p>从“能玩”到正式上线，我又走了 23 天。</p>
 
@@ -203,7 +204,7 @@ export default function AiGame24Days() {
 
               <p>不好玩的地方可以直接说。卡关时，也可以把关卡号留给我。</p>
             </section>
-          </div>
+          </ArticleLightbox>
         </div>
       </article>
     </>

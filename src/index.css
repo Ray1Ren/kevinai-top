@@ -122,23 +122,23 @@ body[data-motion-paused] *::after {
 
 @layer components {
   .article-body > section + section {
-    @apply mt-16 border-t border-white/10 pt-12 md:mt-24 md:pt-16;
+    @apply mt-14 border-t border-white/10 pt-11 md:mt-20 md:pt-14;
   }
 
   .article-body h2 {
-    @apply mb-6 text-3xl font-semibold tracking-tight text-white md:text-4xl;
+    @apply mb-5 text-[1.75rem] font-semibold leading-tight tracking-tight text-white md:text-[2rem];
   }
 
   .article-body h3 {
-    @apply mb-3 mt-10 text-xl font-semibold tracking-tight text-white md:text-2xl;
+    @apply mb-3 mt-9 text-xl font-semibold leading-snug tracking-tight text-white md:text-[1.375rem];
   }
 
   .article-body p {
-    @apply max-w-[65ch] text-base leading-[1.85] text-graphite-200 md:text-lg;
+    @apply max-w-none text-[17px] leading-[1.9] text-graphite-200;
   }
 
   .article-body p + p {
-    @apply mt-5;
+    @apply mt-4;
   }
 
   .article-body .article-note {
@@ -147,5 +147,13 @@ body[data-motion-paused] *::after {
 
   .article-body .article-note a {
     @apply text-pitch-400 underline decoration-pitch-500/30 underline-offset-4 hover:text-pitch-300;
+  }
+
+  .article-zoomable-image {
+    @apply cursor-zoom-in transition-[filter,opacity] duration-200 hover:brightness-105;
+  }
+
+  .article-zoomable-image:focus-visible {
+    outline-offset: 4px;
   }
 }

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ArticleLightbox from '../components/ArticleLightbox'
 import SEOHead from '../components/SEOHead'
 import {
   ArticleFigure,
@@ -35,7 +36,7 @@ export default function AiGame24DaysEn() {
       />
 
       <article className="pb-24 pt-24 md:pb-32 md:pt-32">
-        <header className="mx-auto max-w-[1400px] px-4 md:px-6">
+        <header className="mx-auto max-w-[70rem] px-4 md:px-6">
           <Link to="/en/articles" className="inline-flex text-sm text-graphite-400 transition-colors hover:text-white">
             <span className="mr-2" aria-hidden="true">←</span>All English articles
           </Link>
@@ -47,7 +48,7 @@ export default function AiGame24DaysEn() {
                 <span>July 15, 2026</span>
                 <span>9 min read</span>
               </div>
-              <h1 className="max-w-5xl text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl">
                 AI made my first game playable in a day. Shipping it took 24.
               </h1>
               <p className="mt-7 max-w-[65ch] text-lg leading-relaxed text-graphite-200 md:text-xl">
@@ -86,8 +87,8 @@ export default function AiGame24DaysEn() {
           </div>
         </header>
 
-        <div className="mx-auto mt-10 grid max-w-[1400px] grid-cols-1 gap-12 px-4 md:mt-16 md:px-6 lg:grid-cols-12">
-          <aside className="hidden lg:col-span-3 lg:block">
+        <div className="mx-auto mt-10 grid max-w-[70rem] grid-cols-1 gap-12 px-4 md:mt-14 md:px-6 lg:grid-cols-[12rem_minmax(0,43rem)] lg:justify-center lg:gap-12 xl:gap-20">
+          <aside className="hidden lg:block">
             <nav className="sticky top-28 border-l border-white/10 pl-5" aria-label="Article contents">
               <p className="mb-4 text-xs uppercase tracking-[0.18em] text-graphite-500">Contents</p>
               <ol className="space-y-3 text-sm text-graphite-400">
@@ -102,7 +103,7 @@ export default function AiGame24DaysEn() {
             </nav>
           </aside>
 
-          <div className="article-body min-w-0 lg:col-span-8 lg:col-start-5">
+          <ArticleLightbox className="article-body min-w-0">
             <section id="playable">
               <p>I needed another 23 days between “it works” and “I can let other people play this.”</p>
 
@@ -170,7 +171,7 @@ export default function AiGame24DaysEn() {
               </div>
 
               <p>A had the strongest personality, but it spoke slowly enough to become tiring after repeated triggers. B was short and direct, so it worked better while the match was moving. C was softer and suited a message after failure. I ended up keeping more than one.</p>
-              <p>The original Chinese line called the player gege—literally “older brother,” but too familiar for this character. I removed it later and made the sideline character a coach throughout the game. Picking a voice was not enough. I also rewrote the line and changed when it played.</p>
+              <p>The early line still called the player gege. I removed that form of address later and made the sideline character a coach throughout the game. The voice was only one part of the decision; I also changed the words and when the line played.</p>
               <p>For the final pass, I put each voice back in the game and triggered it about ten times. If it was already annoying by the tenth, it did not stay.</p>
 
               <blockquote className="my-10 border-l-2 border-pitch-500 pl-5 text-xl leading-relaxed text-white md:text-2xl">
@@ -182,7 +183,7 @@ export default function AiGame24DaysEn() {
               <h2>Why I started writing</h2>
               <p>I love both AAA and indie games, and I have long wanted to make a good indie game myself. One Kick is my first attempt.</p>
               <p>It was also my first time going through the whole process: idea, demo, testing, voice, assets, cloud services, platform review, and release.</p>
-              <p>I decided to write the process down. It felt more useful than posting another summary of a new AI feature. I plan to write about:</p>
+              <p>I decided to write the process down. I plan to write about:</p>
               <ul className="mt-5 list-disc space-y-3 pl-5 text-base leading-relaxed text-graphite-200 md:text-lg">
                 <li>AI tools and workflows I have actually used</li>
                 <li>How an idea moves from demo to release</li>
@@ -196,15 +197,13 @@ export default function AiGame24DaysEn() {
               <h2>The current release</h2>
               <p>One Kick is a football route puzzle. Move the players and obstacles to clear a path from the ball to the goal. Later levels add more rules to the board.</p>
               <p>The home screen, route hints, leaderboards, animal events, and reward collection have all changed since the first demo.</p>
-              <p className="article-note">The live WeChat build currently uses a Chinese interface. These are unedited screenshots from that release.</p>
-
               <GameScreenshotGrid english />
 
               <ArticleQrCta english />
 
               <p>If something is not fun, tell me. If a level stops you, send me the level number.</p>
             </section>
-          </div>
+          </ArticleLightbox>
         </div>
       </article>
     </>
