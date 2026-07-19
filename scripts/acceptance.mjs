@@ -360,7 +360,7 @@ async function testPrimaryNavigation(browser, base) {
     { home: '/', label: '链接', path: '/links', heading: 'Kevin AI局' },
     { home: '/en', label: 'Articles', path: '/en/articles', heading: 'I write after I have something to show.' },
     { home: '/en', label: 'Lab', path: '/en/lab', heading: 'Four AI tests' },
-    { home: '/en', label: 'Links', path: '/en/links', heading: 'Kevin AI Lab' },
+    { home: '/en', label: 'Links', path: '/en/links', heading: 'Kevin AI Observatory' },
   ]
 
   for (const testCase of cases) {
