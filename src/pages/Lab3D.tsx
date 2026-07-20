@@ -3,6 +3,7 @@ import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
 import { useLocale } from '../hooks/useLocale'
 import PlayableComparison from '../components/PlayableComparison'
+import FullPrompt from '../components/FullPrompt'
 
 export default function Lab3D() {
   const { data, loading, error } = useBenchmarks()
@@ -19,12 +20,14 @@ export default function Lab3D() {
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
               {isEnglish ? '3D web game test' : '3D 小游戏实测'}
             </h1>
-            <p className="text-graphite-200 leading-relaxed mb-4">
+            <p className="text-graphite-200 leading-relaxed mb-6">
               {task?.conclusion ?? (isEnglish ? 'K3 scored 91.0, Codex 89.2, and MiniMax M3 83.6. All three can be finished.' : 'K3 91.0 第一，Codex 89.2，MiniMax M3 83.6。三套都能玩完。')}
             </p>
-            <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
-              {task?.prompt ?? (isEnglish ? 'Build an original 3D browser game with a complete tactical training flow.' : '做一款让普通玩家一眼能理解进入 3D 战术训练场、移动瞄准、与敌人交火、清场后拆除装置的原创网页小游戏。')}
-            </blockquote>
+            <FullPrompt
+              isEnglish={isEnglish}
+              promptPath="/evidence/prompts/3d.txt"
+              summary={task?.prompt ?? (isEnglish ? 'Build an original 3D browser game with a complete tactical training flow.' : '做一款让普通玩家一眼能理解进入 3D 战术训练场、移动瞄准、与敌人交火、清场后拆除装置的原创网页小游戏。')}
+            />
           </div>
 
           <PlayableComparison

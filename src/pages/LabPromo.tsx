@@ -2,6 +2,7 @@ import SEOHead from '../components/SEOHead'
 import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
 import { useLocale } from '../hooks/useLocale'
+import FullPrompt from '../components/FullPrompt'
 
 export default function LabPromo() {
   const { data, loading, error } = useBenchmarks()
@@ -21,9 +22,11 @@ export default function LabPromo() {
             <p className="text-graphite-200 leading-relaxed mb-6">
               {task?.conclusion ?? (isEnglish ? 'Codex scored 95.0, K3 91.0, and MiniMax M3 85.0. MiniMax shipped fastest.' : 'Codex 95.0，K3 91.0，MiniMax M3 85.0。MiniMax 交付最快。')}
             </p>
-            <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
-              {task?.prompt ?? (isEnglish ? 'Put the core One Kick interaction directly into a promotion page.' : '把《一脚晋级》的核心乐趣直接做进网页：访客进入首屏就能在一个缩小版 6×6 球场里滑动足球、判断路线、三步破门。')}
-            </blockquote>
+            <FullPrompt
+              isEnglish={isEnglish}
+              promptPath="/evidence/prompts/promo.txt"
+              summary={task?.prompt ?? (isEnglish ? 'Put the core One Kick interaction directly into a promotion page.' : '把《一脚晋级》的核心乐趣直接做进网页：访客进入首屏就能在一个缩小版 6×6 球场里滑动足球、判断路线、三步破门。')}
+            />
           </div>
 
           {data && (

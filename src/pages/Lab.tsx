@@ -115,24 +115,6 @@ export default function Lab() {
             </div>
           </Link>
 
-          {!isEnglish && (
-            <a
-              href="/recording-desk/"
-              className="group mb-8 block overflow-hidden rounded-2xl border border-pitch-500/25 bg-graphite-900/45 p-5 transition-colors hover:border-pitch-500/50 active:scale-[0.99] md:p-7"
-            >
-              <span className="mb-2 block text-xs uppercase tracking-widest text-pitch-500">Long-form recording desk</span>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <h2 className="text-2xl font-semibold text-white">四类评测实机录制台</h2>
-                  <p className="mt-2 max-w-2xl text-sm leading-relaxed text-graphite-300">
-                    在同一页面切换 2D、3D、宣传页和 50 图识别，直接试玩三家成品，并查看 Prompt、公开结果与现场录屏。
-                  </p>
-                </div>
-                <span className="shrink-0 text-sm text-pitch-400 transition-transform group-hover:translate-x-1">打开录制台 →</span>
-              </div>
-            </a>
-          )}
-
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {taskCards.map((card) => (
               <Link

@@ -120,6 +120,10 @@ const REQUIRED_PUBLIC_ASSETS = [
   'data/benchmarks.json',
   'data/benchmarks.en.json',
   'data/vision-cases.json',
+  'evidence/prompts/2d.txt',
+  'evidence/prompts/3d.txt',
+  'evidence/prompts/promo.txt',
+  'evidence/prompts/vision.txt',
   'bundles/i18n.js',
   'favicon.svg',
   'CNAME',
@@ -386,6 +390,44 @@ async function checkBilingualBenchmarks() {
   }
 }
 
+async function checkPromptEvidence() {
+  const promptCases = {
+    '2d': { minLines: 70, minCharacters: 2200, marker: 'window.__SLINGSHOT_TEST__' },
+    '3d': { minLines: 90, minCharacters: 3900, marker: 'window.__BREACH_TEST__' },
+    'promo': { minLines: 90, minCharacters: 4000, marker: 'window.__ONEKICK_TEST__' },
+    'vision': { minLines: 50, minCharacters: 14500, marker: '"id":"V050"' },
+  }
+
+  for (const [task, expectation] of Object.entries(promptCases)) {
+    const publicPath = `evidence/prompts/${task}.txt`
+    const content = (await readFile(join(PUBLIC, publicPath), 'utf8')).trimEnd()
+    const lineCount = content.split('\n').length
+    if (lineCount < expectation.minLines) {
+      errors.push(`Prompt evidence is truncated: ${publicPath} has ${lineCount} lines`)
+    }
+    if (content.length < expectation.minCharacters) {
+      errors.push(`Prompt evidence is truncated: ${publicPath} has ${content.length} characters`)
+    }
+    if (!content.includes(expectation.marker)) {
+      errors.push(`Prompt evidence is missing marker ${expectation.marker}: ${publicPath}`)
+    }
+
+    const pageName = task === '2d' ? 'Lab2D' : task === '3d' ? 'Lab3D' : task === 'promo' ? 'LabPromo' : 'LabVision'
+    const pageSource = await readFile(join(SRC, 'pages', `${pageName}.tsx`), 'utf8')
+    if (!pageSource.includes(`promptPath="/${publicPath}"`)) {
+      errors.push(`${pageName}.tsx does not expose the complete ${task} prompt`)
+    }
+  }
+
+  const labSource = await readFile(join(SRC, 'pages/Lab.tsx'), 'utf8')
+  if (labSource.includes('/recording-desk/') || labSource.includes('四类评测实机录制台')) {
+    errors.push('Private recording desk is still linked from the public Lab page')
+  }
+  if (await fileExists(join(PUBLIC, 'recording-desk'))) {
+    errors.push('Private recording desk still exists in public/recording-desk')
+  }
+}
+
 async function checkVisionDataset() {
   const vision = JSON.parse(await readFile(join(PUBLIC, 'data/vision-cases.json'), 'utf8'))
   if (!Array.isArray(vision.cases) || vision.cases.length !== 50) {
@@ -508,6 +550,7 @@ async function main() {
   await checkDistributionContent()
   await checkRouteManifest()
   await checkBilingualBenchmarks()
+  await checkPromptEvidence()
   await checkVisionDataset()
   await checkWorkflow()
   await checkDistSize()
