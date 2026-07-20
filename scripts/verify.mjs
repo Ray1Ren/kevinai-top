@@ -428,6 +428,46 @@ async function checkPromptEvidence() {
   }
 }
 
+async function checkOfficialModelBenchmarks() {
+  const pageSource = await readFile(join(SRC, 'pages/ModelPriceBenchmark.tsx'), 'utf8')
+  const labSource = await readFile(join(SRC, 'pages/Lab.tsx'), 'utf8')
+  const requiredModels = ['Claude Fable 5', 'GPT-5.6 Sol', 'Kimi K3', 'GLM-5.2', 'MiniMax M3', 'DeepSeek V4 Pro']
+  const requiredFacts = ['67.3', '90.4', '81.0', '62.1', '83.5', '37.1 · #3', 'data-official-source']
+
+  for (const model of requiredModels) {
+    if (!pageSource.includes(`model: '${model}'`)) {
+      errors.push(`Official benchmark list is missing ${model}`)
+    }
+  }
+  for (const fact of requiredFacts) {
+    if (!pageSource.includes(fact)) {
+      errors.push(`Official benchmark list is missing required fact: ${fact}`)
+    }
+  }
+
+  const officialSourceCount = (pageSource.match(/href: 'https:\/\//g) ?? []).length - pricingSourceCount(pageSource)
+  if (officialSourceCount !== 6) {
+    errors.push(`Official benchmark list must contain six HTTPS sources, found ${officialSourceCount}`)
+  }
+
+  for (const forbidden of ['useBenchmarks', 'BenchmarkTable', 'data-benchmark-model', 'Hands-on benchmark', '四项质量评分']) {
+    if (pageSource.includes(forbidden)) {
+      errors.push(`Price comparison page still exposes the private score block: ${forbidden}`)
+    }
+  }
+  if (!pageSource.includes('不能据此直接合成统一总榜') || !pageSource.includes('do not form one directly comparable leaderboard')) {
+    errors.push('Official benchmark comparison warning is missing in one or both languages')
+  }
+  if (!labSource.includes('模型 API 价格与官方评测') || labSource.includes('模型 API 价格与实测评分')) {
+    errors.push('Lab entry does not use the official benchmark wording')
+  }
+}
+
+function pricingSourceCount(pageSource) {
+  const pricingBlock = pageSource.match(/const pricingSources = \[([\s\S]*?)\n\]/)?.[1] ?? ''
+  return (pricingBlock.match(/href: 'https:\/\//g) ?? []).length
+}
+
 async function checkVisionDataset() {
   const vision = JSON.parse(await readFile(join(PUBLIC, 'data/vision-cases.json'), 'utf8'))
   if (!Array.isArray(vision.cases) || vision.cases.length !== 50) {
@@ -551,6 +591,7 @@ async function main() {
   await checkRouteManifest()
   await checkBilingualBenchmarks()
   await checkPromptEvidence()
+  await checkOfficialModelBenchmarks()
   await checkVisionDataset()
   await checkWorkflow()
   await checkDistSize()

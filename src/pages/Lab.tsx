@@ -101,12 +101,12 @@ export default function Lab() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 className="text-2xl font-semibold tracking-tight text-[#1d1d1f]">
-                  {isEnglish ? 'API price vs hands-on score' : '模型 API 价格与实测评分'}
+                  {isEnglish ? 'API price & official benchmarks' : '模型 API 价格与官方评测'}
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#6e6e73]">
                   {isEnglish
-                    ? 'Use a 94.7% cache-hit agent workload to compare six model prices, then place the three tested systems beside their four quality scores.'
-                    : '按 94.7% 缓存命中的 Agent 用量比较六个模型价格，再对照三套实测系统的四项质量分。'}
+                    ? 'Compare six model prices using a 94.7% cache-hit agent workload, then review the official benchmark claims published by each provider.'
+                    : '按 94.7% 缓存命中的 Agent 用量比较六个模型价格，再查看六家厂商各自公开的官方评测与排名。'}
                 </p>
               </div>
               <span className="shrink-0 text-sm font-medium text-[#0066cc] transition-transform group-hover:translate-x-1">
