@@ -115,11 +115,13 @@ async function testStaticDeepLinks(browser, base) {
   const cases = [
     ['/lab/2d', '2D 小游戏实测'],
     ['/lab/vision', '50 图识别实测'],
+    ['/lab/model-price-benchmark', '模型 API 价格与实测评分'],
     ['/links', '链接'],
     ['/notes', '文章与动态'],
     ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
     ['/notes/ai-game-24-days', 'AI 做小游戏'],
     ['/en/lab/2d', '2D Web Game Test'],
+    ['/en/lab/model-price-benchmark', 'API Price vs Hands-on Score'],
     ['/en/articles', 'Notes & Updates'],
     ['/en/articles/kimi-k3-review', 'Is Kimi K3'],
     ['/en/articles/ai-game-24-days', 'AI made my first game playable'],
@@ -957,6 +959,68 @@ async function testEmbeddedPlayableBuilds(browser, base) {
   log('embedded playable builds passed: Chinese and English 2D/3D model switching')
 }
 
+async function testModelPriceBenchmark(browser, base) {
+  const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' })
+  await desktopContext.addInitScript(() => window.localStorage.setItem('kevinai.theme', 'dark'))
+  const desktopPage = await desktopContext.newPage()
+  const finishDesktopMonitoring = monitorPage(desktopPage, 'model price benchmark desktop', { allowDocument404: true })
+
+  await desktopPage.goto(`${base}/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
+  await desktopPage.getByRole('heading', { name: '缓存命中率拉高后，模型成本差多少。' }).waitFor({ state: 'visible' })
+  const priceOrder = await desktopPage.locator('[data-price-model]').evaluateAll((rows) => rows.map((row) => row.getAttribute('data-price-model')))
+  assert.deepEqual(priceOrder, ['Claude Fable 5', 'GPT-5.6 Sol', 'Kimi K3', 'GLM-5.2', 'MiniMax M3', 'DeepSeek V4 Pro'])
+  assert.match(await desktopPage.locator('[data-price-model="DeepSeek V4 Pro"]').innerText(), /1\.00×/)
+  assert.match(await desktopPage.locator('[data-price-model="MiniMax M3"]').innerText(), /2\.69×/)
+  await desktopPage.getByText('查看六家官方定价来源').click()
+  const pricingSourceLinks = desktopPage.locator('[data-model-price-benchmark] details a')
+  assert.equal(await pricingSourceLinks.count(), 6)
+  assert.equal(await pricingSourceLinks.evaluateAll((links) => links.every((link) => link.href.startsWith('https://'))), true)
+
+  const minimaxScores = await desktopPage.locator('[data-benchmark-model="minimax"]').innerText()
+  assert.match(minimaxScores, /77\.8/)
+  assert.match(minimaxScores, /83\.6/)
+  assert(!minimaxScores.includes('73.9'), 'the comparison page must not reuse the stale MiniMax total')
+  assert.match(await desktopPage.locator('[data-benchmark-model="codex"]').innerText(), /92\.6/)
+
+  const desktopState = await desktopPage.locator('[data-model-price-benchmark]').evaluate((section) => ({
+    background: getComputedStyle(section).backgroundColor,
+    heading: getComputedStyle(section.querySelector('h1')).color,
+    width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
+    viewport: document.documentElement.clientWidth,
+  }))
+  assert.equal(desktopState.background, 'rgb(255, 255, 255)', 'comparison surface must stay white')
+  assert.equal(desktopState.heading, 'rgb(29, 29, 31)', 'comparison heading must keep Apple ink on the white surface')
+  assert(desktopState.width <= desktopState.viewport + 2, `desktop comparison overflows: ${desktopState.width}px`)
+  await desktopPage.screenshot({ path: join(SCREENSHOTS, 'model-price-benchmark-desktop.png'), fullPage: true })
+
+  await desktopPage.goto(`${base}/en/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
+  await desktopPage.getByRole('heading', { name: 'What a high cache-hit rate does to model cost.' }).waitFor({ state: 'visible' })
+  assert.equal(await desktopPage.locator('html').getAttribute('lang'), 'en')
+  assert.match(await desktopPage.locator('[data-benchmark-model="minimax"]').innerText(), /77\.8/)
+  finishDesktopMonitoring()
+  await desktopContext.close()
+
+  const mobileContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+    locale: 'zh-CN',
+  })
+  const mobilePage = await mobileContext.newPage()
+  const finishMobileMonitoring = monitorPage(mobilePage, 'model price benchmark mobile', { allowDocument404: true })
+  await mobilePage.goto(`${base}/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
+  await mobilePage.locator('[data-benchmark-model="minimax"]').waitFor({ state: 'visible' })
+  const mobileState = await mobilePage.evaluate(() => ({
+    width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
+    viewport: document.documentElement.clientWidth,
+  }))
+  assert(mobileState.width <= mobileState.viewport + 2, `mobile comparison overflows: ${mobileState.width}px`)
+  await mobilePage.screenshot({ path: join(SCREENSHOTS, 'model-price-benchmark-mobile.png'), fullPage: true })
+  finishMobileMonitoring()
+  await mobileContext.close()
+  log('model price benchmark passed: price order, current scores, bilingual copy, white surface, and mobile layout')
+}
+
 async function testThemeModes(browser, base) {
   const routeCases = [
     '/',
@@ -1173,6 +1237,7 @@ async function main() {
     await testPromoInteraction(browser, base)
     await testEnglishBundleLocalization(browser, base)
     await testPublishedBenchmarkScores(browser, base)
+    await testModelPriceBenchmark(browser, base)
     await testVisionReview(browser, base)
     await testEmbeddedPlayableBuilds(browser, base)
     await testThemeModes(browser, base)

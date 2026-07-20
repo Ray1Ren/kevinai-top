@@ -18,6 +18,7 @@ const Lab3D = lazy(() => import('./pages/Lab3D'))
 const LabPromo = lazy(() => import('./pages/LabPromo'))
 const LabVision = lazy(() => import('./pages/LabVision'))
 const LabVisionReview = lazy(() => import('./pages/LabVisionReview'))
+const ModelPriceBenchmark = lazy(() => import('./pages/ModelPriceBenchmark'))
 const KimiK3Review = lazy(() => import('./pages/KimiK3Review'))
 const AiGame24Days = lazy(() => import('./pages/AiGame24Days'))
 const AiGame24DaysEn = lazy(() => import('./pages/AiGame24DaysEn'))
@@ -52,6 +53,7 @@ function renderLocalizedRoutes(prefix: '' | '/en') {
     <Route key={route('/lab/promo')} path={route('/lab/promo')} element={<Suspense fallback={<PageFallback />}><LabPromo /></Suspense>} />,
     <Route key={route('/lab/vision')} path={route('/lab/vision')} element={<Suspense fallback={<PageFallback />}><LabVision /></Suspense>} />,
     <Route key={route('/lab/vision/review')} path={route('/lab/vision/review')} element={<Suspense fallback={<PageFallback />}><LabVisionReview /></Suspense>} />,
+    <Route key={route('/lab/model-price-benchmark')} path={route('/lab/model-price-benchmark')} element={<Suspense fallback={<PageFallback />}><ModelPriceBenchmark /></Suspense>} />,
     <Route key={route('/links')} path={route('/links')} element={<Links />} />,
   ]
 

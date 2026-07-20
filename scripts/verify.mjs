@@ -138,7 +138,7 @@ const BUNDLE_REQUIRED = {
   'promo': ['index.html', 'styles.css', 'app.js'],
 }
 
-const SHARED_BASE_ROUTES = ['/', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/links']
+const SHARED_BASE_ROUTES = ['/', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/lab/model-price-benchmark', '/links']
 const CHINESE_ARTICLE_ROUTES = ['/notes', '/notes/kimi-k3-subscription-review', '/notes/ai-game-24-days']
 const ENGLISH_ARTICLE_ROUTES = ['/en/articles', '/en/articles/kimi-k3-review', '/en/articles/ai-game-24-days']
 const LEGACY_ENGLISH_ARTICLE_ROUTES = ['/en/notes', '/en/notes/kimi-k3-subscription-review']

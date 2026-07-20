@@ -93,6 +93,28 @@ export default function Lab() {
 
           {data && <BenchmarkEfficiency data={data} />}
 
+          <Link
+            to={path('/lab/model-price-benchmark')}
+            className="group mb-8 block overflow-hidden rounded-2xl border border-[#b8d9ff] bg-paper p-5 text-[#1d1d1f] transition-[border-color,transform] hover:border-[#0071e3] active:scale-[0.99] md:p-7"
+          >
+            <span className="mb-2 block text-xs font-semibold uppercase tracking-widest text-[#0071e3]">API price · real agent mix</span>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold tracking-tight text-[#1d1d1f]">
+                  {isEnglish ? 'API price vs hands-on score' : '模型 API 价格与实测评分'}
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#6e6e73]">
+                  {isEnglish
+                    ? 'Use a 94.7% cache-hit agent workload to compare six model prices, then place the three tested systems beside their four quality scores.'
+                    : '按 94.7% 缓存命中的 Agent 用量比较六个模型价格，再对照三套实测系统的四项质量分。'}
+                </p>
+              </div>
+              <span className="shrink-0 text-sm font-medium text-[#0066cc] transition-transform group-hover:translate-x-1">
+                {isEnglish ? 'Open comparison' : '打开对比'} →
+              </span>
+            </div>
+          </Link>
+
           {!isEnglish && (
             <a
               href="/recording-desk/"
