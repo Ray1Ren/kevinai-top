@@ -8,6 +8,7 @@ import Lab from './pages/Lab'
 import Links from './pages/Links'
 import RedirectHandler from './components/RedirectHandler'
 import LanguageRedirect from './components/LanguageRedirect'
+import ScrollToTop from './components/ScrollToTop'
 import Notes from './pages/Notes'
 import EnglishArticles from './pages/EnglishArticles'
 import { useLocale } from './hooks/useLocale'
@@ -31,6 +32,7 @@ function App() {
           <Layout>
             <RedirectHandler />
             <LanguageRedirect />
+            <ScrollToTop />
             <Routes>
               {renderLocalizedRoutes('')}
               {renderLocalizedRoutes('/en')}

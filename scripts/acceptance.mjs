@@ -993,6 +993,14 @@ async function testModelPriceBenchmark(browser, base) {
   assert(desktopState.width <= desktopState.viewport + 2, `desktop comparison overflows: ${desktopState.width}px`)
   await desktopPage.screenshot({ path: join(SCREENSHOTS, 'model-price-benchmark-desktop.png'), fullPage: true })
 
+  await desktopPage.goto(`${base}/lab`, { waitUntil: 'networkidle' })
+  const comparisonEntry = desktopPage.getByRole('link', { name: /模型 API 价格与实测评分/ })
+  await comparisonEntry.scrollIntoViewIfNeeded()
+  assert((await desktopPage.evaluate(() => window.scrollY)) > 0, 'lab entry must require scrolling for this regression check')
+  await comparisonEntry.click()
+  await desktopPage.waitForURL(`${base}/lab/model-price-benchmark`)
+  assert.equal(await desktopPage.evaluate(() => window.scrollY), 0, 'SPA navigation must reset the new page to the top')
+
   await desktopPage.goto(`${base}/en/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
   await desktopPage.getByRole('heading', { name: 'What a high cache-hit rate does to model cost.' }).waitFor({ state: 'visible' })
   assert.equal(await desktopPage.locator('html').getAttribute('lang'), 'en')
