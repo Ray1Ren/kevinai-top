@@ -9,6 +9,7 @@ const VALID_PATHS = [
   '/lab/promo',
   '/lab/vision',
   '/lab/vision/review',
+  '/lab/model-price-benchmark',
   '/links',
   '/notes',
   '/notes/kimi-k3-subscription-review',
@@ -25,6 +26,7 @@ const VALID_PATHS = [
   '/en/lab/promo',
   '/en/lab/vision',
   '/en/lab/vision/review',
+  '/en/lab/model-price-benchmark',
   '/en/links',
 ]
 
