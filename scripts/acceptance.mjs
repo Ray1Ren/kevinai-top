@@ -867,6 +867,62 @@ async function testPublishedBenchmarkScores(browser, base) {
   log('published benchmark scores passed: four detail pages and equal-weight total match the public-account article')
 }
 
+async function testFullPrompts(browser, base) {
+  const promptCases = [
+    { path: '/lab/2d', marker: 'window.__SLINGSHOT_TEST__', minCharacters: 2200 },
+    { path: '/lab/3d', marker: 'window.__BREACH_TEST__', minCharacters: 3900 },
+    { path: '/lab/promo', marker: 'window.__ONEKICK_TEST__', minCharacters: 4000 },
+    { path: '/lab/vision', marker: '"id":"V050"', minCharacters: 14500 },
+  ]
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' })
+  const page = await context.newPage()
+  const finishMonitoring = monitorPage(page, 'complete prompt evidence', { allowDocument404: true })
+
+  await page.goto(`${base}/lab`, { waitUntil: 'networkidle' })
+  assert.equal(await page.getByText('四类评测实机录制台').count(), 0, 'private recording desk must not appear on the public Lab page')
+  assert.equal(await page.locator('a[href="/recording-desk/"]').count(), 0, 'private recording desk link must be removed')
+  assert.equal((await fetch(`${base}/recording-desk/`)).status, 404, 'private recording desk files must not ship in dist')
+
+  for (const promptCase of promptCases) {
+    await page.goto(`${base}${promptCase.path}`, { waitUntil: 'networkidle' })
+    const evidence = page.locator('[data-full-prompt]')
+    await evidence.waitFor({ state: 'visible' })
+    assert.match(await evidence.innerText(), /任务摘要 · 不是完整 Prompt/)
+    await evidence.locator('summary').click()
+    const content = evidence.locator('[data-prompt-content]')
+    await content.waitFor({ state: 'visible' })
+    const promptText = await content.textContent()
+    assert(promptText && promptText.length >= promptCase.minCharacters, `${promptCase.path} prompt must be complete`)
+    assert(promptText.includes(promptCase.marker), `${promptCase.path} prompt must include ${promptCase.marker}`)
+  }
+  await page.screenshot({ path: join(SCREENSHOTS, 'full-prompt-desktop.png'), fullPage: true })
+
+  await page.goto(`${base}/en/lab/2d`, { waitUntil: 'networkidle' })
+  const englishEvidence = page.locator('[data-full-prompt]')
+  assert.match(await englishEvidence.innerText(), /Task summary · not the full prompt/)
+  await englishEvidence.locator('summary').click()
+  const englishContent = englishEvidence.locator('[data-prompt-content]')
+  await englishContent.waitFor({ state: 'visible' })
+  assert.match(await englishEvidence.innerText(), /Original prompt \(Chinese\)/)
+  assert((await englishContent.textContent())?.includes('同题任务：做一款真正能玩的原创弹弓物理游戏'))
+  finishMonitoring()
+  await context.close()
+
+  const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: 'zh-CN' })
+  const mobilePage = await mobileContext.newPage()
+  const finishMobileMonitoring = monitorPage(mobilePage, 'complete prompt mobile', { allowDocument404: true })
+  await mobilePage.goto(`${base}/lab/vision`, { waitUntil: 'networkidle' })
+  const mobileEvidence = mobilePage.locator('[data-full-prompt]')
+  await mobileEvidence.locator('summary').click()
+  await mobileEvidence.locator('[data-prompt-content]').waitFor({ state: 'visible' })
+  const mobileWidth = await mobilePage.evaluate(() => Math.max(document.body.scrollWidth, document.documentElement.scrollWidth))
+  assert(mobileWidth <= 392, `complete prompt must not overflow a 390px viewport, got ${mobileWidth}px`)
+  await mobileEvidence.screenshot({ path: join(SCREENSHOTS, 'full-prompt-mobile.png') })
+  finishMobileMonitoring()
+  await mobileContext.close()
+  log('complete prompts passed: four Chinese pages, English source label, mobile layout, and private desk removal')
+}
+
 async function testVisionReview(browser, base) {
   const vision = await fetch(`${base}/data/vision-cases.json`).then((response) => response.json())
   assert.equal(vision.cases.length, 50)
@@ -1245,6 +1301,7 @@ async function main() {
     await testPromoInteraction(browser, base)
     await testEnglishBundleLocalization(browser, base)
     await testPublishedBenchmarkScores(browser, base)
+    await testFullPrompts(browser, base)
     await testModelPriceBenchmark(browser, base)
     await testVisionReview(browser, base)
     await testEmbeddedPlayableBuilds(browser, base)

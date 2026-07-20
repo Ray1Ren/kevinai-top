@@ -3,6 +3,7 @@ import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
 import { useLocale } from '../hooks/useLocale'
 import VisionReviewGrid from '../components/VisionReviewGrid'
+import FullPrompt from '../components/FullPrompt'
 
 export default function LabVision() {
   const { data, loading, error } = useBenchmarks()
@@ -22,9 +23,11 @@ export default function LabVision() {
             <p className="text-graphite-200 leading-relaxed mb-6">
               {task?.conclusion ?? (isEnglish ? 'Kimi scored highest on these 50 images, followed by Codex and MiniMax M3.' : '这次 50 图测试，Kimi 得分最高，Codex 和 MiniMax M3 随后。')}
             </p>
-            <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
-              {task?.prompt ?? (isEnglish ? 'Answer using only the attached image and output exactly one line of JSON.' : '只根据随附图片回答。即使图片模糊，也请选择最符合图片的一项，只输出一行 JSON。')}
-            </blockquote>
+            <FullPrompt
+              isEnglish={isEnglish}
+              promptPath="/evidence/prompts/vision.txt"
+              summary={task?.prompt ?? (isEnglish ? 'Answer using only the attached image and output exactly one line of JSON.' : '只根据随附图片回答。即使图片模糊，也请选择最符合图片的一项，只输出一行 JSON。')}
+            />
           </div>
 
           {data && (

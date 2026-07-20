@@ -3,6 +3,7 @@ import { useBenchmarks } from '../hooks/useBenchmarks'
 import ModelResult from '../components/ModelResult'
 import { useLocale } from '../hooks/useLocale'
 import PlayableComparison from '../components/PlayableComparison'
+import FullPrompt from '../components/FullPrompt'
 
 export default function Lab2D() {
   const { data, loading, error } = useBenchmarks()
@@ -24,9 +25,11 @@ export default function Lab2D() {
                 ? 'Codex scored 96.0 and felt the most reliable. K3 scored 80.5 with drifting later levels. MiniMax M3 scored 54.5 and could not clear level one through normal play.'
                 : 'Codex 96.0，操作最稳。K3 80.5，第二、三关会自己漂；MiniMax M3 54.5，正常操作过不了第一关。')}
             </p>
-            <blockquote className="border-l-2 border-pitch-500 pl-4 text-graphite-300 italic">
-              {task?.prompt ?? (isEnglish ? 'Build an original browser game with an immediately understandable slingshot interaction.' : '做一款让普通玩家一眼能理解拖弹弓、放手发射、撞塌建筑的原创网页小游戏。')}
-            </blockquote>
+            <FullPrompt
+              isEnglish={isEnglish}
+              promptPath="/evidence/prompts/2d.txt"
+              summary={task?.prompt ?? (isEnglish ? 'Build an original browser game with an immediately understandable slingshot interaction.' : '做一款让普通玩家一眼能理解拖弹弓、放手发射、撞塌建筑的原创网页小游戏。')}
+            />
           </div>
 
           <PlayableComparison
