@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
-import { useBenchmarks } from '../hooks/useBenchmarks'
 import { useLocale } from '../hooks/useLocale'
 
 const priceRows = [
@@ -21,12 +20,95 @@ const pricingSources = [
   { label: 'MiniMax', href: 'https://platform.minimax.io/docs/guides/pricing-paygo' },
 ]
 
-type ModelKey = 'kimi' | 'codex' | 'minimax'
+type LocalizedCopy = { zh: string; en: string }
 
-const benchmarkModels: Array<{ key: ModelKey; name: string; dot: string }> = [
-  { key: 'kimi', name: 'Kimi K3', dot: 'bg-[#7256b8]' },
-  { key: 'codex', name: 'GPT-5.6 Sol', dot: 'bg-[#2b746d]' },
-  { key: 'minimax', name: 'MiniMax M3', dot: 'bg-[#f06d2f]' },
+type OfficialBenchmarkClaim = {
+  model: string
+  provider: string
+  claim: LocalizedCopy
+  metrics: Array<{ label: string; value: LocalizedCopy }>
+  href: string
+}
+
+const officialBenchmarkClaims: OfficialBenchmarkClaim[] = [
+  {
+    model: 'Claude Fable 5',
+    provider: 'Anthropic',
+    claim: {
+      zh: '官方称在其列出的绝大多数能力基准达到 SOTA。',
+      en: 'Anthropic reports state-of-the-art results across nearly every capability benchmark it lists.',
+    },
+    metrics: [
+      { label: 'Cognition FrontierCode', value: { zh: '最高分', en: 'Top score' } },
+      { label: 'Hebbia Finance Benchmark', value: { zh: '最高分', en: 'Top score' } },
+    ],
+    href: 'https://www.anthropic.com/news/claude-fable-5-mythos-5',
+  },
+  {
+    model: 'GPT-5.6 Sol',
+    provider: 'OpenAI',
+    claim: {
+      zh: '官方模型目录将其定位为面向复杂专业工作的前沿模型。',
+      en: 'OpenAI positions it as a frontier model for complex professional work.',
+    },
+    metrics: [
+      { label: 'Reasoning', value: { zh: '最高档', en: 'Highest' } },
+      { label: 'Official model tier', value: { zh: '前沿', en: 'Frontier' } },
+    ],
+    href: 'https://developers.openai.com/api/docs/models/gpt-5.6-sol',
+  },
+  {
+    model: 'Kimi K3',
+    provider: 'Moonshot AI',
+    claim: {
+      zh: 'Kimi 官方评测套件中，除 Claude Fable 5 与 GPT-5.6 Sol 外领先其余对照模型。',
+      en: 'In Kimi’s own suite, K3 leads the other comparison models apart from Claude Fable 5 and GPT-5.6 Sol.',
+    },
+    metrics: [
+      { label: 'DeepSWE', value: { zh: '67.3', en: '67.3' } },
+      { label: 'BrowseComp', value: { zh: '90.4', en: '90.4' } },
+    ],
+    href: 'https://www.kimi.com/blog/kimi-k3',
+  },
+  {
+    model: 'GLM-5.2',
+    provider: 'Z.ai',
+    claim: {
+      zh: 'FrontierSWE、PostTrainBench、SWE-Marathon 三项均列开源模型第 1。',
+      en: 'Ranks No. 1 among open models on FrontierSWE, PostTrainBench, and SWE-Marathon.',
+    },
+    metrics: [
+      { label: 'Terminal-Bench 2.1', value: { zh: '81.0', en: '81.0' } },
+      { label: 'SWE-bench Pro', value: { zh: '62.1', en: '62.1' } },
+    ],
+    href: 'https://docs.z.ai/guides/llm/glm-5.2',
+  },
+  {
+    model: 'MiniMax M3',
+    provider: 'MiniMax',
+    claim: {
+      zh: '官方页面显示 BrowseComp 超过 Opus 4.7，PostTrainBench 总榜第 3。',
+      en: 'MiniMax reports a higher BrowseComp score than Opus 4.7 and No. 3 overall on PostTrainBench.',
+    },
+    metrics: [
+      { label: 'BrowseComp', value: { zh: '83.5', en: '83.5' } },
+      { label: 'PostTrainBench', value: { zh: '37.1 · #3', en: '37.1 · #3' } },
+    ],
+    href: 'https://www.minimax.io/models/text/m3',
+  },
+  {
+    model: 'DeepSeek V4 Pro',
+    provider: 'DeepSeek',
+    claim: {
+      zh: '官方称 Agentic Coding 达到开源 SOTA，World Knowledge 位列开放模型第 1。',
+      en: 'DeepSeek reports open-source SOTA in agentic coding and No. 1 among open models in world knowledge.',
+    },
+    metrics: [
+      { label: 'Agentic Coding', value: { zh: '开源 SOTA', en: 'Open SOTA' } },
+      { label: 'World Knowledge', value: { zh: '开放模型第 1', en: 'No. 1 open model' } },
+    ],
+    href: 'https://api-docs.deepseek.com/news/news260424',
+  },
 ]
 
 function PriceChart({ isEnglish }: { isEnglish: boolean }) {
@@ -71,69 +153,47 @@ function PriceChart({ isEnglish }: { isEnglish: boolean }) {
   )
 }
 
-function BenchmarkTable({ isEnglish }: { isEnglish: boolean }) {
-  const { data, loading, error } = useBenchmarks()
-
-  if (loading) {
-    return (
-      <div className="mt-8 space-y-3" role="status" aria-live="polite" aria-label={isEnglish ? 'Loading benchmark scores' : '正在加载实测评分'}>
-        {[0, 1, 2].map((row) => <div key={row} className="h-20 animate-pulse rounded-2xl bg-[#f0f0f2]" />)}
-      </div>
-    )
-  }
-
-  if (error || !data) {
-    return (
-      <div className="mt-8 rounded-2xl border border-[#ffb4ab] bg-[#fff1f0] p-5 text-sm text-[#9f1c13]" role="alert">
-        {isEnglish ? 'The benchmark data could not be loaded.' : '实测评分暂时加载失败。'} {error}
-      </div>
-    )
-  }
-
-  const taskRows = data.summary.table.slice(0, 4)
-  const totalRow = data.summary.table[4]
-
+function OfficialBenchmarkList({ isEnglish }: { isEnglish: boolean }) {
   return (
-    <div className="mt-8" role="table" aria-label={isEnglish ? 'Four hands-on quality scores for Kimi K3, GPT-5.6 Sol, and MiniMax M3' : 'Kimi K3、GPT-5.6 Sol 和 MiniMax M3 的四项实测质量评分'}>
-      <div className="sr-only md:grid md:grid-cols-[1.25fr_0.65fr_repeat(4,1fr)] md:gap-4 md:border-b md:border-[#d2d2d7] md:px-5 md:pb-3 md:text-[11px] md:font-medium md:uppercase md:tracking-[0.08em] md:text-[#86868b]" role="row">
-        <span role="columnheader">{isEnglish ? 'Model' : '模型'}</span>
-        <span role="columnheader">{isEnglish ? 'Overall' : '总分'}</span>
-        {taskRows.map((row) => <span key={row.task} role="columnheader">{row.task}</span>)}
-      </div>
+    <div className="mt-10 border-t border-[#d2d2d7]" role="list" aria-label={isEnglish ? 'Provider-reported official benchmark claims for six models' : '六个模型由厂商公布的官方评测与排名'}>
+      {officialBenchmarkClaims.map((item) => (
+        <article
+          key={item.model}
+          data-official-benchmark={item.model}
+          className="grid gap-5 border-b border-[#e5e5e7] py-7 md:grid-cols-[minmax(150px,0.72fr)_minmax(0,1.35fr)_minmax(260px,0.95fr)_auto] md:items-center md:gap-8"
+          role="listitem"
+        >
+          <div>
+            <h3 className="text-[17px] font-semibold tracking-[-0.015em] text-[#1d1d1f]">{item.model}</h3>
+            <p className="mt-1 text-xs text-[#86868b]">{item.provider}</p>
+          </div>
 
-      <div className="space-y-3 pt-3">
-        {benchmarkModels.map((model) => {
-          const total = totalRow[model.key]
-          const winner = model.key === 'codex'
-          return (
-            <div
-              key={model.key}
-              data-benchmark-model={model.key}
-              className={`grid grid-cols-2 gap-3 rounded-2xl border p-5 md:grid-cols-[1.25fr_0.65fr_repeat(4,1fr)] md:items-center md:gap-4 ${winner ? 'border-[#b8d9ff] bg-[#f1f7ff]' : 'border-[#e5e5e7] bg-[#fafafa]'}`}
-              role="row"
-            >
-              <div className="col-span-2 flex items-center gap-2 text-[15px] font-semibold text-[#1d1d1f] md:col-span-1" role="rowheader">
-                <span className={`h-2.5 w-2.5 rounded-full ${model.dot}`} aria-hidden="true" />
-                {model.name}
+          <p className="max-w-[52ch] text-sm leading-relaxed text-[#515154]">
+            {isEnglish ? item.claim.en : item.claim.zh}
+          </p>
+
+          <dl className="grid grid-cols-2 gap-3">
+            {item.metrics.map((metric) => (
+              <div key={metric.label} className="border-l border-[#d2d2d7] pl-3">
+                <dt className="text-[10px] font-medium leading-tight text-[#86868b]">{metric.label}</dt>
+                <dd className="mt-1 text-[15px] font-semibold tabular-nums text-[#1d1d1f]">
+                  {isEnglish ? metric.value.en : metric.value.zh}
+                </dd>
               </div>
-              <div role="cell">
-                <span className="block text-[10px] font-medium uppercase tracking-[0.08em] text-[#86868b] md:hidden">{isEnglish ? 'Overall' : '总分'}</span>
-                <strong className="text-2xl font-semibold tabular-nums tracking-[-0.03em] text-[#1d1d1f]">{total.toFixed(1)}</strong>
-                {winner && <span className="ml-2 rounded-full bg-[#dcecff] px-2 py-0.5 text-[10px] font-semibold text-[#0064c8]">{isEnglish ? 'Top' : '最高'}</span>}
-              </div>
-              {taskRows.map((row) => (
-                <div key={row.task} role="cell">
-                  <span className="block truncate text-[10px] font-medium uppercase tracking-[0.06em] text-[#86868b] md:hidden">{row.task}</span>
-                  <span className="text-[15px] font-semibold tabular-nums text-[#1d1d1f]">{row[model.key].toFixed(1)}</span>
-                  <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-[#e5e5e7]" aria-hidden="true">
-                    <span className={`block h-full rounded-full ${model.dot}`} style={{ width: `${row[model.key]}%` }} />
-                  </span>
-                </div>
-              ))}
-            </div>
-          )
-        })}
-      </div>
+            ))}
+          </dl>
+
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noreferrer"
+            data-official-source={item.provider}
+            className="w-fit shrink-0 text-sm font-medium text-[#0066cc] underline decoration-[#b8d9ff] underline-offset-4 transition-colors hover:text-[#004f9e] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0071e3] active:scale-[0.98]"
+          >
+            {isEnglish ? 'Official source' : '官方来源'} ↗
+          </a>
+        </article>
+      ))}
     </div>
   )
 }
@@ -144,8 +204,8 @@ export default function ModelPriceBenchmark() {
   return (
     <>
       <SEOHead
-        title={isEnglish ? 'API Price vs Hands-on Score' : '模型 API 价格与实测评分'}
-        description={isEnglish ? 'Compare six model API costs using a real agent token mix, then place the three tested systems beside their four hands-on quality scores.' : '按真实 Agent Token 构成比较六个模型的 API 成本，并对照三套实际完成四项任务的质量评分。'}
+        title={isEnglish ? 'API Price & Official Benchmarks' : '模型 API 价格与官方评测'}
+        description={isEnglish ? 'Compare six model API costs using a real agent token mix, then review each provider’s official benchmark claims and source.' : '按真实 Agent Token 构成比较六个模型的 API 成本，并查看各厂商公开的官方评测、排名与原始来源。'}
       />
       <section className="min-h-[100dvh] bg-[#ffffff] pb-24 pt-28 text-[#1d1d1f] md:pb-32 md:pt-32" data-model-price-benchmark>
         <div className="mx-auto max-w-[1200px] px-4 md:px-6">
@@ -206,18 +266,18 @@ export default function ModelPriceBenchmark() {
           <section className="border-t border-[#d2d2d7] py-16 md:py-20" aria-labelledby="benchmark-heading">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">02 · Hands-on benchmark</p>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">02 · Official benchmark claims</p>
                 <h2 id="benchmark-heading" className="text-3xl font-semibold tracking-[-0.025em] text-[#1d1d1f] md:text-4xl">
-                  {isEnglish ? 'Four quality scores' : '四项质量评分'}
+                  {isEnglish ? 'Official benchmarks and rankings' : '官方公开评测与排名'}
                 </h2>
               </div>
               <p className="max-w-md text-sm leading-relaxed text-[#6e6e73] md:text-right">
-                {isEnglish ? 'Only the three systems we actually ran are shown here. Each task contributes 25%; speed is reported separately and does not affect quality.' : '这里仅列实际跑完四项任务的三套系统。每项各占 25%，速度单列，不计入质量分。'}
+                {isEnglish ? 'All results below are provider-reported. Test sets, harnesses, reasoning effort, and release dates differ, so they do not form one directly comparable leaderboard.' : '以下均为厂商官方自报。测试集、Harness、推理强度和发布时间不同，不能据此直接合成统一总榜。'}
               </p>
             </div>
-            <BenchmarkTable isEnglish={isEnglish} />
+            <OfficialBenchmarkList isEnglish={isEnglish} />
             <p className="mt-6 text-xs leading-relaxed text-[#86868b]">
-              {isEnglish ? 'Hands-on runs: July 17–18, 2026. Scores load from the same published dataset used by the main Lab page.' : '实测时间：2026-07-17 至 2026-07-18。评分直接读取主实验室同一份已发布数据，避免两个页面口径漂移。'}
+              {isEnglish ? 'Sources checked July 20, 2026. Wording is condensed from each provider’s official page; open the source on each row for methodology and full context.' : '来源核查：2026-07-20。这里压缩呈现厂商官方页面口径；评测方法和完整上下文请打开每行的官方来源查看。'}
             </p>
           </section>
         </div>

@@ -115,13 +115,13 @@ async function testStaticDeepLinks(browser, base) {
   const cases = [
     ['/lab/2d', '2D 小游戏实测'],
     ['/lab/vision', '50 图识别实测'],
-    ['/lab/model-price-benchmark', '模型 API 价格与实测评分'],
+    ['/lab/model-price-benchmark', '模型 API 价格与官方评测'],
     ['/links', '链接'],
     ['/notes', '文章与动态'],
     ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
     ['/notes/ai-game-24-days', 'AI 做小游戏'],
     ['/en/lab/2d', '2D Web Game Test'],
-    ['/en/lab/model-price-benchmark', 'API Price vs Hands-on Score'],
+    ['/en/lab/model-price-benchmark', 'API Price & Official Benchmarks'],
     ['/en/articles', 'Notes & Updates'],
     ['/en/articles/kimi-k3-review', 'Is Kimi K3'],
     ['/en/articles/ai-game-24-days', 'AI made my first game playable'],
@@ -1032,11 +1032,20 @@ async function testModelPriceBenchmark(browser, base) {
   assert.equal(await pricingSourceLinks.count(), 6)
   assert.equal(await pricingSourceLinks.evaluateAll((links) => links.every((link) => link.href.startsWith('https://'))), true)
 
-  const minimaxScores = await desktopPage.locator('[data-benchmark-model="minimax"]').innerText()
-  assert.match(minimaxScores, /77\.8/)
-  assert.match(minimaxScores, /83\.6/)
-  assert(!minimaxScores.includes('73.9'), 'the comparison page must not reuse the stale MiniMax total')
-  assert.match(await desktopPage.locator('[data-benchmark-model="codex"]').innerText(), /92\.6/)
+  const officialOrder = await desktopPage.locator('[data-official-benchmark]').evaluateAll((rows) => rows.map((row) => row.getAttribute('data-official-benchmark')))
+  assert.deepEqual(officialOrder, ['Claude Fable 5', 'GPT-5.6 Sol', 'Kimi K3', 'GLM-5.2', 'MiniMax M3', 'DeepSeek V4 Pro'])
+  assert.match(await desktopPage.locator('[data-official-benchmark="Kimi K3"]').innerText(), /67\.3.*90\.4/s)
+  assert.match(await desktopPage.locator('[data-official-benchmark="GLM-5.2"]').innerText(), /81\.0.*62\.1/s)
+  assert.match(await desktopPage.locator('[data-official-benchmark="MiniMax M3"]').innerText(), /83\.5.*37\.1 · #3/s)
+  assert.match(await desktopPage.locator('[data-official-benchmark="DeepSeek V4 Pro"]').innerText(), /开源 SOTA.*开放模型第 1/s)
+  const officialSourceLinks = desktopPage.locator('a[data-official-source]')
+  assert.equal(await officialSourceLinks.count(), 6)
+  assert.equal(await officialSourceLinks.evaluateAll((links) => links.every((link) => link.href.startsWith('https://'))), true)
+  const benchmarkSectionText = await desktopPage.locator('section[aria-labelledby="benchmark-heading"]').innerText()
+  assert.match(benchmarkSectionText, /厂商官方自报/)
+  assert.match(benchmarkSectionText, /不能据此直接合成统一总榜/)
+  assert.equal(await desktopPage.locator('[data-benchmark-model]').count(), 0)
+  assert.equal((await desktopPage.locator('main').innerText()).includes('四项质量评分'), false)
 
   const desktopState = await desktopPage.locator('[data-model-price-benchmark]').evaluate((section) => ({
     background: getComputedStyle(section).backgroundColor,
@@ -1050,7 +1059,7 @@ async function testModelPriceBenchmark(browser, base) {
   await desktopPage.screenshot({ path: join(SCREENSHOTS, 'model-price-benchmark-desktop.png'), fullPage: true })
 
   await desktopPage.goto(`${base}/lab`, { waitUntil: 'networkidle' })
-  const comparisonEntry = desktopPage.getByRole('link', { name: /模型 API 价格与实测评分/ })
+  const comparisonEntry = desktopPage.getByRole('link', { name: /模型 API 价格与官方评测/ })
   await comparisonEntry.scrollIntoViewIfNeeded()
   assert((await desktopPage.evaluate(() => window.scrollY)) > 0, 'lab entry must require scrolling for this regression check')
   await comparisonEntry.click()
@@ -1060,7 +1069,9 @@ async function testModelPriceBenchmark(browser, base) {
   await desktopPage.goto(`${base}/en/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
   await desktopPage.getByRole('heading', { name: 'What a high cache-hit rate does to model cost.' }).waitFor({ state: 'visible' })
   assert.equal(await desktopPage.locator('html').getAttribute('lang'), 'en')
-  assert.match(await desktopPage.locator('[data-benchmark-model="minimax"]').innerText(), /77\.8/)
+  assert.match(await desktopPage.locator('[data-official-benchmark="MiniMax M3"]').innerText(), /83\.5.*37\.1 · #3/s)
+  assert.match(await desktopPage.locator('[data-official-benchmark="DeepSeek V4 Pro"]').innerText(), /Open SOTA.*No\. 1 open model/s)
+  assert.equal((await desktopPage.locator('main').innerText()).includes('Four quality scores'), false)
   finishDesktopMonitoring()
   await desktopContext.close()
 
@@ -1073,7 +1084,7 @@ async function testModelPriceBenchmark(browser, base) {
   const mobilePage = await mobileContext.newPage()
   const finishMobileMonitoring = monitorPage(mobilePage, 'model price benchmark mobile', { allowDocument404: true })
   await mobilePage.goto(`${base}/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
-  await mobilePage.locator('[data-benchmark-model="minimax"]').waitFor({ state: 'visible' })
+  await mobilePage.locator('[data-official-benchmark="MiniMax M3"]').waitFor({ state: 'visible' })
   const mobileState = await mobilePage.evaluate(() => ({
     width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
     viewport: document.documentElement.clientWidth,
@@ -1082,7 +1093,7 @@ async function testModelPriceBenchmark(browser, base) {
   await mobilePage.screenshot({ path: join(SCREENSHOTS, 'model-price-benchmark-mobile.png'), fullPage: true })
   finishMobileMonitoring()
   await mobileContext.close()
-  log('model price benchmark passed: price order, current scores, bilingual copy, white surface, and mobile layout')
+  log('model price benchmark passed: price order, six official claims and sources, bilingual copy, white surface, and mobile layout')
 }
 
 async function testThemeModes(browser, base) {
