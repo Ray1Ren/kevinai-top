@@ -76,7 +76,7 @@ export default function Links() {
               className="w-40 h-40 rounded-lg bg-paper p-1 mb-4"
             />
             <p className="text-white font-medium">{isEnglish ? 'Play One Kick in WeChat' : '扫码试玩《一脚晋级》'}</p>
-            <p className="text-xs text-graphite-400 mt-1">{isEnglish ? '500 levels, each verified to have a solution' : '500 关，每一关都有可行解'}</p>
+            <p className="text-xs text-graphite-400 mt-1">{isEnglish ? 'Addictive fun, every kick takes thought' : '好玩上头，每一脚都得动脑'}</p>
           </button>
 
           <p className="text-center text-xs text-graphite-600 mt-10">kevinai.top</p>
