@@ -122,8 +122,8 @@ export default function Lab() {
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#6e6e73]">
                   {isEnglish
-                    ? 'Compare official API prices and provider-published benchmark claims without mixing incompatible test harnesses.'
-                    : '比较官方 API 定价与厂商公开评测，保留各自测试口径，不把不同 harness 的分数硬合成总榜。'}
+                    ? 'Compare six-model API pricing, the latest four hands-on tests across eight models, and provider claims without mixing incompatible test harnesses.'
+                    : '一页查看六模型 API 定价、八模型四项最新实测与厂商公开评测；不同测试口径继续分开呈现。'}
                 </p>
               </div>
               <span className="shrink-0 text-sm font-medium text-[#0066cc] transition-transform group-hover:translate-x-1">

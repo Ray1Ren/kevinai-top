@@ -1118,6 +1118,19 @@ async function testModelPriceBenchmark(browser, base) {
   assert.equal(await pricingSourceLinks.count(), 6)
   assert.equal(await pricingSourceLinks.evaluateAll((links) => links.every((link) => link.href.startsWith('https://'))), true)
 
+  const currentLabOrder = await desktopPage.locator('[data-current-lab-model]').evaluateAll((rows) => rows.map((row) => row.getAttribute('data-current-lab-model')))
+  assert.deepEqual(currentLabOrder, ['opus5', 'gpt56', 'k3', 'fable5', 'qwen38', 'grok45', 'glm52', 'minimax'])
+  assert.match(await desktopPage.locator('[data-current-lab-model="opus5"]').innerText(), /94\.4/)
+  assert.match(await desktopPage.locator('[data-current-lab-model="k3"]').innerText(), /89\.6/)
+  assert.match(await desktopPage.locator('[data-current-lab-model="glm52"]').innerText(), /完成 3 项.*70\.8/s)
+  const currentTaskLinks = desktopPage.locator('[data-current-task-link]')
+  assert.equal(await currentTaskLinks.count(), 4)
+  assert.deepEqual(
+    await currentTaskLinks.evaluateAll((links) => links.map((link) => link.getAttribute('href'))),
+    ['/lab/2d', '/lab/3d', '/lab/vision', '/lab/aesthetic'],
+  )
+  assert.equal(await desktopPage.locator('[data-k3-latest-build]').getAttribute('href'), '/bundles/2d/k3-retest/')
+
   const officialOrder = await desktopPage.locator('[data-official-benchmark]').evaluateAll((rows) => rows.map((row) => row.getAttribute('data-official-benchmark')))
   assert.deepEqual(officialOrder, ['Claude Fable 5', 'GPT-5.6 Sol', 'Kimi K3', 'GLM-5.2', 'MiniMax M3', 'DeepSeek V4 Pro'])
   assert.match(await desktopPage.locator('[data-official-benchmark="Kimi K3"]').innerText(), /67\.3.*90\.4/s)
@@ -1155,6 +1168,8 @@ async function testModelPriceBenchmark(browser, base) {
   await desktopPage.goto(`${base}/en/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
   await desktopPage.getByRole('heading', { name: 'What a high cache-hit rate does to model cost.' }).waitFor({ state: 'visible' })
   assert.equal(await desktopPage.locator('html').getAttribute('lang'), 'en')
+  assert.match(await desktopPage.locator('[data-current-lab-model="k3"]').innerText(), /4 tasks.*89\.6/s)
+  assert.equal(await desktopPage.locator('[data-k3-latest-build]').getAttribute('href'), '/bundles/2d/k3-retest/?lang=en')
   assert.match(await desktopPage.locator('[data-official-benchmark="MiniMax M3"]').innerText(), /83\.5.*37\.1 · #3/s)
   assert.match(await desktopPage.locator('[data-official-benchmark="DeepSeek V4 Pro"]').innerText(), /Open SOTA.*No\. 1 open model/s)
   assert.equal((await desktopPage.locator('main').innerText()).includes('Four quality scores'), false)
@@ -1170,6 +1185,7 @@ async function testModelPriceBenchmark(browser, base) {
   const mobilePage = await mobileContext.newPage()
   const finishMobileMonitoring = monitorPage(mobilePage, 'model price benchmark mobile', { allowDocument404: true })
   await mobilePage.goto(`${base}/lab/model-price-benchmark`, { waitUntil: 'networkidle' })
+  await mobilePage.locator('[data-current-lab-model="minimax"]').waitFor({ state: 'visible' })
   await mobilePage.locator('[data-official-benchmark="MiniMax M3"]').waitFor({ state: 'visible' })
   const mobileState = await mobilePage.evaluate(() => ({
     width: Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
@@ -1179,7 +1195,7 @@ async function testModelPriceBenchmark(browser, base) {
   await mobilePage.screenshot({ path: join(SCREENSHOTS, 'model-price-benchmark-mobile.png'), fullPage: true })
   finishMobileMonitoring()
   await mobileContext.close()
-  log('model price benchmark passed: price order, six official claims and sources, bilingual copy, white surface, and mobile layout')
+  log('model price benchmark passed: six-model pricing, synchronized eight-model Lab results, four task links, official claims, bilingual copy, white surface, and mobile layout')
 }
 
 async function testThemeModes(browser, base) {

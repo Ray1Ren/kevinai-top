@@ -530,6 +530,14 @@ async function checkOfficialModelBenchmarks() {
   const labSource = await readFile(join(SRC, 'pages/Lab.tsx'), 'utf8')
   const requiredModels = ['Claude Fable 5', 'GPT-5.6 Sol', 'Kimi K3', 'GLM-5.2', 'MiniMax M3', 'DeepSeek V4 Pro']
   const requiredFacts = ['67.3', '90.4', '81.0', '62.1', '83.5', '37.1 · #3', 'data-official-source']
+  const requiredCurrentLabBindings = [
+    'useCurrentBenchmarks',
+    'data-current-lab-results',
+    'data-current-lab-model',
+    'data-current-task-link',
+    'data-k3-latest-build',
+    '不与本轮实测混成一个总榜',
+  ]
 
   for (const model of requiredModels) {
     if (!pageSource.includes(`model: '${model}'`)) {
@@ -547,16 +555,22 @@ async function checkOfficialModelBenchmarks() {
     errors.push(`Official benchmark list must contain six HTTPS sources, found ${officialSourceCount}`)
   }
 
-  for (const forbidden of ['useBenchmarks', 'BenchmarkTable', 'data-benchmark-model', 'Hands-on benchmark', '四项质量评分']) {
+  for (const binding of requiredCurrentLabBindings) {
+    if (!pageSource.includes(binding)) {
+      errors.push(`Model price page is not synchronized with the current Lab: ${binding}`)
+    }
+  }
+
+  for (const forbidden of ['useBenchmarks', 'BenchmarkTable', 'data-benchmark-model']) {
     if (pageSource.includes(forbidden)) {
-      errors.push(`Price comparison page still exposes the private score block: ${forbidden}`)
+      errors.push(`Price comparison page still exposes the legacy private score block: ${forbidden}`)
     }
   }
   if (!pageSource.includes('不能据此直接合成统一总榜') || !pageSource.includes('do not form one directly comparable leaderboard')) {
     errors.push('Official benchmark comparison warning is missing in one or both languages')
   }
-  if (!labSource.includes('模型 API 价格与官方评测') || labSource.includes('模型 API 价格与实测评分')) {
-    errors.push('Lab entry does not use the official benchmark wording')
+  if (!labSource.includes('模型 API 价格与官方评测') || !labSource.includes('八模型四项最新实测') || labSource.includes('模型 API 价格与实测评分')) {
+    errors.push('Lab entry does not describe the synchronized price, current Lab, and official-source layers')
   }
 }
 
