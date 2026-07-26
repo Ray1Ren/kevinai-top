@@ -113,14 +113,18 @@ function monitorPage(page, label, { allowDocument404 = false } = {}) {
 
 async function testStaticDeepLinks(browser, base) {
   const cases = [
-    ['/lab/2d', '2D 小游戏实测'],
-    ['/lab/vision', '50 图识别实测'],
+    ['/lab/2d', '2D 小游戏'],
+    ['/lab/3d', '3D 小游戏'],
+    ['/lab/aesthetic', '产品发布页'],
+    ['/lab/vision', '图片识别'],
     ['/lab/model-price-benchmark', '模型 API 价格与官方评测'],
     ['/links', '链接'],
     ['/notes', '文章与动态'],
     ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
     ['/notes/ai-game-24-days', 'AI 做小游戏'],
-    ['/en/lab/2d', '2D Web Game Test'],
+    ['/en/lab/2d', '2D web game'],
+    ['/en/lab/3d', '3D web game'],
+    ['/en/lab/aesthetic', 'Product launch page'],
     ['/en/lab/model-price-benchmark', 'API Price & Official Benchmarks'],
     ['/en/articles', 'Notes & Updates'],
     ['/en/articles/kimi-k3-review', 'Is Kimi K3'],
@@ -500,10 +504,10 @@ async function testPrimaryNavigation(browser, base) {
   const finishMonitoring = monitorPage(page, 'primary SPA navigation', { allowDocument404: true })
   const cases = [
     { home: '/', label: '文章', path: '/notes', heading: '把做东西的过程写下来。' },
-    { home: '/', label: '实验室', path: '/lab', heading: '四项 AI 实测' },
+    { home: '/', label: '实验室', path: '/lab', heading: '八个模型，四项真人实测' },
     { home: '/', label: '链接', path: '/links', heading: 'Kevin AI局' },
     { home: '/en', label: 'Articles', path: '/en/articles', heading: 'Notes from the work, as it happened.' },
-    { home: '/en', label: 'Lab', path: '/en/lab', heading: 'Four AI tests' },
+    { home: '/en', label: 'Lab', path: '/en/lab', heading: 'Eight models, four hands-on tests' },
     { home: '/en', label: 'Links', path: '/en/links', heading: 'Kevin AI Lab' },
   ]
 
@@ -583,9 +587,35 @@ const bundleKinds = {
   promo: { files: ['index.html', 'styles.css', 'app.js'], ready: 'main' },
 }
 
+const bundleLoadCases = {
+  '2d': {
+    ...bundleKinds['2d'],
+    models: ['codex', 'minimax-m3', 'opus5', 'fable5', 'grok45', 'qwen38', 'glm52', 'k3-retest'],
+  },
+  '3d': {
+    ...bundleKinds['3d'],
+    models: ['kimi', 'codex', 'minimax-m3', 'minimax-m3-original', 'opus5', 'fable5', 'grok45', 'qwen38', 'glm52'],
+  },
+  promo: {
+    ...bundleKinds.promo,
+    models: ['kimi', 'codex', 'minimax-m3'],
+  },
+  aesthetic: {
+    files: ['index.html', 'styles.css', 'app.js', 'vendor/three.min.js'],
+    ready: 'canvas, main, #app, #keyboard-stage',
+    models: ['opus5', 'codex', 'fable5', 'kimi', 'grok45', 'qwen38', 'glm52', 'minimax-m3'],
+  },
+}
+
+const englishBundleModels = {
+  '2d': ['k3-retest', 'codex', 'minimax-m3'],
+  '3d': ['kimi', 'codex', 'minimax-m3'],
+  promo: ['kimi', 'codex', 'minimax-m3'],
+}
+
 async function testBundleMimeAndLoad(browser, base) {
-  for (const [kind, config] of Object.entries(bundleKinds)) {
-    for (const model of ['kimi', 'codex', 'minimax-m3']) {
+  for (const [kind, config] of Object.entries(bundleLoadCases)) {
+    for (const model of config.models) {
       const prefix = `${base}/bundles/${kind}/${model}`
       for (const file of config.files) {
         const response = await fetch(`${prefix}/${file}`)
@@ -607,6 +637,8 @@ async function testBundleMimeAndLoad(browser, base) {
       log(`bundle load and MIME passed: ${kind}/${model}`)
     }
   }
+  assert.equal((await fetch(`${base}/bundles/2d/kimi/`)).status, 404, 'retired 2D Kimi bundle must stay offline')
+  log('retired bundle passed: 2d/kimi returns 404')
 }
 
 async function test2DInteraction(browser, base) {
@@ -792,7 +824,7 @@ async function testEnglishBundleLocalization(browser, base) {
   const finishMonitoring = monitorPage(page, 'English playable bundles')
 
   for (const [kind, config] of Object.entries(bundleKinds)) {
-    for (const model of ['kimi', 'codex', 'minimax-m3']) {
+    for (const model of englishBundleModels[kind]) {
       const label = `${kind}/${model}`
       await page.goto(`${base}/bundles/${label}/?lang=en`, { waitUntil: 'networkidle', timeout: 30000 })
       await page.locator(config.ready).first().waitFor({ state: 'visible', timeout: 15000 })
@@ -840,10 +872,46 @@ async function testPublishedBenchmarkScores(browser, base) {
   const page = await context.newPage()
   const finishMonitoring = monitorPage(page, 'published benchmark scores', { allowDocument404: true })
   const expectedByPage = {
-    '/lab/2d': { kimi: '80.5', codex: '96.0', minimax: '54.5' },
-    '/lab/3d': { kimi: '91.0', codex: '89.2', minimax: '83.6' },
-    '/lab/promo': { kimi: '91.0', codex: '95.0', minimax: '85.0' },
-    '/lab/vision': { kimi: '96.7', codex: '90.0', minimax: '88.0' },
+    '/lab/2d': {
+      opus5: '95.0',
+      gpt56: '94.0',
+      k3: '88.3',
+      fable5: '84.8',
+      qwen38: '80.5',
+      grok45: '87.0',
+      glm52: '74.0',
+      minimax: '54.5',
+    },
+    '/lab/3d': {
+      opus5: '91.3',
+      gpt56: '89.2',
+      k3: '91.0',
+      fable5: '83.3',
+      qwen38: '87.8',
+      grok45: '73.2',
+      glm52: '62.8',
+      minimax: '68.0',
+    },
+    '/lab/vision': {
+      opus5: '100.0',
+      gpt56: '90.0',
+      k3: '96.7',
+      fable5: '96.0',
+      qwen38: '94.8',
+      grok45: '88.1',
+      glm52: '—',
+      minimax: '88.0',
+    },
+    '/lab/aesthetic': {
+      opus5: '91.2',
+      gpt56: '90.3',
+      k3: '82.3',
+      fable5: '87.8',
+      qwen38: '80.2',
+      grok45: '81.2',
+      glm52: '75.7',
+      minimax: '71.2',
+    },
   }
 
   for (const [path, expected] of Object.entries(expectedByPage)) {
@@ -858,20 +926,32 @@ async function testPublishedBenchmarkScores(browser, base) {
   }
 
   await page.goto(`${base}/lab`, { waitUntil: 'networkidle' })
-  const totalRow = page.locator('tr').filter({ hasText: /四项等权总分/ })
-  assert.match(await totalRow.innerText(), /89\.8/)
-  assert.match(await totalRow.innerText(), /92\.6/)
-  assert.match(await totalRow.innerText(), /77\.8/)
+  const overallRows = page.locator('article').filter({ hasText: '可比任务平均' }).locator(':scope > div').nth(1).locator(':scope > div')
+  const expectedOverall = [
+    ['Claude Opus 5', '94.4', '4 项'],
+    ['GPT-5.6 Sol', '90.9', '4 项'],
+    ['Kimi K3', '89.6', '4 项'],
+    ['Claude Fable 5', '88.0', '4 项'],
+    ['Qwen 3.8 Max', '85.8', '4 项'],
+    ['Grok 4.5', '82.4', '4 项'],
+    ['GLM 5.2', '70.8', '已完成 3 项'],
+    ['MiniMax M3', '70.4', '4 项'],
+  ]
+  assert.equal(await overallRows.count(), expectedOverall.length)
+  for (const [index, expected] of expectedOverall.entries()) {
+    const rowText = await overallRows.nth(index).innerText()
+    for (const value of expected) assert(rowText.includes(value), `overall row ${index + 1} must include ${value}`)
+  }
   finishMonitoring()
   await context.close()
-  log('published benchmark scores passed: four detail pages and equal-weight total match the public-account article')
+  log('published benchmark scores passed: eight models, four current detail pages, GLM absence, and comparable-task averages')
 }
 
 async function testFullPrompts(browser, base) {
   const promptCases = [
     { path: '/lab/2d', marker: 'window.__SLINGSHOT_TEST__', minCharacters: 2200 },
     { path: '/lab/3d', marker: 'window.__BREACH_TEST__', minCharacters: 3900 },
-    { path: '/lab/promo', marker: 'window.__ONEKICK_TEST__', minCharacters: 4000 },
+    { path: '/lab/aesthetic', marker: '声律 75', minCharacters: 1600 },
     { path: '/lab/vision', marker: '"id":"V050"', minCharacters: 14500 },
   ]
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: 'zh-CN' })
@@ -936,7 +1016,7 @@ async function testVisionReview(browser, base) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
   const page = await context.newPage()
   const finishMonitoring = monitorPage(page, 'vision review interaction', { allowDocument404: true })
-  await page.goto(`${base}/lab/vision`, { waitUntil: 'networkidle' })
+  await page.goto(`${base}/lab/vision/review`, { waitUntil: 'networkidle' })
   const cards = page.locator('article[data-case-id]')
   await cards.first().waitFor({ state: 'visible' })
   assert.equal(await cards.count(), 50)
@@ -951,7 +1031,7 @@ async function testVisionReview(browser, base) {
   await page.locator('#difficulty').selectOption(difficulty)
   assert.equal(await cards.count(), expectedIntersection)
   assert(expectedIntersection > 0, 'chosen category/difficulty intersection must not be empty')
-  assert.match(await page.locator('body').innerText(), /Kimi K3/)
+  assert.match(await page.locator('body').innerText(), /K3/)
   assert.match(await cards.first().innerText(), /K3/)
   assert.match(await cards.first().innerText(), /Codex/)
   assert.match(await cards.first().innerText(), /M3/)
@@ -989,30 +1069,36 @@ async function testEmbeddedPlayableBuilds(browser, base) {
   await page.goto(`${base}/lab/2d`, { waitUntil: 'networkidle' })
   const frame = page.locator('iframe[data-playable-frame]')
   await frame.waitFor({ state: 'visible' })
-  assert.equal(await frame.getAttribute('src'), '/bundles/2d/codex/')
-  await page.locator('button[data-playable-id="kimi"]').click()
-  assert.equal(await frame.getAttribute('src'), '/bundles/2d/kimi/')
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/opus5/')
+  await page.locator('button[data-playable-id="k3"]').click()
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/k3-retest/')
 
   await page.goto(`${base}/lab/3d`, { waitUntil: 'networkidle' })
   await frame.waitFor({ state: 'visible' })
-  assert.equal(await frame.getAttribute('src'), '/bundles/3d/kimi/')
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/opus5/')
   await page.locator('button[data-playable-id="minimax"]').click()
-  assert.equal(await frame.getAttribute('src'), '/bundles/3d/minimax-m3/')
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/minimax-m3-original/')
+
+  await page.goto(`${base}/lab/aesthetic`, { waitUntil: 'networkidle' })
+  await frame.waitFor({ state: 'visible' })
+  assert.equal(await frame.getAttribute('src'), '/bundles/aesthetic/opus5/')
+  await page.locator('button[data-playable-id="gpt56"]').click()
+  assert.equal(await frame.getAttribute('src'), '/bundles/aesthetic/codex/')
 
   await page.goto(`${base}/en/lab/2d`, { waitUntil: 'networkidle' })
   await frame.waitFor({ state: 'visible' })
-  assert.equal(await frame.getAttribute('src'), '/bundles/2d/codex/?lang=en')
-  await page.locator('button[data-playable-id="kimi"]').click()
-  assert.equal(await frame.getAttribute('src'), '/bundles/2d/kimi/?lang=en')
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/opus5/?lang=en')
+  await page.locator('button[data-playable-id="k3"]').click()
+  assert.equal(await frame.getAttribute('src'), '/bundles/2d/k3-retest/?lang=en')
 
   await page.goto(`${base}/en/lab/3d`, { waitUntil: 'networkidle' })
   await frame.waitFor({ state: 'visible' })
-  assert.equal(await frame.getAttribute('src'), '/bundles/3d/kimi/?lang=en')
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/opus5/?lang=en')
   await page.locator('button[data-playable-id="minimax"]').click()
-  assert.equal(await frame.getAttribute('src'), '/bundles/3d/minimax-m3/?lang=en')
+  assert.equal(await frame.getAttribute('src'), '/bundles/3d/minimax-m3-original/?lang=en')
   finishMonitoring()
   await context.close()
-  log('embedded playable builds passed: Chinese and English 2D/3D model switching')
+  log('embedded playable builds passed: Opus 5 defaults and current 2D/3D/product-page switching')
 }
 
 async function testModelPriceBenchmark(browser, base) {
@@ -1105,6 +1191,7 @@ async function testThemeModes(browser, base) {
     '/lab',
     '/lab/2d',
     '/lab/3d',
+    '/lab/aesthetic',
     '/lab/promo',
     '/lab/vision',
     '/lab/vision/review',

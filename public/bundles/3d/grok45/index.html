@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#0b1520" />
+  <title>Breach Point / 破门点</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Start overlay -->
+    <div id="start-screen" class="overlay panel-overlay">
+      <div class="panel start-panel">
+        <div class="brand">
+          <span class="brand-en">BREACH POINT</span>
+          <span class="brand-zh">破门点</span>
+        </div>
+        <p class="tagline">低多边形海港仓库 · 战术拆弹训练</p>
+        <div class="brief">
+          <p>进入训练场，沿廊道推进，清除敌方单位后拆除核心装置。注意掩体与倒计时。</p>
+          <ul class="howto">
+            <li><strong>目标</strong>：消灭全部敌人 → 靠近发光装置长按拆除</li>
+            <li><strong>桌面</strong>：WASD 移动 · 鼠标瞄准 · 左键射击 · R 换弹 · E 拆除 · Esc 暂停</li>
+            <li><strong>触控</strong>：左侧摇杆移动 · 右侧拖拽视角 · 底部按钮射击/换弹/交互</li>
+          </ul>
+        </div>
+        <div class="best-line" id="best-line">最佳通关：—</div>
+        <button id="btn-start" class="btn primary" type="button">开始任务</button>
+      </div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden" aria-hidden="true">
+      <div class="hud-top">
+        <div class="hud-block">
+          <span class="label">生命</span>
+          <div class="bar"><div id="hp-bar" class="fill hp"></div></div>
+          <span id="hp-text">100</span>
+        </div>
+        <div class="hud-block center">
+          <span class="label">倒计时</span>
+          <span id="timer-text" class="timer">75.0</span>
+        </div>
+        <div class="hud-block right">
+          <span class="label">敌人</span>
+          <span id="enemy-count">4</span>
+        </div>
+      </div>
+
+      <div class="hud-objective" id="objective-text">清除所有敌方单位</div>
+      <div class="hint" id="hint-text"></div>
+
+      <div class="crosshair" id="crosshair">
+        <span class="ch-h"></span>
+        <span class="ch-v"></span>
+      </div>
+
+      <div class="damage-vignette" id="damage-vignette"></div>
+      <div class="hit-marker" id="hit-marker"></div>
+      <div class="dir-indicator" id="dir-indicator"></div>
+
+      <div class="hud-bottom">
+        <div class="ammo-block">
+          <span id="ammo-text">12</span><span class="sep">/</span><span id="reserve-text">36</span>
+          <span class="ammo-label">弹匣 · 备弹</span>
+        </div>
+        <div class="hud-actions">
+          <button id="btn-pause" class="btn ghost small" type="button">暂停</button>
+          <button id="btn-mute" class="btn ghost small" type="button">静音</button>
+          <button id="btn-restart-hud" class="btn ghost small" type="button">重开</button>
+        </div>
+      </div>
+
+      <div class="defuse-bar-wrap hidden" id="defuse-bar-wrap">
+        <div class="defuse-label">拆除中…</div>
+        <div class="defuse-bar"><div id="defuse-bar" class="fill"></div></div>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div id="pause-screen" class="overlay panel-overlay hidden">
+      <div class="panel">
+        <h2>任务暂停</h2>
+        <p>倒计时与敌方行动已冻结。</p>
+        <div class="btn-row">
+          <button id="btn-resume" class="btn primary" type="button">继续</button>
+          <button id="btn-restart-pause" class="btn" type="button">重开</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div id="result-screen" class="overlay panel-overlay hidden">
+      <div class="panel result-panel">
+        <h2 id="result-title">任务完成</h2>
+        <p id="result-sub"></p>
+        <ul class="stats-list" id="stats-list"></ul>
+        <button id="btn-replay" class="btn primary" type="button">再次挑战</button>
+      </div>
+    </div>
+
+    <!-- Mobile controls -->
+    <div id="touch-controls" class="hidden" aria-hidden="true">
+      <div id="move-zone" class="touch-zone left">
+        <div id="move-stick" class="stick"></div>
+        <div class="zone-label">移动</div>
+      </div>
+      <div id="look-zone" class="touch-zone right">
+        <div class="zone-label">视角</div>
+      </div>
+      <div class="touch-buttons">
+        <button id="btn-reload-touch" class="touch-btn" type="button">R</button>
+        <button id="btn-interact-touch" class="touch-btn interact" type="button">E</button>
+        <button id="btn-fire-touch" class="touch-btn fire" type="button">射击</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

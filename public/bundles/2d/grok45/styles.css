@@ -1,0 +1,436 @@
+/* Sling Siege — original siege UI, no external assets */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-deep: #0b1220;
+  --panel: rgba(12, 22, 40, 0.92);
+  --panel-border: rgba(120, 190, 255, 0.28);
+  --amber: #f0a030;
+  --amber-glow: #ffc96a;
+  --teal: #3ecfbf;
+  --steel: #8aa4c8;
+  --text: #e8f0ff;
+  --muted: #9bb0cc;
+  --danger: #ff6b6b;
+  --ok: #5ddea0;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  --radius: 16px;
+  --font: "Segoe UI", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  user-select: none;
+}
+
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0 auto;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(30, 70, 110, 0.45), transparent 70%),
+    linear-gradient(180deg, #0a101c 0%, #101a2e 55%, #16243a 100%);
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  object-fit: contain;
+  background: transparent;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+/* HUD */
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+#hud.hidden {
+  display: none;
+}
+
+.hud-left,
+.hud-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.hud-right {
+  pointer-events: auto;
+}
+
+.hud-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(8, 14, 28, 0.72);
+  border: 1px solid rgba(140, 190, 255, 0.22);
+  backdrop-filter: blur(8px);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.hud-chip .label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(140, 190, 255, 0.28);
+  background: rgba(8, 14, 28, 0.78);
+  color: var(--text);
+  font-size: 18px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(30, 50, 80, 0.9);
+  border-color: rgba(240, 160, 48, 0.55);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+#hintBar {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  max-width: min(92vw, 560px);
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(8, 14, 28, 0.7);
+  border: 1px solid rgba(140, 190, 255, 0.18);
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#hintBar.hidden {
+  display: none;
+}
+
+/* Overlays */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(4, 8, 16, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overlay.hidden {
+  display: none;
+}
+
+.panel {
+  width: min(440px, 100%);
+  padding: 28px 24px 24px;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(160deg, rgba(28, 48, 78, 0.95), rgba(12, 20, 36, 0.96));
+  border: 1px solid var(--panel-border);
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.title-panel {
+  width: min(480px, 100%);
+}
+
+.crest {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 8px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  font-size: 28px;
+  color: var(--amber-glow);
+  background: radial-gradient(circle at 40% 35%, rgba(240, 160, 48, 0.35), rgba(20, 40, 70, 0.9));
+  border: 1px solid rgba(240, 160, 48, 0.45);
+  box-shadow: 0 0 24px rgba(240, 160, 48, 0.25);
+}
+
+.title-main {
+  font-size: clamp(1.8rem, 6vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(120deg, #ffe2a0, #f0a030 45%, #7fe7d8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.15;
+}
+
+.title-sub {
+  margin-top: 4px;
+  font-size: 1.05rem;
+  color: var(--teal);
+  letter-spacing: 0.35em;
+  font-weight: 600;
+}
+
+.blurb {
+  margin: 14px 0 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.blurb strong {
+  color: var(--amber-glow);
+  font-weight: 700;
+}
+
+.howto {
+  list-style: none;
+  text-align: left;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(140, 190, 255, 0.12);
+}
+
+.howto li {
+  color: var(--steel);
+  font-size: 0.86rem;
+  line-height: 1.5;
+  padding: 4px 0;
+}
+
+.howto li + li {
+  border-top: 1px solid rgba(140, 190, 255, 0.08);
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 5px;
+  border: 1px solid rgba(140, 190, 255, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.8em;
+  font-family: inherit;
+  color: var(--text);
+}
+
+.meta {
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  opacity: 0.9;
+}
+
+h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid rgba(140, 190, 255, 0.28);
+  background: rgba(30, 48, 78, 0.9);
+  color: var(--text);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 12px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  min-width: 120px;
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn:hover {
+  background: rgba(45, 70, 110, 0.95);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, #e8952a, #f0b040 40%, #5fd4c4);
+  color: #101820;
+  border-color: rgba(255, 220, 140, 0.55);
+  box-shadow: 0 8px 24px rgba(240, 160, 48, 0.28);
+  min-width: 160px;
+}
+
+.btn.primary:hover {
+  box-shadow: 0 10px 28px rgba(240, 160, 48, 0.4);
+  background: linear-gradient(135deg, #f0a030, #ffc86a 45%, #7fe7d8);
+}
+
+.btn.ghost {
+  background: transparent;
+  border-color: rgba(140, 190, 255, 0.2);
+  color: var(--muted);
+  min-width: 100px;
+}
+
+.level-flash {
+  background:
+    linear-gradient(160deg, rgba(36, 58, 92, 0.96), rgba(14, 24, 42, 0.97));
+  animation: flashIn 0.35s ease;
+}
+
+.level-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(62, 207, 191, 0.15);
+  border: 1px solid rgba(62, 207, 191, 0.4);
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+@keyframes flashIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .panel {
+    padding: 22px 16px 18px;
+  }
+
+  .title-main {
+    letter-spacing: 0.02em;
+  }
+
+  .title-sub {
+    letter-spacing: 0.2em;
+  }
+
+  .btn {
+    min-width: 0;
+    flex: 1 1 40%;
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+
+  .btn.primary {
+    flex: 1 1 100%;
+  }
+
+  #hintBar {
+    font-size: 11px;
+    bottom: 10px;
+    white-space: normal;
+    max-width: 94vw;
+    border-radius: 12px;
+  }
+
+  .hud-chip {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .panel {
+    padding: 14px 18px;
+  }
+
+  .howto {
+    display: none;
+  }
+
+  .crest {
+    display: none;
+  }
+
+  .blurb {
+    margin: 8px 0;
+    font-size: 0.85rem;
+  }
+}

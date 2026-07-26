@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Breach Point / 破门点 —— 原创低多边形海港仓库 3D 第一人称拆弹训练场">
+<title>Breach Point / 破门点</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <canvas id="gl"></canvas>
+
+  <!-- ============ HUD ============ -->
+  <div id="hud" aria-hidden="false">
+
+    <div id="vignette"></div>
+    <div id="lowhp"></div>
+
+    <div class="dmg-arrow" id="dmg-top"></div>
+    <div class="dmg-arrow" id="dmg-bottom"></div>
+    <div class="dmg-arrow" id="dmg-left"></div>
+    <div class="dmg-arrow" id="dmg-right"></div>
+
+    <div id="markers"></div>
+
+    <!-- 左上：生命 -->
+    <div class="hud-panel hud-tl">
+      <div class="panel-brackets"></div>
+      <div class="row">
+        <span class="tag">VITALS</span>
+        <span class="tag-cn">生命</span>
+      </div>
+      <div class="hp-wrap">
+        <div id="hp-fill"></div>
+        <div id="hp-ticks"></div>
+      </div>
+      <div class="row row-b">
+        <span id="hp-value" class="num">100</span>
+        <span class="unit">/ 100</span>
+        <span id="armor-note">护甲 · 轻型战术背心</span>
+      </div>
+    </div>
+
+    <!-- 顶部中央：倒计时 / 目标 -->
+    <div class="hud-panel hud-tc">
+      <div class="mission-row">
+        <div class="mission-block">
+          <div class="mini-label">TIME / 倒计时</div>
+          <div id="timer" class="big-num">75.0</div>
+        </div>
+        <div class="mission-sep"></div>
+        <div class="mission-block">
+          <div class="mini-label">HOSTILES / 敌人</div>
+          <div id="enemies-left" class="big-num">5</div>
+        </div>
+      </div>
+      <div id="objective-line"><span class="obj-dot"></span><span id="objective-text">清除敌人</span></div>
+    </div>
+
+    <!-- 准星 -->
+    <div id="crosshair">
+      <div class="ch-line ch-up"></div>
+      <div class="ch-line ch-down"></div>
+      <div class="ch-line ch-left"></div>
+      <div class="ch-line ch-right"></div>
+      <div id="ch-dot"></div>
+    </div>
+    <div id="hitmarker"><span></span><span></span><span></span><span></span></div>
+
+    <!-- 右下：弹药 -->
+    <div class="hud-panel hud-br">
+      <div class="panel-brackets"></div>
+      <div id="weapon-name">MK-2 «汐鸦» 战术步枪</div>
+      <div class="ammo-row">
+        <span id="ammo-mag" class="ammo-big">12</span>
+        <span class="ammo-slash">/</span>
+        <span id="ammo-reserve" class="ammo-small">36</span>
+      </div>
+      <div id="reload-track"><div id="reload-bar"></div></div>
+      <div id="ammo-hint">左键射击 · R 换弹</div>
+    </div>
+
+    <!-- 拆弹进度 -->
+    <div id="defuse-panel" class="hidden">
+      <div id="defuse-ring"><div id="defuse-core"><span id="defuse-pct">0%</span></div></div>
+      <div id="defuse-text">长按 <b>E</b> 拆除装置</div>
+    </div>
+
+    <div id="killfeed"></div>
+    <div id="toast"></div>
+    <div id="fallback-hint" class="hidden"></div>
+  </div>
+
+  <!-- 右上：常驻控制按钮（层级高于暂停/结算层，保证随时可点） -->
+  <div id="hud-controls" class="hud-buttons hidden">
+    <button id="btn-pause" class="ui-btn" type="button" title="暂停 / 继续 (Esc)">暂停</button>
+    <button id="btn-mute" class="ui-btn" type="button" title="静音 (M)">♪ 开</button>
+    <button id="btn-restart" class="ui-btn" type="button" title="重开任务">重开</button>
+  </div>
+
+  <!-- ============ 触摸控制 ============ -->
+  <div id="touch" class="hidden">
+    <div id="look-pad"></div>
+    <div id="stick"><div id="stick-ring"></div><div id="stick-knob"></div><span class="stick-label">移动</span></div>
+    <div id="touch-buttons">
+      <button id="tbtn-reload" class="tbtn" type="button">换弹<small>R</small></button>
+      <button id="tbtn-interact" class="tbtn" type="button">拆除<small>E</small></button>
+      <button id="tbtn-fire" class="tbtn tbtn-fire" type="button">射击</button>
+    </div>
+  </div>
+
+  <!-- ============ 首屏 ============ -->
+  <section id="screen-menu" class="screen">
+    <div class="menu-box">
+      <div class="brand-line">
+        <span class="brand-code">OP · 17</span>
+        <span class="brand-dot"></span>
+        <span class="brand-sub">HARBOR DEMOLITION RANGE / 海港拆弹训练场</span>
+      </div>
+      <h1 class="title-en">BREACH<span>POINT</span></h1>
+      <h2 class="title-cn">破 门 点</h2>
+      <p class="lede">
+        黄昏时分，十七号船坞的旧仓库被布下一枚训练用爆破装置。
+        你是「汐鸦」小队的破门手：沿黄色导引线突入仓库，清除全部武装靶员，然后贴近装置完成拆除。
+      </p>
+      <div class="mission-cards">
+        <div class="mcard"><span class="mc-i">01</span><b>突入</b><i>沿导引线经大门 / 侧门进入仓库</i></div>
+        <div class="mcard"><span class="mc-i">02</span><b>清场</b><i>击倒 5 名武装靶员</i></div>
+        <div class="mcard"><span class="mc-i">03</span><b>拆除</b><i>贴近发光装置长按 E 满 1.5 秒</i></div>
+      </div>
+      <div class="keys">
+        <div class="kgroup"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>移动</span></div>
+        <div class="kgroup"><kbd>鼠标</kbd><span>瞄准</span></div>
+        <div class="kgroup"><kbd>左键</kbd><span>射击</span></div>
+        <div class="kgroup"><kbd>R</kbd><span>换弹</span></div>
+        <div class="kgroup"><kbd>E</kbd><span>长按拆除</span></div>
+        <div class="kgroup"><kbd>Shift</kbd><span>慢步</span></div>
+        <div class="kgroup"><kbd>Esc</kbd><span>暂停</span></div>
+      </div>
+      <p class="touch-note">手机 / 平板：左下摇杆移动，右侧拖动观察，右下按钮射击 · 换弹 · 拆除。</p>
+      <button id="btn-start" class="cta" type="button">开始任务</button>
+      <div id="best-menu" class="best-line">暂无记录</div>
+      <p class="legal">全部场景、角色、武器、音效与代码均为本作原创；仅使用本地预置 Three.js r147（MIT）。</p>
+    </div>
+  </section>
+
+  <!-- ============ 暂停 ============ -->
+  <section id="screen-pause" class="screen hidden">
+    <div class="menu-box small">
+      <div class="brand-line"><span class="brand-code">PAUSED</span><span class="brand-dot"></span><span class="brand-sub">任务暂停</span></div>
+      <h2 class="title-cn small-cn">暂 停</h2>
+      <p class="lede small">倒计时、敌人 AI、射击冷却与拆除进度已全部冻结。</p>
+      <div class="btn-col">
+        <button id="btn-resume" class="cta" type="button">继续任务</button>
+        <button id="btn-restart2" class="cta ghost" type="button">重新开始</button>
+        <button id="btn-quit" class="cta ghost" type="button">返回首页</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 结算 ============ -->
+  <section id="screen-result" class="screen hidden">
+    <div class="menu-box small">
+      <div class="brand-line"><span class="brand-code" id="result-code">DEBRIEF</span><span class="brand-dot"></span><span class="brand-sub">任务结算</span></div>
+      <h2 id="result-title" class="title-cn small-cn">任务完成</h2>
+      <p id="result-sub" class="lede small">装置已安全拆除。</p>
+      <div id="result-stats" class="stat-grid"></div>
+      <div id="result-best" class="best-line"></div>
+      <div class="btn-col">
+        <button id="btn-again" class="cta" type="button">再来一次</button>
+        <button id="btn-menu" class="cta ghost" type="button">返回首页</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="fatal" class="screen hidden">
+    <div class="menu-box small">
+      <h2 class="title-cn small-cn">渲染环境不可用</h2>
+      <p id="fatal-msg" class="lede small"></p>
+    </div>
+  </div>
+
+</div>
+
+<noscript><div style="color:#e8eef2;font:16px/1.6 system-ui;padding:24px">本作需要启用 JavaScript 与 WebGL。</div></noscript>
+
+<script src="vendor/three.min.js"></script>
+<script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

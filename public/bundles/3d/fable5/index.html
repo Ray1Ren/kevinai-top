@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Breach Point · 破门点 — 海港仓库拆弹训练</title>
+  <meta name="description" content="原创低多边形 3D 第一人称拆弹训练网页小游戏" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="viewport" aria-label="3D 游戏画面"></div>
+
+    <!-- HUD -->
+    <div id="hud" hidden>
+      <div id="hud-top">
+        <div class="hud-box" id="hud-timer">75</div>
+        <div class="hud-box" id="hud-objective">清除敌人</div>
+        <div class="hud-box" id="hud-enemies">敌人 5</div>
+      </div>
+      <div id="hud-sysbtns">
+        <button id="btn-pause" class="sysbtn" title="暂停 (Esc)" aria-label="暂停">Ⅱ</button>
+        <button id="btn-mute" class="sysbtn" title="静音开关" aria-label="静音">♪</button>
+      </div>
+      <div id="crosshair"><i class="ch t"></i><i class="ch b"></i><i class="ch l"></i><i class="ch r"></i><i class="ch dot"></i></div>
+      <div id="hitmarker"><i></i><i></i><i></i><i></i></div>
+      <div id="obj-marker" hidden><span class="om-d">◆</span><span class="om-t">装置</span></div>
+      <div id="vignette"></div>
+      <div id="lowhp"></div>
+      <div class="dmgdir" id="dmg-t"></div>
+      <div class="dmgdir" id="dmg-b"></div>
+      <div class="dmgdir" id="dmg-l"></div>
+      <div class="dmgdir" id="dmg-r"></div>
+      <div id="hud-bottom">
+        <div class="hud-box" id="hud-hp">
+          <div id="hp-label">生命</div>
+          <div id="hp-bar"><i id="hp-fill"></i></div>
+          <div id="hp-num">100</div>
+        </div>
+        <div class="hud-box" id="hud-ammo">
+          <span id="ammo-mag">12</span><span id="ammo-sep">/</span><span id="ammo-res">24</span>
+          <div id="ammo-state">已上膛</div>
+        </div>
+      </div>
+      <div id="interact-wrap" hidden>
+        <div id="interact-text">长按 E 拆除装置</div>
+        <div id="interact-bar"><i id="interact-fill"></i></div>
+      </div>
+      <div id="toast" hidden></div>
+    </div>
+
+    <!-- 首屏菜单 -->
+    <div class="overlay" id="ov-menu">
+      <div class="panel menu-panel">
+        <div class="title-en">BREACH POINT</div>
+        <div class="title-cn">破 门 点</div>
+        <div class="title-sub">海港仓库 · 拆弹训练任务 — HARBOR WAREHOUSE OPS</div>
+        <p class="menu-desc">
+          单人潜入雾色码头仓库区。<b>清除 5 名武装守卫</b>,找到主仓库内的
+          <b>爆炸装置</b>,并在 <b>75 秒</b>内长按拆除。沿地面黄线推进,小心利用集装箱掩体。
+        </p>
+        <div class="keys">
+          <span><b>WASD</b> 移动</span><span><b>鼠标</b> 瞄准</span><span><b>左键</b> 射击</span>
+          <span><b>R</b> 换弹</span><span><b>E 长按</b> 拆除</span><span><b>Esc</b> 暂停</span>
+        </div>
+        <div class="keys touch-hint">手机:左侧摇杆移动 · 右侧滑动观察 · 屏幕按钮射击/换弹/拆除</div>
+        <button id="btn-start" class="cta">开始任务</button>
+        <div id="menu-best" class="best-line">最佳通关:--</div>
+      </div>
+    </div>
+
+    <!-- 暂停层 -->
+    <div class="overlay" id="ov-pause" hidden>
+      <div class="panel">
+        <div class="panel-title">已暂停 · PAUSED</div>
+        <div class="btn-col">
+          <button id="btn-resume" class="cta">继续任务</button>
+          <button id="btn-restart-p" class="ghost">重新开始</button>
+          <button id="btn-mute-p" class="ghost">声音:开</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 结算层 -->
+    <div class="overlay" id="ov-end" hidden>
+      <div class="panel">
+        <div class="panel-title" id="end-title">任务完成</div>
+        <div class="end-sub" id="end-sub"></div>
+        <div class="end-stats" id="end-stats"></div>
+        <div class="btn-col">
+          <button id="btn-again" class="cta">再来一局</button>
+          <button id="btn-menu" class="ghost">返回标题</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 触摸控件 -->
+    <div id="touch-ui" hidden>
+      <div id="look-area"></div>
+      <div id="stick"><div id="stick-nub"></div></div>
+      <div id="touch-btns">
+        <button id="tb-act" class="tbtn">拆除</button>
+        <button id="tb-reload" class="tbtn">换弹</button>
+        <button id="tb-fire" class="tbtn big">射击</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

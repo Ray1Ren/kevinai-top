@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#241832">
+<title>Sling Siege · 弹弓攻城</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="game"></canvas>
+
+  <!-- 游戏内 HUD -->
+  <div id="hud" class="hidden">
+    <div class="hud-left">
+      <div id="hud-level" class="hud-pill">第 1 关</div>
+      <div id="hud-score" class="hud-pill">得分 0</div>
+      <div id="hud-shots" class="hud-pill hud-shots" title="剩余弹药"></div>
+    </div>
+    <div class="hud-right">
+      <button id="btn-pause" class="hud-btn" type="button">暂停</button>
+      <button id="btn-restart" class="hud-btn" type="button">重开</button>
+      <button id="btn-mute" class="hud-btn" type="button">音效 开</button>
+    </div>
+  </div>
+
+  <!-- 关卡横幅 / 操作提示 -->
+  <div id="toast" class="hidden"></div>
+  <div id="hint" class="hidden"></div>
+
+  <!-- 开始界面 -->
+  <div id="ov-start" class="overlay">
+    <div class="panel start-panel">
+      <div class="logo-sub">SLING SIEGE</div>
+      <h1 class="logo">弹弓攻城</h1>
+      <p class="tagline">黄昏峡谷 · 燧石弹弓手 对决 锈甲虫帮</p>
+      <ul class="howto">
+        <li><span class="howto-key">拖</span>按住燧石向后拉，看准轨迹，松手发射</li>
+        <li><span class="howto-key">坠</span>飞行中再点一次屏幕（或按空格）触发「裂地坠击」</li>
+        <li><span class="howto-key">灭</span>撞塌哨塔、消灭全部锈甲虫即可过关</li>
+      </ul>
+      <button id="btn-start" class="big-btn" type="button">开 始 攻 城</button>
+      <div id="level-chips" class="chips"></div>
+      <div id="start-best" class="best-line"></div>
+    </div>
+  </div>
+
+  <!-- 暂停界面 -->
+  <div id="ov-pause" class="overlay hidden">
+    <div class="panel">
+      <h2 class="panel-title">歇一口气</h2>
+      <div class="btn-col">
+        <button id="btn-resume" class="big-btn" type="button">继 续</button>
+        <button id="btn-pause-retry" class="mid-btn" type="button">重玩本关</button>
+        <button id="btn-pause-menu" class="mid-btn" type="button">回主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 结算界面（过关 / 失败 / 通关） -->
+  <div id="ov-result" class="overlay hidden">
+    <div class="panel">
+      <h2 id="result-title" class="panel-title">哨塔告破！</h2>
+      <p id="result-sub" class="result-sub"></p>
+      <div id="result-score" class="result-score"></div>
+      <div class="btn-col">
+        <button id="btn-next" class="big-btn" type="button">下 一 关</button>
+        <button id="btn-retry" class="mid-btn" type="button">重玩本关</button>
+        <button id="btn-menu" class="mid-btn" type="button">回主菜单</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

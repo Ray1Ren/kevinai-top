@@ -7,6 +7,7 @@
   <url><loc>https://kevinai.top/lab</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://kevinai.top/lab/2d</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://kevinai.top/lab/3d</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://kevinai.top/lab/aesthetic</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://kevinai.top/lab/promo</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://kevinai.top/lab/vision</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://kevinai.top/lab/vision/review</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -19,6 +20,7 @@
   <url><loc>https://kevinai.top/en/lab</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://kevinai.top/en/lab/2d</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://kevinai.top/en/lab/3d</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://kevinai.top/en/lab/aesthetic</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://kevinai.top/en/lab/promo</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://kevinai.top/en/lab/vision</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://kevinai.top/en/lab/vision/review</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>

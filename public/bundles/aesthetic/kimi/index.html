@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>声律 75 · SOUNDRHYTHM 新品发布</title>
+<meta name="description" content="声律 75 —— 75% 配列机械键盘。Gasket 结构 + 五层消音棉，CNC 一体成型铝合金机身五种配色，三模连接满电续航 30 天。¥1299，2026 年 8 月 8 日发布。">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- 背景层：渐变光晕 / 噪点 / 暗角，全部程序化生成 -->
+<div class="bg" aria-hidden="true">
+  <div class="bg-glow"></div>
+  <div class="bg-grain"></div>
+  <div class="bg-vignette"></div>
+</div>
+
+<!-- 3D 键盘画布（fixed，贯穿全页） -->
+<canvas id="scene" aria-hidden="true"></canvas>
+
+<!-- WebGL 不可用时的降级键盘（CSS 3D，同样程序化生成） -->
+<div id="fallback" class="fallback" hidden aria-hidden="true">
+  <div class="fb-board">
+    <div class="fb-frame"></div>
+    <div class="fb-keys" id="fb-keys"></div>
+  </div>
+</div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#hero" data-go="hero" aria-label="回到首屏">
+    <span class="brand-zh">声律</span><span class="brand-en">SOUNDRHYTHM</span>
+  </a>
+  <nav class="nav-links" aria-label="页面导航">
+    <a href="#features" data-go="features">卖点</a>
+    <a href="#colors" data-go="colors">配色</a>
+    <a href="#buy" data-go="buy">购买</a>
+  </nav>
+  <div class="nav-color" title="当前配色">
+    <span class="nav-dot" id="nav-dot"></span><span class="nav-color-name" id="nav-color-name">暮山紫</span>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section id="hero" aria-label="首屏">
+    <div class="hero-word" aria-hidden="true">SOUND&nbsp;RHYTHM</div>
+    <div class="hero-inner" id="hero-inner">
+      <p class="eyebrow"><span class="mask"><span class="mask-in">SOUNDRHYTHM · 2026 新品发布</span></span></p>
+      <h1 class="hero-title">
+        <span class="mask"><span class="mask-in t-zh">声律</span></span>
+        <span class="mask"><span class="mask-in t-num">75</span></span>
+      </h1>
+      <p class="hero-sub"><span class="mask"><span class="mask-in">75% 配列机械键盘 —— 声线干净，落指沉稳。</span></span></p>
+      <ul class="hero-chips" aria-label="核心规格">
+        <li>GASKET 结构</li>
+        <li>CNC 铝合金机身</li>
+        <li>三模连接 · 续航 30 天</li>
+      </ul>
+      <div class="hero-cta">
+        <button type="button" class="btn btn-solid" data-go="colors">查看五色</button>
+        <button type="button" class="btn btn-ghost" data-go="buy">预约提醒</button>
+      </div>
+      <p class="hero-meta">¥1299&nbsp;&nbsp;·&nbsp;&nbsp;2026.08.08 发布</p>
+    </div>
+    <div class="scroll-cue" id="scroll-cue" aria-hidden="true"><span class="cue-line"></span>SCROLL</div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section id="features" aria-label="三大卖点">
+    <div class="sec-head" data-reveal>
+      <p class="sec-index">01 / WHY</p>
+      <h2 class="sec-title">一把键盘的<br>三重底气</h2>
+      <p class="sec-note">滚动到此，机身已在左侧逐层展开 —— 五层消音棉，看得见。</p>
+    </div>
+    <div class="feat-list">
+      <article class="feat" data-reveal>
+        <div class="feat-icon" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M4 20 Q8 8 12 20 T20 20 T28 20 T36 20"/>
+            <path d="M4 28 Q8 22 12 28 T20 28 T28 28 T36 28" opacity=".45"/>
+          </svg>
+        </div>
+        <p class="feat-no">01</p>
+        <h3 class="feat-title">声 · 干净低沉</h3>
+        <p class="feat-desc">Gasket 结构悬浮内胆，五层消音棉填充腔体。敲击声线干净低沉，没有空腔杂音。</p>
+      </article>
+      <article class="feat" data-reveal>
+        <div class="feat-icon" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+            <path d="M20 6 L34 12 L20 18 L6 12 Z"/>
+            <path d="M6 19 L20 25 L34 19" opacity=".7"/>
+            <path d="M6 26 L20 32 L34 26" opacity=".45"/>
+          </svg>
+        </div>
+        <p class="feat-no">02</p>
+        <h3 class="feat-title">形 · 一体铝机身</h3>
+        <p class="feat-desc">CNC 一体成型铝合金机身，线条一次切削到位。暮山紫 / 月白 / 黛青 / 胭脂 / 玄墨，五种配色。</p>
+      </article>
+      <article class="feat" data-reveal>
+        <div class="feat-icon" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <circle cx="20" cy="30" r="2.2" fill="currentColor" stroke="none"/>
+            <path d="M11 22 A13 13 0 0 1 29 22"/>
+            <path d="M6 15 A20 20 0 0 1 34 15" opacity=".6"/>
+            <path d="M15.5 26.5 A7 7 0 0 1 24.5 26.5" opacity=".8"/>
+          </svg>
+        </div>
+        <p class="feat-no">03</p>
+        <h3 class="feat-title">连 · 三模三十天</h3>
+        <p class="feat-desc">有线 / 2.4G / 蓝牙 5.3 三种连接方式，桌面与移动场景随切。满电续航 30 天。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ COLORS ============ -->
+  <section id="colors" aria-label="配色展示">
+    <div class="colors-panel">
+      <p class="sec-index center" data-reveal>02 / FIVE FINISHES</p>
+      <h2 class="color-name" data-reveal><span id="color-name" class="swap-target">暮山紫</span></h2>
+      <p class="color-en" data-reveal><span id="color-en" class="swap-target">DUSK VIOLET</span></p>
+      <div class="swatches" role="group" aria-label="选择机身配色" data-reveal>
+        <button type="button" class="swatch" data-color="暮山紫" style="--sw:#5c4a63" aria-label="暮山紫" aria-pressed="true"><span class="sw-dot"></span><span class="sw-name">暮山紫</span></button>
+        <button type="button" class="swatch" data-color="月白" style="--sw:#ddd8cc" aria-label="月白" aria-pressed="false"><span class="sw-dot"></span><span class="sw-name">月白</span></button>
+        <button type="button" class="swatch" data-color="黛青" style="--sw:#26474d" aria-label="黛青" aria-pressed="false"><span class="sw-dot"></span><span class="sw-name">黛青</span></button>
+        <button type="button" class="swatch" data-color="胭脂" style="--sw:#9c4a4e" aria-label="胭脂" aria-pressed="false"><span class="sw-dot"></span><span class="sw-name">胭脂</span></button>
+        <button type="button" class="swatch" data-color="玄墨" style="--sw:#17181c" aria-label="玄墨" aria-pressed="false"><span class="sw-dot"></span><span class="sw-name">玄墨</span></button>
+      </div>
+      <p class="colors-hint" data-reveal>CNC 一体成型铝合金机身 · 点击切换，键盘实时换色</p>
+    </div>
+  </section>
+
+  <!-- ============ BUY ============ -->
+  <section id="buy" aria-label="购买">
+    <div class="buy-panel">
+      <p class="sec-index center" data-reveal>03 / LAUNCH</p>
+      <p class="buy-date" data-reveal>2026 年 8 月 8 日 · 正式发售</p>
+      <h2 class="price" data-reveal><span class="yen">¥</span><span class="price-num">1299</span></h2>
+      <p class="buy-sub" data-reveal>声律 75 · 五色同价 · 75% 配列</p>
+      <div class="buy-actions" data-reveal>
+        <button type="button" class="btn btn-solid btn-buy" id="buy-btn" aria-pressed="false">预约发售提醒</button>
+        <p class="buy-note" id="buy-note" hidden>已为你记下，发售当天见。<span>（演示按钮，不产生真实订单）</span></p>
+      </div>
+    </div>
+    <footer class="footer">
+      <p>© 2026 SOUNDRHYTHM 声律 · 本页面为虚构产品演示</p>
+      <p>页面内全部视觉元素均由代码实时生成，无任何外链素材</p>
+    </footer>
+  </section>
+
+</main>
+
+<script src="vendor/three.min.js"></script>
+<script src="app.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

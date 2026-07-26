@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="声律 75 — Gasket 结构 CNC 铝合金三模机械键盘，2026.08.08 发布" />
+  <title>声律 75 | SOUNDRHYTHM</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23c9a66b' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23c9a66b'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="stage" aria-hidden="true">
+    <canvas id="kb-canvas"></canvas>
+    <canvas id="fx-canvas"></canvas>
+    <div id="kb-css" class="kb-css is-hidden">
+      <div class="kb-css-shadow"></div>
+      <div class="kb-css-body">
+        <div class="kb-css-plate" id="kb-css-keys"></div>
+        <div class="kb-css-badge"></div>
+        <div class="kb-css-port"></div>
+      </div>
+    </div>
+    <div class="stage-vignette"></div>
+    <div class="stage-grain"></div>
+  </div>
+
+  <header class="site-header" id="site-header">
+    <a class="brand" href="#hero" data-nav="hero">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">
+        <span class="brand-cn">声律</span>
+        <span class="brand-en">SOUNDRHYTHM</span>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="页面导航">
+      <button type="button" data-nav="hero" class="nav-link is-active">首屏</button>
+      <button type="button" data-nav="features" class="nav-link">结构</button>
+      <button type="button" data-nav="colors" class="nav-link">配色</button>
+      <button type="button" data-nav="buy" class="nav-link">预订</button>
+    </nav>
+    <button type="button" class="header-cta" data-nav="buy">预订 · ¥1299</button>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="hero" class="section hero" data-section="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">
+          <span class="eyebrow-line"></span>
+          2026.08.08 · 正式发布
+        </p>
+        <h1 class="hero-title">
+          <span class="hero-title-sub">声律 75</span>
+          <span class="hero-title-main">听键入律</span>
+        </h1>
+        <p class="hero-desc">
+          75% 配列 · Gasket 结构 · CNC 一体铝合金机身<br />
+          干净低沉的敲击声线，写给指尖的节奏。
+        </p>
+        <div class="hero-actions">
+          <button type="button" class="btn btn-primary" data-nav="buy">立即预订</button>
+          <button type="button" class="btn btn-ghost" data-nav="features">探索结构</button>
+        </div>
+        <dl class="hero-meta">
+          <div>
+            <dt>配列</dt>
+            <dd>75%</dd>
+          </div>
+          <div>
+            <dt>连接</dt>
+            <dd>三模</dd>
+          </div>
+          <div>
+            <dt>续航</dt>
+            <dd>30 天</dd>
+          </div>
+          <div>
+            <dt>售价</dt>
+            <dd>¥1299</dd>
+          </div>
+        </dl>
+      </div>
+      <div class="hero-scroll-hint" aria-hidden="true">
+        <span>向下滚动</span>
+        <span class="scroll-bar"></span>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section features" data-section="features">
+      <div class="section-head">
+        <p class="eyebrow"><span class="eyebrow-line"></span>三大核心</p>
+        <h2 class="section-title">以声为律，以器成形</h2>
+        <p class="section-lead">从结构到材质，再到连接方式——每一层都为手感与声线服务。</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature-card" data-feature="0">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <rect x="8" y="18" width="48" height="28" rx="4" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 28h40M12 36h40" stroke="currentColor" stroke-width="1" opacity=".45"/>
+              <path d="M18 22v20M32 22v20M46 22v20" stroke="currentColor" stroke-width="1" opacity=".3"/>
+              <path d="M14 46c4 6 32 6 36 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="20" cy="50" r="1.5" fill="currentColor" opacity=".5"/>
+              <circle cx="32" cy="52" r="1.5" fill="currentColor" opacity=".5"/>
+              <circle cx="44" cy="50" r="1.5" fill="currentColor" opacity=".5"/>
+            </svg>
+          </div>
+          <h3>Gasket 结构</h3>
+          <p class="feature-tag">五层消音棉</p>
+          <p>软弹定位板挂载配合五层声学棉料，滤掉刺耳高频，留下干净低沉、有共鸣的敲击声线。</p>
+          <ul class="feature-list">
+            <li>Gasket 软弹定位</li>
+            <li>五层复合消音</li>
+            <li>声线干净低沉</li>
+          </ul>
+        </article>
+
+        <article class="feature-card" data-feature="1">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <path d="M12 44L32 12l20 32H12z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M22 44l10-16 10 16" stroke="currentColor" stroke-width="1.2" opacity=".5"/>
+              <rect x="18" y="46" width="28" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M24 28h16M28 36h8" stroke="currentColor" stroke-width="1" opacity=".4"/>
+            </svg>
+          </div>
+          <h3>CNC 一体成型</h3>
+          <p class="feature-tag">铝合金机身</p>
+          <p>整块铝合金精密铣削，一体成型无拼接缝。冷硬质感落指即知，五种配色诠释金属本色。</p>
+          <ul class="feature-list">
+            <li>CNC 精密铣削</li>
+            <li>一体铝合金</li>
+            <li>五色阳极工艺</li>
+          </ul>
+        </article>
+
+        <article class="feature-card" data-feature="2">
+          <div class="feature-icon" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="18" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M32 18v14l10 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 32h4M46 32h4M32 14v4M32 46v4" stroke="currentColor" stroke-width="1.2" opacity=".45"/>
+              <path d="M48 20c4 4 6 9 6 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>
+              <path d="M52 16c5 5 8 11 8 16" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".35"/>
+            </svg>
+          </div>
+          <h3>三模连接</h3>
+          <p class="feature-tag">有线 / 2.4G / 蓝牙 5.3</p>
+          <p>一键切换有线、2.4G 与蓝牙 5.3 三通道。满电续航 30 天，桌面与移动场景无缝衔接。</p>
+          <ul class="feature-list">
+            <li>三模自由切换</li>
+            <li>蓝牙 5.3</li>
+            <li>满电续航 30 天</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- COLORS -->
+    <section id="colors" class="section colors" data-section="colors">
+      <div class="colors-layout">
+        <div class="colors-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span>五色阳极</p>
+          <h2 class="section-title">金属本色，五种时序</h2>
+          <p class="section-lead">
+            CNC 铝合金机身经阳极氧化，呈现五种沉静配色。点击色卡，键盘即时换装。
+          </p>
+
+          <div class="color-swatches" role="listbox" aria-label="选择键盘配色">
+            <button type="button" class="swatch is-active" role="option" aria-selected="true"
+              data-color="暮山紫" style="--sw: #6b5a78">
+              <span class="swatch-chip"></span>
+              <span class="swatch-meta">
+                <span class="swatch-name">暮山紫</span>
+                <span class="swatch-en">Dusk Violet</span>
+              </span>
+            </button>
+            <button type="button" class="swatch" role="option" aria-selected="false"
+              data-color="月白" style="--sw: #e6e2d8">
+              <span class="swatch-chip"></span>
+              <span class="swatch-meta">
+                <span class="swatch-name">月白</span>
+                <span class="swatch-en">Moon White</span>
+              </span>
+            </button>
+            <button type="button" class="swatch" role="option" aria-selected="false"
+              data-color="黛青" style="--sw: #3f5c5e">
+              <span class="swatch-chip"></span>
+              <span class="swatch-meta">
+                <span class="swatch-name">黛青</span>
+                <span class="swatch-en">Ink Teal</span>
+              </span>
+            </button>
+            <button type="button" class="swatch" role="option" aria-selected="false"
+              data-color="胭脂" style="--sw: #8c4f4f">
+              <span class="swatch-chip"></span>
+              <span class="swatch-meta">
+                <span class="swatch-name">胭脂</span>
+                <span class="swatch-en">Rouge Clay</span>
+              </span>
+            </button>
+            <button type="button" class="swatch" role="option" aria-selected="false"
+              data-color="玄墨" style="--sw: #1c1c1e">
+              <span class="swatch-chip"></span>
+              <span class="swatch-meta">
+                <span class="swatch-name">玄墨</span>
+                <span class="swatch-en">Xuan Black</span>
+              </span>
+            </button>
+          </div>
+
+          <p class="color-active-label">
+            当前：<strong id="active-color-name">暮山紫</strong>
+          </p>
+        </div>
+        <div class="colors-stage-spacer" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- BUY -->
+    <section id="buy" class="section buy" data-section="buy">
+      <div class="buy-panel">
+        <p class="eyebrow"><span class="eyebrow-line"></span>正式发布</p>
+        <h2 class="buy-title">声律 75</h2>
+        <p class="buy-sub">2026 年 8 月 8 日 · 开启预订</p>
+
+        <div class="buy-price-row">
+          <span class="buy-price">¥1299</span>
+          <span class="buy-price-note">首发价 · 含税包邮</span>
+        </div>
+
+        <ul class="buy-points">
+          <li>
+            <span class="buy-dot"></span>
+            Gasket 结构 + 五层消音棉
+          </li>
+          <li>
+            <span class="buy-dot"></span>
+            CNC 一体铝合金 · 五色可选
+          </li>
+          <li>
+            <span class="buy-dot"></span>
+            三模连接 · 满电续航 30 天
+          </li>
+        </ul>
+
+        <div class="buy-actions">
+          <button type="button" class="btn btn-primary btn-lg" id="btn-preorder">
+            立即预订
+          </button>
+          <button type="button" class="btn btn-ghost btn-lg" id="btn-notify">
+            提醒我
+          </button>
+        </div>
+
+        <p class="buy-footnote" id="buy-feedback" aria-live="polite"></p>
+        <p class="buy-legal">本页为虚构产品演示发布页，按钮不会跳转外部站点。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>声律 SOUNDRHYTHM · 声律 75</span>
+    <span>© 2026 虚构品牌演示</span>
+  </footer>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="app.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

@@ -13,6 +13,8 @@ interface PlayableComparisonProps {
   defaultId: string
   title: string
   description: string
+  loadingLabel?: string
+  footnote?: string
 }
 
 export default function PlayableComparison({
@@ -20,6 +22,8 @@ export default function PlayableComparison({
   defaultId,
   title,
   description,
+  loadingLabel,
+  footnote,
 }: PlayableComparisonProps) {
   const { isEnglish } = useLocale()
   const [selectedId, setSelectedId] = useState(defaultId)
@@ -80,7 +84,7 @@ export default function PlayableComparison({
             <div className="absolute inset-0 z-10 flex items-center justify-center bg-graphite-950" role="status" aria-live="polite">
               <div className="flex items-center gap-3 text-sm text-graphite-400">
                 <span className="h-2 w-2 animate-pulse-slow rounded-full bg-pitch-500" />
-                {isEnglish ? 'Loading the game…' : '游戏加载中…'}
+                {loadingLabel ?? (isEnglish ? 'Loading the game…' : '游戏加载中…')}
               </div>
             </div>
           )}
@@ -97,9 +101,9 @@ export default function PlayableComparison({
         </div>
       </div>
       <p className="mt-3 text-xs text-graphite-500">
-        {isEnglish
+        {footnote ?? (isEnglish
           ? 'These are the games exactly as submitted. Keyboard, mouse, and touch support vary between them.'
-          : '这里放的是三家交来的原版网页游戏，键盘、鼠标和触摸支持各不相同。'}
+          : '这里放的是三家交来的原版网页游戏，键盘、鼠标和触摸支持各不相同。')}
       </p>
     </section>
   )

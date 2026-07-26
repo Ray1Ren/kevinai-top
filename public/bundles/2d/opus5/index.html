@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#070b14" />
+<meta name="description" content="Sling Siege 弹弓攻城 —— 原创单页 Canvas 弹弓物理攻城游戏，纯原生实现。" />
+<title>Sling Siege · 弹弓攻城</title>
+<link rel="icon" href="data:," />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><i></i></span>
+      <span class="brand-text">
+        <strong>SLING&nbsp;SIEGE</strong>
+        <em>弹弓攻城</em>
+      </span>
+    </div>
+
+    <div class="hud" role="status" aria-live="polite">
+      <div class="stat"><span class="k">关卡</span><span class="v" id="statLevel">1</span></div>
+      <div class="stat"><span class="k">分数</span><span class="v" id="statScore">0</span></div>
+      <div class="stat"><span class="k">最高</span><span class="v" id="statBest">0</span></div>
+      <div class="stat"><span class="k">守卫</span><span class="v" id="statGuards">0</span></div>
+      <div class="stat stat-ammo"><span class="k">弹药</span><span class="ammo-row" id="ammoRow"></span></div>
+    </div>
+
+    <div class="tools">
+      <button class="btn" id="btnPause" type="button" aria-pressed="false">暂停</button>
+      <button class="btn" id="btnRestart" type="button">重开</button>
+      <button class="btn" id="btnMute" type="button" aria-pressed="false">音效开</button>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <canvas id="game"></canvas>
+
+    <div class="ability-hint" id="abilityHint" hidden>
+      <span class="key">SPACE</span><span class="txt">点击画面触发能力</span>
+    </div>
+    <div class="toast" id="toast" hidden></div>
+
+    <div class="overlay" id="overlay">
+
+      <section class="panel" data-panel="title">
+        <p class="eyebrow">原创弹弓物理挑战</p>
+        <h2 class="title-big">SLING SIEGE</h2>
+        <p class="title-sub">弹弓攻城 · 共鸣晶核 vs 石甲哨兵</p>
+        <ol class="howto">
+          <li><b>1</b><span>按住左侧晶核向后拉，虚线预测轨迹，力度条越满飞得越远</span></li>
+          <li><b>2</b><span>松手发射；飞行中按 <kbd>Space</kbd> 或点击画面触发一次晶核能力</span></li>
+          <li><b>3</b><span>砸塌沙丘要塞，清空全部石甲哨兵即可过关</span></li>
+        </ol>
+        <div class="panel-actions">
+          <button class="btn primary big" id="btnStart" type="button">开始攻城</button>
+        </div>
+        <div class="level-select" id="levelSelect" aria-label="选择关卡"></div>
+        <p class="note">最高分 <b id="titleBest">0</b> · 已解锁 <b id="titleUnlocked">1</b>/3 关</p>
+      </section>
+
+      <section class="panel" data-panel="clear" hidden>
+        <p class="eyebrow good">要塞陷落</p>
+        <h2 class="res-title">第 <span id="clearLevel">1</span> 关 · 通过</h2>
+        <div class="score-grid">
+          <div><span>击破得分</span><b id="clearBase">0</b></div>
+          <div><span>剩余弹药奖励</span><b id="clearBonus">0</b></div>
+          <div class="total"><span>累计总分</span><b id="clearTotal">0</b></div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn primary" id="btnNext" type="button">进入下一关</button>
+          <button class="btn" id="btnReplay" type="button">重玩本关</button>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="fail" hidden>
+        <p class="eyebrow bad">弹药耗尽</p>
+        <h2 class="res-title">要塞仍在坚守</h2>
+        <p class="res-desc">还剩 <b id="failGuards">1</b> 名石甲哨兵。换个落点，先打断承重结构。</p>
+        <div class="score-grid">
+          <div class="total"><span>本关得分</span><b id="failScore">0</b></div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn primary" id="btnRetry" type="button">重玩本关</button>
+          <button class="btn" id="btnHome" type="button">回到标题</button>
+        </div>
+      </section>
+
+      <section class="panel" data-panel="complete" hidden>
+        <p class="eyebrow good">全线突破</p>
+        <h2 class="res-title">三座要塞全部陷落</h2>
+        <p class="res-desc">沙丘之上再无石甲哨兵。挑战更高的总分吧。</p>
+        <div class="score-grid">
+          <div class="total"><span>最终总分</span><b id="doneTotal">0</b></div>
+          <div><span>历史最高</span><b id="doneBest">0</b></div>
+        </div>
+        <div class="panel-actions">
+          <button class="btn primary" id="btnFromScratch" type="button">从头开始</button>
+          <button class="btn" id="btnHome2" type="button">回到标题</button>
+        </div>
+      </section>
+
+      <section class="panel panel-slim" data-panel="paused" hidden>
+        <p class="eyebrow">已暂停</p>
+        <h2 class="res-title">攻城暂停</h2>
+        <div class="panel-actions">
+          <button class="btn primary" id="btnResume" type="button">继续</button>
+          <button class="btn" id="btnRestart2" type="button">重玩本关</button>
+          <button class="btn" id="btnHome3" type="button">回到标题</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <section class="dock">
+    <div class="dock-ammo">
+      <span class="chip" id="dockChip" aria-hidden="true"></span>
+      <span class="dock-text">
+        <strong id="dockName">锥核</strong>
+        <span id="dockDesc">飞行中触发：加速俯冲</span>
+      </span>
+    </div>
+    <div class="dock-power">
+      <span class="power-label">力度</span>
+      <span class="meter"><i id="powerFill"></i></span>
+      <span class="power-val" id="powerVal">0%</span>
+    </div>
+    <p class="dock-hint" id="dockHint">拖动左侧晶核向后蓄力</p>
+  </section>
+
+  <footer class="tipbar">
+    <span>鼠标 / 触摸拖拽发射</span>
+    <span><kbd>Space</kbd> 空中能力</span>
+    <span><kbd>P</kbd> 暂停</span>
+    <span><kbd>R</kbd> 重开</span>
+    <span><kbd>M</kbd> 静音</span>
+  </footer>
+
+</div>
+
+<script src="physics.js"></script>
+<script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

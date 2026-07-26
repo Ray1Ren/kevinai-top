@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Sling Siege / 弹弓攻城</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="gameCanvas" width="1280" height="720" aria-label="Sling Siege 游戏画布"></canvas>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden" aria-live="polite">
+      <div class="hud-left">
+        <div class="hud-chip"><span class="label">关卡</span><span id="hudLevel">1</span></div>
+        <div class="hud-chip"><span class="label">分数</span><span id="hudScore">0</span></div>
+        <div class="hud-chip"><span class="label">弹药</span><span id="hudShots">3</span></div>
+      </div>
+      <div class="hud-right">
+        <button type="button" id="btnMute" class="icon-btn" title="静音" aria-label="静音">🔊</button>
+        <button type="button" id="btnPause" class="icon-btn" title="暂停" aria-label="暂停">⏸</button>
+        <button type="button" id="btnRestart" class="icon-btn" title="重开本关" aria-label="重开本关">↻</button>
+      </div>
+    </div>
+
+    <div id="hintBar" class="hidden">拖拽蓄力 · 松手发射 · 空中点按 / 空格 释放脉冲</div>
+
+    <!-- Title screen -->
+    <div id="overlayTitle" class="overlay">
+      <div class="panel title-panel">
+        <div class="crest" aria-hidden="true">◈</div>
+        <h1 class="title-main">Sling Siege</h1>
+        <p class="title-sub">弹弓攻城</p>
+        <p class="blurb">
+          拖拽左侧<strong>琥珀弹丸</strong>蓄力瞄准，松手发射；击碎木石结构，击败右侧<strong>晶卫哨兵</strong>。
+          飞行中可点按或按 <kbd>Space</kbd> 触发一次<strong>脉冲爆破</strong>。
+        </p>
+        <ul class="howto">
+          <li>🎯 拖得越远，弹力越大；虚线显示预估轨迹</li>
+          <li>💥 冲击可推倒木/石块并伤害守卫</li>
+          <li>⚡ 每发一次空中脉冲：短促加速 + 范围冲击</li>
+        </ul>
+        <button type="button" id="btnStart" class="btn primary">开始围攻</button>
+        <p class="meta" id="titleMeta">最高分 0 · 已解锁第 1 关</p>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div id="overlayPause" class="overlay hidden">
+      <div class="panel">
+        <h2>已暂停</h2>
+        <p class="blurb">围攻暂停中。继续冲锋，或重开本关。</p>
+        <div class="btn-row">
+          <button type="button" id="btnResume" class="btn primary">继续</button>
+          <button type="button" id="btnPauseRestart" class="btn">重开本关</button>
+          <button type="button" id="btnPauseMenu" class="btn ghost">返回标题</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Win -->
+    <div id="overlayWin" class="overlay hidden">
+      <div class="panel">
+        <h2>关卡肃清！</h2>
+        <p class="blurb" id="winText">哨兵已被击溃。</p>
+        <div class="btn-row">
+          <button type="button" id="btnNext" class="btn primary">下一关</button>
+          <button type="button" id="btnWinReplay" class="btn">重玩本关</button>
+          <button type="button" id="btnWinMenu" class="btn ghost">返回标题</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lose -->
+    <div id="overlayLose" class="overlay hidden">
+      <div class="panel">
+        <h2>弹药耗尽</h2>
+        <p class="blurb" id="loseText">仍有哨兵据守。再试一次！</p>
+        <div class="btn-row">
+          <button type="button" id="btnLoseReplay" class="btn primary">重玩本关</button>
+          <button type="button" id="btnLoseMenu" class="btn ghost">返回标题</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level intro flash -->
+    <div id="overlayLevel" class="overlay hidden">
+      <div class="panel level-flash">
+        <p class="level-tag" id="levelTag">第 1 关</p>
+        <h2 id="levelName">前哨木架</h2>
+        <p class="blurb" id="levelDesc">轻松热身，熟悉拖拽与脉冲。</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

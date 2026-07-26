@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Breach Point / 破门点</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ========== 3D Canvas ========== -->
+<div id="game-container">
+  <canvas id="webgl-canvas"></canvas>
+</div>
+
+<!-- ========== Start Menu ========== -->
+<div id="menu-screen" class="overlay-screen">
+  <div class="menu-card">
+    <h1 class="game-title">BREACH POINT</h1>
+    <h2 class="game-subtitle">破门点 · 海港仓库拆弹训练场</h2>
+    <div class="menu-desc">
+      <p>你已潜入海港仓库。清除全部敌方目标后，靠近发光装置长按拆除。</p>
+      <p class="en">Infiltrate the harbor warehouse. Eliminate all hostiles, then reach the glowing device and hold to defuse.</p>
+    </div>
+    <div class="menu-controls">
+      <div class="ctrl-row">
+        <span class="key">WASD</span><span>移动 / Move</span>
+        <span class="key">Mouse</span><span>瞄准 / Aim</span>
+        <span class="key">Click</span><span>射击 / Shoot</span>
+      </div>
+      <div class="ctrl-row">
+        <span class="key">R</span><span>换弹 / Reload</span>
+        <span class="key">E</span><span>长按拆除 / Hold Defuse</span>
+        <span class="key">Esc</span><span>暂停 / Pause</span>
+      </div>
+    </div>
+    <div class="menu-hint" id="best-time-display"></div>
+    <button id="start-btn" class="menu-btn">开始任务 / Start Mission</button>
+  </div>
+</div>
+
+<!-- ========== HUD ========== -->
+<div id="hud" class="hidden">
+  <!-- Top bar: health + timer + enemies -->
+  <div id="hud-top">
+    <div id="hud-health" class="hud-box">
+      <div class="hud-label">HP</div>
+      <div class="hud-bar-wrap"><div id="health-bar" class="hud-bar"></div></div>
+      <div id="health-text" class="hud-val">100</div>
+    </div>
+    <div id="hud-timer" class="hud-box center">
+      <div class="hud-label">TIME</div>
+      <div id="timer-text" class="hud-val big">75</div>
+    </div>
+    <div id="hud-enemies" class="hud-box">
+      <div class="hud-label">HOSTILES</div>
+      <div id="enemy-text" class="hud-val">0 / 0</div>
+    </div>
+  </div>
+
+  <!-- Crosshair -->
+  <div id="crosshair">
+    <div class="ch-dot"></div>
+    <div class="ch-line ch-top"></div>
+    <div class="ch-line ch-bottom"></div>
+    <div class="ch-line ch-left"></div>
+    <div class="ch-line ch-right"></div>
+  </div>
+
+  <!-- Hit marker -->
+  <div id="hitmarker" class="hidden"></div>
+
+  <!-- Damage indicator -->
+  <div id="damage-vignette"></div>
+
+  <!-- Objective marker (3D projected) -->
+  <div id="objective-marker">
+    <div class="obj-icon"></div>
+    <div class="obj-label" id="obj-label">前往装置 / GO TO DEVICE</div>
+  </div>
+
+  <!-- Bottom: ammo + objective text -->
+  <div id="hud-bottom">
+    <div id="hud-ammo" class="hud-box">
+      <div class="hud-label">AMMO</div>
+      <div class="hud-val"><span id="ammo-mag">12</span> / <span id="ammo-reserve">24</span></div>
+      <div id="reload-indicator" class="hidden">RELOADING…</div>
+    </div>
+    <div id="hud-objective" class="hud-box center">
+      <span id="obj-text">清除敌人 / ELIMINATE HOSTILES</span>
+    </div>
+    <div id="hud-buttons">
+      <button id="pause-btn" class="hud-btn" title="暂停">⏸</button>
+      <button id="mute-btn" class="hud-btn" title="静音">🔊</button>
+    </div>
+  </div>
+
+  <!-- Defuse progress bar -->
+  <div id="defuse-bar-container" class="hidden">
+    <div id="defuse-bar"></div>
+    <div id="defuse-text">拆除中… DEFUSING…</div>
+  </div>
+
+  <!-- Interaction prompt -->
+  <div id="interact-prompt" class="hidden">
+    <span class="key-big">E</span> 长按拆除 / HOLD TO DEFUSE
+  </div>
+
+  <!-- Kill feed / notifications -->
+  <div id="notif-area"></div>
+</div>
+
+<!-- ========== Pause Screen ========== -->
+<div id="pause-screen" class="overlay-screen hidden">
+  <div class="menu-card">
+    <h2>已暂停 / PAUSED</h2>
+    <button id="resume-btn" class="menu-btn">继续 / Resume</button>
+    <button id="restart-pause-btn" class="menu-btn secondary">重开 / Restart</button>
+    <button id="quit-pause-btn" class="menu-btn secondary">返回主菜单 / Main Menu</button>
+  </div>
+</div>
+
+<!-- ========== Win Screen ========== -->
+<div id="win-screen" class="overlay-screen hidden">
+  <div class="menu-card result-card">
+    <h2 class="result-title win">任务完成 / MISSION COMPLETE</h2>
+    <div id="win-stats" class="result-stats"></div>
+    <button id="restart-win-btn" class="menu-btn">再玩一次 / Play Again</button>
+  </div>
+</div>
+
+<!-- ========== Lose Screen ========== -->
+<div id="lose-screen" class="overlay-screen hidden">
+  <div class="menu-card result-card">
+    <h2 id="lose-title" class="result-title lose">任务失败 / MISSION FAILED</h2>
+    <div id="lose-stats" class="result-stats"></div>
+    <button id="restart-lose-btn" class="menu-btn">重试 / Retry</button>
+  </div>
+</div>
+
+<!-- ========== Mobile Controls ========== -->
+<div id="mobile-controls" class="hidden">
+  <!-- Left: movement joystick -->
+  <div id="touch-move">
+    <div id="joystick-base">
+      <div id="joystick-knob"></div>
+    </div>
+  </div>
+  <!-- Right: look drag area -->
+  <div id="touch-look"></div>
+  <!-- Action buttons -->
+  <div id="touch-buttons">
+    <button id="btn-shoot" class="touch-btn fire">FIRE</button>
+    <button id="btn-reload" class="touch-btn">RELOAD</button>
+    <button id="btn-interact" class="touch-btn interact">DEFUSE</button>
+    <button id="btn-pause-m" class="touch-btn small">⏸</button>
+  </div>
+</div>
+
+<!-- ========== Loading ========== -->
+<div id="loading-screen" class="overlay-screen">
+  <div class="loading-text">LOADING…</div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

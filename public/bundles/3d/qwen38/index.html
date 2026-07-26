@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0c1720">
+<title>破门点 BREACH POINT · 海港仓库拆弹训练</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="phase-menu">
+<div id="app">
+  <canvas id="scene" aria-label="3D 第一人称游戏画面"></canvas>
+
+  <!-- ============ HUD ============ -->
+  <div id="hud" hidden>
+    <div id="hudTop">
+      <div id="hpBlock" class="hudCard">
+        <span class="hudLabel">生命 VITALS</span>
+        <div class="hpRow">
+          <div id="hpBar"><i id="hpFill"></i></div>
+          <span id="hpNum" class="mono">100</span>
+        </div>
+      </div>
+      <div id="objBlock" class="hudCard">
+        <div id="compass"><i id="compassArrow"></i><span id="compassDist" class="mono">--</span></div>
+        <div id="objText">准备突入</div>
+      </div>
+      <div id="rightBlock" class="hudCard">
+        <div class="rrow"><span class="hudLabel">倒计时</span><span id="timer" class="mono">1:15</span></div>
+        <div class="rrow"><span class="hudLabel">哨兵</span><span id="enemyPips"></span></div>
+      </div>
+    </div>
+
+    <div id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+    <div id="hitmark"><i></i><i></i><i></i><i></i></div>
+
+    <div id="hudBottom">
+      <div id="ammoBlock" class="hudCard">
+        <span class="hudLabel">弹药 AMMO</span>
+        <div id="ammoRow">
+          <span id="ammoMag" class="mono">12</span><span class="ammoSep">/</span><span id="ammoRes" class="mono">36</span>
+        </div>
+        <div id="reloadBar"><i></i></div>
+        <div id="reloadHint" hidden>换弹中…</div>
+      </div>
+      <div id="sysBtns">
+        <button id="btnPause" class="sysBtn" type="button" title="暂停 (Esc)" aria-label="暂停">Ⅱ</button>
+        <button id="btnRestart" class="sysBtn" type="button" title="重新开始" aria-label="重新开始">↻</button>
+        <button id="btnMute" class="sysBtn" type="button" title="静音 (M)" aria-label="静音">♪</button>
+      </div>
+    </div>
+
+    <div id="toast" hidden></div>
+    <div id="hintDrag" hidden>指针锁定不可用 — 已切换拖拽视角：按住左键拖动观察，快速点按射击</div>
+  </div>
+
+  <div id="vignette"></div>
+  <div id="dmgFlash"></div>
+
+  <!-- ============ 触摸控制 ============ -->
+  <div id="touchUI" hidden>
+    <div id="stickZone"><div id="stickBase" hidden><div id="stickNub"></div></div></div>
+    <div id="lookZone"></div>
+    <button id="btnInteract" class="tBtn tSmall" type="button">拆除<small>长按</small></button>
+    <button id="btnReloadT" class="tBtn tSmall" type="button">换弹</button>
+    <button id="btnFire" class="tBtn tFire" type="button">射击</button>
+  </div>
+
+  <!-- ============ 主菜单 / 任务简报 ============ -->
+  <div id="menu" class="overlay">
+    <div id="menuPanel">
+      <div class="kicker mono">HARBOR DISTRICT 7 · 训练许可 A-03 · LOW-POLY RANGE</div>
+      <h1 id="title"><span class="tCn">破门点</span><span class="tEn mono">BREACH&nbsp;POINT</span></h1>
+      <p class="lede">黄昏的旧港区仓库，一枚训练用起爆装置被设定在北侧栈台。<br class="desk">突入、清场、拆除 —— 75 秒内完成。</p>
+      <ul class="brief">
+        <li><b>目标</b><span>清除 <em>5</em> 名巡逻哨兵，登上栈台长按 <kbd>E</kbd> 拆除装置</span></li>
+        <li><b>时限</b><span>75 秒 · 生命归零或超时即判失败</span></li>
+        <li><b>武器</b><span>12 发弹匣 + 36 发备弹 · <kbd>R</kbd> 换弹 · 墙体可阻挡弹道</span></li>
+        <li><b>路线</b><span>西侧集装箱场 或 东侧仓库，两条通路均可抵达栈台</span></li>
+      </ul>
+      <div class="controls mono">
+        <span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动</span>
+        <span>鼠标 视角 / 左键 射击</span>
+        <span><kbd>R</kbd> 换弹</span>
+        <span><kbd>E</kbd> 长按拆除</span>
+        <span><kbd>Esc</kbd> 暂停</span>
+      </div>
+      <div id="bestLine" class="mono" hidden></div>
+      <button id="btnStart" type="button">开始任务 ▸ BREACH</button>
+      <div class="foot mono">原创场景 · 程序化几何与音效 · 无外部资源请求</div>
+    </div>
+  </div>
+
+  <!-- ============ 暂停 ============ -->
+  <div id="pauseOv" class="overlay" hidden>
+    <div class="card">
+      <h2 class="ovTitle mono">已暂停 / PAUSED</h2>
+      <p id="pauseReason" class="dim"></p>
+      <div class="btnCol">
+        <button id="btnResume" class="primary" type="button">继续任务</button>
+        <button id="btnRestartP" type="button">重新开始</button>
+        <button id="btnMuteP" type="button">切换静音</button>
+        <button id="btnMenuP" type="button">返回主菜单</button>
+      </div>
+      <p class="dim small mono">WASD 移动 · 左键射击 · R 换弹 · 长按 E 拆除</p>
+    </div>
+  </div>
+
+  <!-- ============ 结算 ============ -->
+  <div id="endOv" class="overlay" hidden>
+    <div class="card" id="endCard">
+      <h2 id="endTitle" class="ovTitle"></h2>
+      <p id="endReason" class="dim"></p>
+      <div id="endStats" class="stats mono"></div>
+      <div id="endRecord" class="mono" hidden>★ 新纪录</div>
+      <div class="btnCol">
+        <button id="btnAgain" class="primary" type="button">再来一局</button>
+        <button id="btnMenuE" type="button">返回主菜单</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="fatal" class="overlay" hidden>
+    <div class="card">
+      <h2 class="ovTitle">初始化失败</h2>
+      <p id="fatalMsg" class="dim"></p>
+    </div>
+  </div>
+</div>
+<script src="vendor/three.min.js"></script>
+<script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

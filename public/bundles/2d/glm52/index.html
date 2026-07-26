@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sling Siege / 弹弓攻城</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas" width="1280" height="720"></canvas>
+
+    <!-- Title Screen -->
+    <div id="title-screen" class="overlay">
+      <div class="title-content">
+        <h1 class="game-title">SLING SIEGE</h1>
+        <p class="game-subtitle">弹 弓 攻 城</p>
+        <div class="instructions">
+          <p><span class="inst-icon">⊙</span> 拖拽弹弓蓄力瞄准，松手发射攻城弹</p>
+          <p><span class="inst-icon">★</span> 飞行中点击 / 触摸 / 按空格触发震波</p>
+          <p><span class="inst-icon">☠</span> 消灭全部水晶哨兵即可过关</p>
+        </div>
+        <button id="start-btn" class="game-btn">开始攻城</button>
+        <p id="high-score-display" class="high-score-text"></p>
+      </div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud" class="hud hidden">
+      <div class="hud-left">
+        <span class="hud-item">关卡 <span id="level-display">1</span></span>
+        <span class="hud-item">分数 <span id="score-display">0</span></span>
+        <span class="hud-item">弹药 <span id="ammo-display">3</span></span>
+      </div>
+      <div class="hud-right">
+        <button id="pause-btn" class="icon-btn" title="暂停">II</button>
+        <button id="restart-btn" class="icon-btn" title="重开">&#x21bb;</button>
+        <button id="mute-btn" class="icon-btn" title="静音">&#x266B;</button>
+      </div>
+    </div>
+
+    <!-- Pause Overlay -->
+    <div id="pause-screen" class="overlay hidden">
+      <div class="title-content">
+        <h2>已暂停</h2>
+        <button id="resume-btn" class="game-btn">继续游戏</button>
+        <button id="restart-pause-btn" class="game-btn secondary">重新开始</button>
+      </div>
+    </div>
+
+    <!-- Win Overlay -->
+    <div id="win-screen" class="overlay hidden">
+      <div class="title-content">
+        <h2 class="win-title">攻城胜利</h2>
+        <p id="win-score" class="score-text"></p>
+        <button id="next-level-btn" class="game-btn">下一关</button>
+        <button id="replay-win-btn" class="game-btn secondary">重玩本关</button>
+      </div>
+    </div>
+
+    <!-- Lose Overlay -->
+    <div id="lose-screen" class="overlay hidden">
+      <div class="title-content">
+        <h2 class="lose-title">攻城失败</h2>
+        <p id="lose-score" class="score-text"></p>
+        <button id="retry-btn" class="game-btn">重试本关</button>
+        <button id="restart-game-btn" class="game-btn secondary">从头开始</button>
+      </div>
+    </div>
+
+    <!-- Level Transition -->
+    <div id="transition-screen" class="overlay hidden">
+      <div class="title-content">
+        <h2 id="transition-level"></h2>
+        <p id="transition-name"></p>
+      </div>
+    </div>
+
+    <!-- Game Complete -->
+    <div id="complete-screen" class="overlay hidden">
+      <div class="title-content">
+        <h2 class="win-title">全线攻克</h2>
+        <p id="complete-score" class="score-text"></p>
+        <button id="restart-all-btn" class="game-btn">从头开始</button>
+      </div>
+    </div>
+
+    <!-- Ability Hint -->
+    <div id="ability-hint" class="ability-hint hidden">震波就绪！按空格 / 点击触发</div>
+  </div>
+
+  <script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

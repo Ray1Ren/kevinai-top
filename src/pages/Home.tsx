@@ -241,10 +241,12 @@ export default function Home() {
                 <div>
                   <h3 className="font-medium text-white">{isEnglish ? 'AI tool tests' : 'AI 工具实测'}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-graphite-400">
-                    {isEnglish ? 'The 2D and 3D games are playable. The promotion pages and all 50 image-test answers are open as well.' : '2D、3D 小游戏能直接玩。宣传页可以打开，50 道识图结果也全部展开。'}
+                    {isEnglish
+                      ? 'Eight models across a 2D game, a 3D game, 50-image recognition, and a product launch page. Frozen scores, time, tokens, and submitted builds are all linked.'
+                      : '八个模型同测 2D、3D、50 图识别和产品发布页。冻结分数、用时、Token 与网页原作都能直接查看。'}
                   </p>
                   <Link to={path('/lab')} className="mt-3 inline-flex text-sm text-pitch-500 hover:text-pitch-400">
-                    {isEnglish ? 'See all four tests' : '查看四项实测'} <span className="ml-1">→</span>
+                    {isEnglish ? 'Open the eight-model Lab' : '打开八模型实验室'} <span className="ml-1">→</span>
                   </Link>
                 </div>
               </div>
