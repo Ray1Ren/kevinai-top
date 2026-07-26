@@ -528,15 +528,14 @@ async function checkPromptEvidence() {
 async function checkOfficialModelBenchmarks() {
   const pageSource = await readFile(join(SRC, 'pages/ModelPriceBenchmark.tsx'), 'utf8')
   const labSource = await readFile(join(SRC, 'pages/Lab.tsx'), 'utf8')
-  const requiredModels = ['Claude Fable 5', 'GPT-5.6 Sol', 'Kimi K3', 'GLM-5.2', 'MiniMax M3', 'DeepSeek V4 Pro']
-  const requiredFacts = ['67.3', '90.4', '81.0', '62.1', '83.5', '37.1 · #3', 'data-official-source']
-  const requiredCurrentLabBindings = [
+  const requiredModels = ['Claude Fable 5', 'GPT-5.6 Sol', 'Claude Opus 5', 'Kimi K3', 'GLM-5.2', 'MiniMax M3', 'DeepSeek V4 Pro']
+  const requiredFacts = ['ARC-AGI-3', '约 3× 竞品', '67.3', '90.4', '81.0', '62.1', '83.5', '37.1 · #3', 'data-official-source']
+  const forbiddenCurrentLabBindings = [
     'useCurrentBenchmarks',
     'data-current-lab-results',
     'data-current-lab-model',
     'data-current-task-link',
     'data-k3-latest-build',
-    '不与本轮实测混成一个总榜',
   ]
 
   for (const model of requiredModels) {
@@ -551,13 +550,13 @@ async function checkOfficialModelBenchmarks() {
   }
 
   const officialSourceCount = (pageSource.match(/href: 'https:\/\//g) ?? []).length - pricingSourceCount(pageSource)
-  if (officialSourceCount !== 6) {
-    errors.push(`Official benchmark list must contain six HTTPS sources, found ${officialSourceCount}`)
+  if (officialSourceCount !== 7) {
+    errors.push(`Official benchmark list must contain seven HTTPS sources, found ${officialSourceCount}`)
   }
 
-  for (const binding of requiredCurrentLabBindings) {
-    if (!pageSource.includes(binding)) {
-      errors.push(`Model price page is not synchronized with the current Lab: ${binding}`)
+  for (const binding of forbiddenCurrentLabBindings) {
+    if (pageSource.includes(binding)) {
+      errors.push(`Model price page still includes the removed current-Lab section: ${binding}`)
     }
   }
 
@@ -569,8 +568,8 @@ async function checkOfficialModelBenchmarks() {
   if (!pageSource.includes('不能据此直接合成统一总榜') || !pageSource.includes('do not form one directly comparable leaderboard')) {
     errors.push('Official benchmark comparison warning is missing in one or both languages')
   }
-  if (!labSource.includes('模型 API 价格与官方评测') || !labSource.includes('八模型四项最新实测') || labSource.includes('模型 API 价格与实测评分')) {
-    errors.push('Lab entry does not describe the synchronized price, current Lab, and official-source layers')
+  if (!labSource.includes('模型 API 价格与官方评测') || !labSource.includes('八个模型的 API 定价与厂商公开评测') || labSource.includes('八模型四项最新实测') || labSource.includes('模型 API 价格与实测评分')) {
+    errors.push('Lab entry does not describe the eight-model price and official-source layers')
   }
 }
 
