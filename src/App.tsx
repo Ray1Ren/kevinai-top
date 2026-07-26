@@ -16,6 +16,7 @@ import './index.css'
 
 const Lab2D = lazy(() => import('./pages/Lab2D'))
 const Lab3D = lazy(() => import('./pages/Lab3D'))
+const LabAesthetic = lazy(() => import('./pages/LabAesthetic'))
 const LabPromo = lazy(() => import('./pages/LabPromo'))
 const LabVision = lazy(() => import('./pages/LabVision'))
 const LabVisionReview = lazy(() => import('./pages/LabVisionReview'))
@@ -52,6 +53,7 @@ function renderLocalizedRoutes(prefix: '' | '/en') {
     <Route key={route('/lab')} path={route('/lab')} element={<Lab />} />,
     <Route key={route('/lab/2d')} path={route('/lab/2d')} element={<Suspense fallback={<PageFallback />}><Lab2D /></Suspense>} />,
     <Route key={route('/lab/3d')} path={route('/lab/3d')} element={<Suspense fallback={<PageFallback />}><Lab3D /></Suspense>} />,
+    <Route key={route('/lab/aesthetic')} path={route('/lab/aesthetic')} element={<Suspense fallback={<PageFallback />}><LabAesthetic /></Suspense>} />,
     <Route key={route('/lab/promo')} path={route('/lab/promo')} element={<Suspense fallback={<PageFallback />}><LabPromo /></Suspense>} />,
     <Route key={route('/lab/vision')} path={route('/lab/vision')} element={<Suspense fallback={<PageFallback />}><LabVision /></Suspense>} />,
     <Route key={route('/lab/vision/review')} path={route('/lab/vision/review')} element={<Suspense fallback={<PageFallback />}><LabVisionReview /></Suspense>} />,

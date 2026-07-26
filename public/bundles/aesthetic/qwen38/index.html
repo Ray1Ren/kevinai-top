@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="zh-CN" data-motion="running">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>声律 75 · SOUNDRHYTHM — 为敲击而生的器物</title>
+<meta name="description" content="声律 75：Gasket 结构、五层消音棉、CNC 一体成型铝合金机身，三模连接，满电续航 30 天。¥1299 · 2026.08.08 发布。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0c10'/%3E%3Cg fill='%23a08cf0'%3E%3Crect x='5' y='14' width='3' height='8' rx='1.5'/%3E%3Crect x='10.5' y='9' width='3' height='13' rx='1.5'/%3E%3Crect x='16' y='5' width='3' height='17' rx='1.5'/%3E%3Crect x='21.5' y='11' width='3' height='11' rx='1.5'/%3E%3Crect x='27' y='15' width='3' height='7' rx='1.5'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+<script>
+/* 动效门控自举：在首帧前写入，避免动画闪变 */
+document.documentElement.dataset.motion =
+  matchMedia('(prefers-reduced-motion: reduce)').matches ? 'paused' : 'running';
+</script>
+</head>
+<body>
+
+<a class="skip" href="#features">跳到主要内容</a>
+<div class="progress" id="progressBar" aria-hidden="true"></div>
+
+<!-- 固定机位的 3D 舞台：键盘是全页的持续主角 -->
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div id="fallbackBoard" class="fallback" aria-hidden="true"></div>
+
+<header class="site-head">
+  <a class="brand" href="#hero" data-nav="hero">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="1.5" y="1.5" width="29" height="29" rx="7" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <g fill="currentColor">
+        <rect x="6.5" y="14" width="2.6" height="8" rx="1.3"/>
+        <rect x="11.6" y="9.5" width="2.6" height="12.5" rx="1.3"/>
+        <rect x="16.7" y="6" width="2.6" height="16" rx="1.3"/>
+        <rect x="21.8" y="11" width="2.6" height="11" rx="1.3"/>
+        <rect x="26.9" y="14.5" width="2.6" height="7" rx="1.3"/>
+      </g>
+    </svg>
+    <span class="brand-cn">声律</span>
+    <span class="brand-en">SOUNDRHYTHM</span>
+  </a>
+  <nav class="site-nav" aria-label="页面导航">
+    <a href="#features" data-nav="features">卖点</a>
+    <a href="#colors" data-nav="colors">配色</a>
+    <a href="#buy" data-nav="buy">预约</a>
+  </nav>
+  <button class="motion-btn" id="motionToggle" type="button" aria-pressed="false" aria-label="切换页面动效">
+    <span class="mb-dot" aria-hidden="true"></span><span class="mb-txt">动效 · 开</span>
+  </button>
+</header>
+
+<aside class="rail" aria-label="快速定位">
+  <button type="button" data-nav="hero"><i></i><span>01 首屏</span></button>
+  <button type="button" data-nav="features"><i></i><span>02 卖点</span></button>
+  <button type="button" data-nav="colors"><i></i><span>03 配色</span></button>
+  <button type="button" data-nav="buy"><i></i><span>04 预约</span></button>
+</aside>
+
+<main id="main">
+
+  <!-- ============ 首屏 ============ -->
+  <section id="hero" class="sec sec-hero" data-sec="hero">
+    <span class="hero-ghost" aria-hidden="true">75</span>
+    <span class="hero-brand-v" aria-hidden="true">声律 · 声之律</span>
+
+    <div class="hero-inner">
+      <p class="kicker reveal">SOUNDRHYTHM · 声律出品 · 75% 配列</p>
+      <h1 class="hero-h1 reveal" style="--rd:70ms"><span class="h1-brand">声律</span><span class="h1-num">75</span></h1>
+      <p class="hero-tag reveal" style="--rd:140ms">让每一次敲击，都落在节拍上。</p>
+      <p class="hero-sub reveal" style="--rd:210ms">Gasket 结构 × 五层消音棉 × CNC 一体成型铝合金机身 —— 干净、低沉、克制的敲击声线，与一块完整的铝。</p>
+
+      <ul class="chips reveal" style="--rd:280ms">
+        <li class="chip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 3.5 7.8 12 12.6l8.5-4.8L12 3Z"/><path d="m3.5 12.2 8.5 4.8 8.5-4.8"/><path d="m3.5 16.4 8.5 4.8 8.5-4.8"/></svg>
+          Gasket 结构 · 五层消音棉
+        </li>
+        <li class="chip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="8" width="17" height="11" rx="2.5"/><path d="M7.5 8V5.5h9V8"/><path d="M7.5 13.5h5"/></svg>
+          CNC 铝合金 · 五色阳极氧化
+        </li>
+        <li class="chip">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 13.5a7.5 7.5 0 0 1 15 0"/><path d="M8 13.5a4 4 0 0 1 8 0"/><circle cx="12" cy="14.2" r="1.5"/><path d="M12 15.7V21"/></svg>
+          三模连接 · 满电 30 天
+        </li>
+      </ul>
+
+      <div class="hero-cta reveal" style="--rd:350ms">
+        <a class="btn btn-primary" href="#buy" data-nav="buy">
+          预约 8 月 8 日发布提醒
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13"/><path d="m13 6.5 5.5 5.5-5.5 5.5"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#colors" data-nav="colors">探索五色</a>
+      </div>
+
+      <p class="hero-hint reveal" style="--rd:430ms">TIP · 敲一下你手边的键盘，看它如何回应你</p>
+    </div>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>声律 75<i>◆</i>GASKET 结构 · 五层消音棉<i>◆</i>CNC 一体成型铝合金<i>◆</i>有线 / 2.4G / 蓝牙 5.3<i>◆</i>满电续航 30 天<i>◆</i>五色 · 暮山紫 月白 黛青 胭脂 玄墨<i>◆</i>¥1299<i>◆</i>2026.08.08 正式发布<i>◆</i></span>
+        <span>声律 75<i>◆</i>GASKET 结构 · 五层消音棉<i>◆</i>CNC 一体成型铝合金<i>◆</i>有线 / 2.4G / 蓝牙 5.3<i>◆</i>满电续航 30 天<i>◆</i>五色 · 暮山紫 月白 黛青 胭脂 玄墨<i>◆</i>¥1299<i>◆</i>2026.08.08 正式发布<i>◆</i></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 卖点 ============ -->
+  <section id="features" class="sec sec-features" data-sec="features">
+    <div class="feat-wrap">
+      <header class="sec-head reveal">
+        <p class="kicker">WHY SR-75 · 三个理由</p>
+        <h2 class="sec-title">三件事，<br>定义声律 75。</h2>
+        <p class="sec-sub">声音、机身、连接 —— 每一件事都做到只剩本质。</p>
+      </header>
+
+      <!-- 01 声音 -->
+      <article class="feat reveal">
+        <div class="feat-idx" aria-hidden="true">01</div>
+        <div class="feat-fig">
+          <svg viewBox="0 0 460 320" role="img" aria-label="Gasket 结构与五层消音棉剖面示意">
+            <text x="24" y="26" class="fig-label">VOICE · 声线剖面</text>
+            <path class="fig-wave" d="M24 52 C 64 34, 96 70, 136 52 S 208 34, 248 52 S 320 70, 360 52 S 424 40, 436 50" />
+            <text x="24" y="80" class="fig-note">敲击声 → 层层吸收 → 只剩干净的低频</text>
+
+            <g class="ex" style="--dy:-16px; --d:0ms">
+              <rect x="90" y="112" width="280" height="12" rx="2" class="fig-slab fig-steel"/>
+              <text x="382" y="122" class="fig-label2">定位板</text>
+            </g>
+            <g class="ex" style="--dy:-9px; --d:60ms">
+              <rect x="100" y="130" width="22" height="9" rx="2" class="fig-acc"/>
+              <rect x="338" y="130" width="22" height="9" rx="2" class="fig-acc"/>
+              <text x="382" y="139" class="fig-label2">Gasket 垫片</text>
+            </g>
+            <g class="ex" style="--dy:-3px; --d:120ms">
+              <rect x="90" y="145" width="280" height="10" rx="2" class="fig-slab fig-pcb"/>
+              <path d="M104 150h34M150 150h20M182 150h46M240 150h30M282 150h40" class="fig-trace"/>
+              <text x="382" y="154" class="fig-label2">PCB</text>
+            </g>
+            <g class="ex" style="--dy:3px; --d:180ms">
+              <rect x="90" y="161" width="280" height="9" rx="2" class="fig-cotton c1"/>
+              <rect x="90" y="172" width="280" height="9" rx="2" class="fig-cotton c2"/>
+              <rect x="90" y="183" width="280" height="9" rx="2" class="fig-cotton c3"/>
+              <rect x="90" y="194" width="280" height="9" rx="2" class="fig-cotton c4"/>
+              <rect x="90" y="205" width="280" height="9" rx="2" class="fig-cotton c5"/>
+              <text x="382" y="192" class="fig-label2">消音棉 ×5</text>
+            </g>
+            <g class="ex" style="--dy:14px; --d:240ms">
+              <rect x="82" y="222" width="296" height="18" rx="5" class="fig-case"/>
+              <text x="382" y="235" class="fig-label2">铝合金底壳</text>
+            </g>
+            <text x="24" y="298" class="fig-note">五层不同密度 · 腔体共鸣被逐层吸收</text>
+          </svg>
+        </div>
+        <div class="feat-body">
+          <p class="feat-tag">GASKET · 5-LAYER MUTE</p>
+          <h3 class="feat-title">干净低沉的声线</h3>
+          <p class="feat-copy">整板 Gasket 悬挂，配合五层不同密度的消音棉，把空洞的腔体共鸣层层吸收。敲击落下，只剩一句笃定的低频 —— 干净、低沉，不吵任何人。</p>
+          <ul class="feat-points">
+            <li>整板 Gasket 悬挂结构</li>
+            <li>五层不同密度消音棉</li>
+            <li>腔体共鸣逐层吸收</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 02 机身 -->
+      <article class="feat reveal">
+        <div class="feat-idx" aria-hidden="true">02</div>
+        <div class="feat-fig">
+          <svg viewBox="0 0 460 320" role="img" aria-label="CNC 一体成型铝合金机身示意">
+            <defs>
+              <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="7" class="fig-hatch"/>
+              </pattern>
+              <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+                <stop offset=".5" stop-color="#fff" stop-opacity=".14"/>
+                <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+              </linearGradient>
+              <clipPath id="bodyClip"><rect x="52" y="118" width="284" height="52" rx="16"/></clipPath>
+            </defs>
+            <text x="24" y="26" class="fig-label">BODY · 一体成型</text>
+
+            <rect x="52" y="118" width="284" height="52" rx="16" fill="url(#hatch)" class="fig-body"/>
+            <path d="M68 126h252" class="fig-topline"/>
+            <g clip-path="url(#bodyClip)"><rect class="fig-sweep" x="-90" y="112" width="90" height="64" fill="url(#sweep)"/></g>
+
+            <path d="M52 196v10M336 196v10M52 201h284" class="fig-dim"/>
+            <text x="194" y="226" text-anchor="middle" class="fig-label2">一块铝锭 · 一次铣削</text>
+
+            <g class="fig-knob">
+              <circle cx="392" cy="144" r="36" class="fig-knob-ring"/>
+              <g class="fig-knurl">
+                <line x1="392" y1="114" x2="392" y2="121"/><line x1="392" y1="167" x2="392" y2="174"/>
+                <line x1="362" y1="144" x2="369" y2="144"/><line x1="415" y1="144" x2="422" y2="144"/>
+                <line x1="371" y1="123" x2="376" y2="128"/><line x1="408" y1="160" x2="413" y2="165"/>
+                <line x1="413" y1="123" x2="408" y2="128"/><line x1="376" y1="160" x2="371" y2="165"/>
+              </g>
+              <circle cx="392" cy="144" r="5" class="fig-acc-dot"/>
+            </g>
+            <text x="392" y="206" text-anchor="middle" class="fig-label2">多功能旋钮</text>
+            <text x="24" y="298" class="fig-note">没有拼接 · 没有缝隙 · 侧棱只有一条完整的弧线</text>
+          </svg>
+        </div>
+        <div class="feat-body">
+          <p class="feat-tag">ALUMINUM UNIBODY · 5 COLORS</p>
+          <h3 class="feat-title">一块完整的铝</h3>
+          <p class="feat-copy">一整块铝锭，经 CNC 一体铣削成型。指尖划过侧棱，只有一条完整的弧线。五色阳极氧化，皆是东方色 —— 暮山紫、月白、黛青、胭脂、玄墨。</p>
+          <ul class="feat-points">
+            <li>CNC 一体成型铝合金机身</li>
+            <li>五色阳极氧化 · 东方色</li>
+            <li>无拼接缝隙的完整侧棱</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 03 连接 -->
+      <article class="feat reveal">
+        <div class="feat-idx" aria-hidden="true">03</div>
+        <div class="feat-fig">
+          <svg viewBox="0 0 460 320" role="img" aria-label="三模连接与 30 天续航示意">
+            <text x="24" y="26" class="fig-label">LINK · 三模连接</text>
+
+            <rect x="30" y="128" width="92" height="44" rx="9" class="fig-body"/>
+            <g class="fig-minikeys">
+              <rect x="40" y="138" width="10" height="7" rx="1.5"/><rect x="54" y="138" width="10" height="7" rx="1.5"/><rect x="68" y="138" width="10" height="7" rx="1.5"/><rect x="82" y="138" width="10" height="7" rx="1.5"/><rect x="96" y="138" width="16" height="7" rx="1.5"/>
+              <rect x="40" y="150" width="14" height="7" rx="1.5"/><rect x="58" y="150" width="10" height="7" rx="1.5"/><rect x="72" y="150" width="10" height="7" rx="1.5"/><rect x="86" y="150" width="26" height="7" rx="1.5"/>
+            </g>
+
+            <path class="fig-flow f1" d="M122 140 H 246"/>
+            <g class="fig-node">
+              <rect x="252" y="131" width="38" height="17" rx="8.5" class="fig-usb"/>
+              <rect x="261" y="136.5" width="20" height="6" rx="3" class="fig-acc"/>
+            </g>
+            <text x="271" y="168" text-anchor="middle" class="fig-label2">有线</text>
+
+            <path class="fig-flow f2" d="M122 150 C 176 150, 196 88, 250 82"/>
+            <g class="fig-node">
+              <circle cx="262" cy="82" r="4" class="fig-acc-dot"/>
+              <path d="M274 74a14 14 0 0 1 0 16M284 68a24 24 0 0 1 0 28" class="fig-arc"/>
+            </g>
+            <text x="280" y="112" text-anchor="middle" class="fig-label2">2.4G</text>
+
+            <path class="fig-flow f3" d="M122 160 C 176 162, 196 224, 250 230"/>
+            <g class="fig-node">
+              <path d="m258 222 12 12 -6 5v-34l6 5-12 12" class="fig-bt"/>
+            </g>
+            <text x="272" y="262" text-anchor="middle" class="fig-label2">蓝牙 5.3</text>
+
+            <rect x="120" y="282" width="190" height="18" rx="9" class="fig-batt"/>
+            <rect x="123" y="285" width="184" height="12" rx="6" class="fig-battfill"/>
+            <rect x="312" y="287" width="5" height="8" rx="2" class="fig-batt"/>
+            <text x="330" y="296" class="fig-label2">满电 30 天</text>
+          </svg>
+        </div>
+        <div class="feat-body">
+          <p class="feat-tag">TRI-MODE · 30-DAY BATTERY</p>
+          <h3 class="feat-title">三模连接，三十天续航</h3>
+          <p class="feat-copy">有线、2.4G、蓝牙 5.3，三种连接随场景切换；一次满电，续航 30 天。从书桌到咖啡馆，它始终在线，你也始终在节拍上。</p>
+          <ul class="feat-points">
+            <li>有线 · 2.4G · 蓝牙 5.3</li>
+            <li>满电续航 30 天</li>
+            <li>场景切换 · 不断线</li>
+          </ul>
+        </div>
+      </article>
+
+      <dl class="spec reveal">
+        <div><dt>配列</dt><dd>75% 紧凑布局</dd></div>
+        <div><dt>结构</dt><dd>Gasket 悬挂 · 五层消音棉</dd></div>
+        <div><dt>机身</dt><dd>CNC 一体成型铝合金 · 五色阳极氧化</dd></div>
+        <div><dt>连接</dt><dd>有线 · 2.4G · 蓝牙 5.3</dd></div>
+        <div><dt>续航</dt><dd>满电 30 天</dd></div>
+        <div><dt>发售</dt><dd>2026.08.08 · ¥1299</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 配色 ============ -->
+  <section id="colors" class="sec sec-colors" data-sec="colors">
+    <div class="wm" aria-hidden="true"><span class="wm-a on" id="wmA">紫</span><span class="wm-b" id="wmB">紫</span></div>
+
+    <div class="colors-wrap">
+      <header class="sec-head reveal">
+        <p class="kicker">FIVE COLORS · 东方色</p>
+        <h2 class="sec-title">五色，<br>皆是东方色。</h2>
+        <p class="sec-sub">同一块铝，五种性格。点选切换，看它如何落在你的桌面上。</p>
+      </header>
+
+      <div class="colors-ui">
+        <div class="swatches reveal" id="swatches" role="group" aria-label="选择配色"></div>
+
+        <div class="color-readout reveal" aria-live="polite">
+          <p class="cr-code" id="crCode">SR-75 / 01</p>
+          <h3 class="cr-name" id="crName">暮山紫</h3>
+          <p class="cr-poem" id="crPoem">暮色入山，紫霭沉沉。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 预约 ============ -->
+  <section id="buy" class="sec sec-buy" data-sec="buy">
+    <div class="buy-panel reveal">
+      <p class="kicker">2026.08.08 · 正式发布</p>
+      <h2 class="buy-title">把声律 75 带回家。</h2>
+
+      <div class="price">
+        <span class="p-cur">¥</span><span class="p-num">1299</span>
+        <span class="p-note">全国统一零售价</span>
+      </div>
+
+      <p class="count-label" id="countLabel">距离正式发布</p>
+      <div class="count" id="countdown" role="timer" aria-label="发布倒计时">
+        <div class="count-cell"><b id="cdD">--</b><span>天</span></div><i>:</i>
+        <div class="count-cell"><b id="cdH">--</b><span>时</span></div><i>:</i>
+        <div class="count-cell"><b id="cdM">--</b><span>分</span></div><i>:</i>
+        <div class="count-cell"><b id="cdS">--</b><span>秒</span></div>
+      </div>
+
+      <div class="buy-cta">
+        <button class="btn btn-primary btn-big" id="reserveBtn" type="button">
+          <span class="rb-txt">预约发布提醒</span>
+          <svg class="rb-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13"/><path d="m13 6.5 5.5 5.5-5.5 5.5"/></svg>
+          <svg class="rb-check" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.8 5L19 6.5"/></svg>
+        </button>
+        <a class="btn btn-ghost" href="#colors" data-nav="colors">再看一眼五色</a>
+      </div>
+
+      <ul class="buy-specs">
+        <li>Gasket · 五层消音棉</li>
+        <li>CNC 铝合金 · 五色</li>
+        <li>三模 · 满电 30 天</li>
+      </ul>
+      <p class="buy-note">虚构产品 · 页面按钮仅作演示，不会跳转或提交任何信息。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="foot-brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="1.5" y="1.5" width="29" height="29" rx="7" fill="none" stroke="currentColor" stroke-width="1.6"/>
+      <g fill="currentColor">
+        <rect x="6.5" y="14" width="2.6" height="8" rx="1.3"/>
+        <rect x="11.6" y="9.5" width="2.6" height="12.5" rx="1.3"/>
+        <rect x="16.7" y="6" width="2.6" height="16" rx="1.3"/>
+        <rect x="21.8" y="11" width="2.6" height="11" rx="1.3"/>
+        <rect x="26.9" y="14.5" width="2.6" height="7" rx="1.3"/>
+      </g>
+    </svg>
+    <span>声律 SOUNDRHYTHM</span>
+  </div>
+  <nav class="foot-nav" aria-label="页脚导航">
+    <a href="#hero" data-nav="hero">首屏</a>
+    <a href="#features" data-nav="features">卖点</a>
+    <a href="#colors" data-nav="colors">配色</a>
+    <a href="#buy" data-nav="buy">预约</a>
+  </nav>
+  <p class="foot-note">「声律 SOUNDRHYTHM」为虚构品牌，本页面仅作前端演示 · © 2026 声律</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="vendor/three.min.js"></script>
+<script src="app.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

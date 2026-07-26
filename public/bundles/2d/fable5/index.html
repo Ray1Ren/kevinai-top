@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sling Siege · 弹弓攻城</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="game" width="1280" height="720"></canvas>
+
+    <!-- 游戏内 HUD -->
+    <div id="hud" class="hidden">
+      <div class="hud-left">
+        <span class="hud-chip" id="hudLevel">第 1 关</span>
+        <span class="hud-chip" id="hudScore">分数 0</span>
+        <span class="hud-chip" id="hudAmmo">弹药 ●●●●●</span>
+      </div>
+      <div class="hud-right">
+        <button id="btnPause" class="hud-btn" title="暂停/继续" aria-label="暂停或继续">⏸</button>
+        <button id="btnRetry" class="hud-btn" title="重开本关" aria-label="重开本关">↻</button>
+        <button id="btnMute" class="hud-btn" title="静音" aria-label="静音开关">♪</button>
+      </div>
+    </div>
+
+    <div id="hint" class="hidden"></div>
+
+    <!-- 首屏菜单 -->
+    <div id="menu" class="overlay">
+      <div class="panel">
+        <h1 class="title">弹弓攻城</h1>
+        <p class="subtitle">SLING SIEGE</p>
+        <p class="desc">
+          拖拽弹弓上的<b>星弹</b>向后蓄力,松手发射,撞塌木石堡垒,<br>
+          击败所有紫壳的<b>壳卫</b>即可攻下城池!<br>
+          飞行途中 <b>点击 / 触屏 / 按空格</b> 触发一次「天坠重击」。
+        </p>
+        <button id="btnStart" class="big-btn">开 始 攻 城</button>
+        <p class="best-line" id="bestLine"></p>
+      </div>
+    </div>
+
+    <!-- 胜负面板 -->
+    <div id="endPanel" class="overlay hidden">
+      <div class="panel">
+        <h2 id="endTitle" class="end-title">城破!</h2>
+        <p id="endInfo" class="desc"></p>
+        <div class="btn-row">
+          <button id="btnNext" class="big-btn">下一关</button>
+          <button id="btnAgain" class="big-btn ghost">重玩本关</button>
+          <button id="btnMenuBack" class="big-btn ghost">从头开始</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 暂停面板 -->
+    <div id="pausePanel" class="overlay hidden">
+      <div class="panel">
+        <h2 class="end-title">暂停中</h2>
+        <div class="btn-row">
+          <button id="btnResume" class="big-btn">继续</button>
+          <button id="btnPauseRetry" class="big-btn ghost">重开本关</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

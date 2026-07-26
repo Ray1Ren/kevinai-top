@@ -119,11 +119,27 @@ const REQUIRED_PUBLIC_ASSETS = [
   'assets/gifs-en/promo-m3.gif',
   'data/benchmarks.json',
   'data/benchmarks.en.json',
+  'data/benchmarks-20260725.json',
   'data/vision-cases.json',
   'evidence/prompts/2d.txt',
   'evidence/prompts/3d.txt',
   'evidence/prompts/promo.txt',
   'evidence/prompts/vision.txt',
+  'evidence/prompts/2d-20260725.txt',
+  'evidence/prompts/3d-20260725.txt',
+  'evidence/prompts/aesthetic-20260725.txt',
+  'assets/lab-20260725/v2-quality-overall.png',
+  'assets/lab-20260725/v2-breakdown-2x2.png',
+  'assets/lab-20260725/v2-speed-overview.png',
+  'assets/lab-20260725/v2-output-tokens.png',
+  'assets/lab-20260725/v2-2d-total.png',
+  'assets/lab-20260725/v2-2d-detail.png',
+  'assets/lab-20260725/v2-3d-total.png',
+  'assets/lab-20260725/v2-3d-detail.png',
+  'assets/lab-20260725/v2-vision-total.png',
+  'assets/lab-20260725/v2-vision-detail.png',
+  'assets/lab-20260725/v2-aesthetic-total.png',
+  'assets/lab-20260725/v2-aesthetic-detail.png',
   'bundles/i18n.js',
   'favicon.svg',
   'CNAME',
@@ -132,17 +148,27 @@ const REQUIRED_PUBLIC_ASSETS = [
 ]
 
 const BUNDLE_ALLOWLIST = {
-  '2d': new Set(['index.html', 'styles.css', 'game.js']),
+  '2d': new Set(['index.html', 'styles.css', 'game.js', 'physics.js']),
   '3d': new Set(['index.html', 'styles.css', 'game.js', 'vendor/three.min.js']),
   'promo': new Set(['index.html', 'styles.css', 'app.js']),
+  'aesthetic': new Set(['index.html', 'styles.css', 'app.js', 'vendor/three.min.js']),
 }
 const BUNDLE_REQUIRED = {
   '2d': ['index.html', 'styles.css', 'game.js'],
   '3d': ['index.html', 'styles.css', 'game.js', 'vendor/three.min.js'],
   'promo': ['index.html', 'styles.css', 'app.js'],
+  'aesthetic': ['index.html', 'styles.css', 'app.js', 'vendor/three.min.js'],
 }
 
-const SHARED_BASE_ROUTES = ['/', '/lab', '/lab/2d', '/lab/3d', '/lab/promo', '/lab/vision', '/lab/vision/review', '/lab/model-price-benchmark', '/links']
+const BUNDLE_MODELS = {
+  '2d': ['codex', 'minimax-m3', 'opus5', 'fable5', 'grok45', 'qwen38', 'glm52', 'k3-retest'],
+  '3d': ['kimi', 'codex', 'minimax-m3', 'minimax-m3-original', 'opus5', 'fable5', 'grok45', 'qwen38', 'glm52'],
+  'promo': ['kimi', 'codex', 'minimax-m3'],
+  'aesthetic': ['opus5', 'codex', 'fable5', 'kimi', 'grok45', 'qwen38', 'glm52', 'minimax-m3'],
+}
+const RETIRED_BUNDLES = ['2d/kimi']
+
+const SHARED_BASE_ROUTES = ['/', '/lab', '/lab/2d', '/lab/3d', '/lab/aesthetic', '/lab/promo', '/lab/vision', '/lab/vision/review', '/lab/model-price-benchmark', '/links']
 const CHINESE_ARTICLE_ROUTES = ['/notes', '/notes/kimi-k3-subscription-review', '/notes/ai-game-24-days']
 const ENGLISH_ARTICLE_ROUTES = ['/en/articles', '/en/articles/kimi-k3-review', '/en/articles/ai-game-24-days']
 const LEGACY_ENGLISH_ARTICLE_ROUTES = ['/en/notes', '/en/notes/kimi-k3-subscription-review']
@@ -232,8 +258,13 @@ async function checkBundles() {
     errors.push('Missing public/bundles/')
     return
   }
-  for (const kind of ['2d', '3d', 'promo']) {
-    for (const model of ['kimi', 'codex', 'minimax-m3']) {
+  for (const retired of RETIRED_BUNDLES) {
+    if (await fileExists(join(BUNDLES, retired))) {
+      errors.push(`Retired bundle must not ship: ${retired}`)
+    }
+  }
+  for (const kind of Object.keys(BUNDLE_MODELS)) {
+    for (const model of BUNDLE_MODELS[kind]) {
       const dir = join(BUNDLES, kind, model)
       if (!(await fileExists(dir))) {
         errors.push(`Missing bundle: ${kind}/${model}`)
@@ -388,17 +419,65 @@ async function checkBilingualBenchmarks() {
       }
     }
   }
+
+  const current = JSON.parse(await readFile(join(PUBLIC, 'data/benchmarks-20260725.json'), 'utf8'))
+  const modelIds = current.metadata.models.map((model) => model.id)
+  const expectedTaskOrder = ['2d', '3d', 'vision', 'aesthetic']
+  if (JSON.stringify(current.metadata.taskOrder) !== JSON.stringify(expectedTaskOrder)) {
+    errors.push(`Current benchmark task order must be ${expectedTaskOrder.join(', ')}`)
+  }
+  if (modelIds.length !== 8 || new Set(modelIds).size !== 8) {
+    errors.push('Current benchmark must declare eight unique model ids')
+  }
+
+  for (const taskId of expectedTaskOrder) {
+    const task = current.tasks[taskId]
+    if (!task) {
+      errors.push(`Current benchmark is missing task: ${taskId}`)
+      continue
+    }
+    if (!task.name?.zh || !task.name?.en || !task.conclusion?.zh || !task.conclusion?.en) {
+      errors.push(`Current benchmark task is not bilingual: ${taskId}`)
+    }
+    for (const modelId of modelIds) {
+      if (!task.models[modelId]) errors.push(`Current benchmark is missing ${taskId}/${modelId}`)
+    }
+  }
+
+  const expectedScores = {
+    '2d': { opus5: 95, gpt56: 94, k3: 88.3, grok45: 87, fable5: 84.8, qwen38: 80.5, glm52: 74, minimax: 54.5 },
+    '3d': { opus5: 91.3, k3: 91, gpt56: 89.2, qwen38: 87.8, fable5: 83.3, grok45: 73.2, minimax: 68, glm52: 62.8 },
+    'vision': { opus5: 100, k3: 96.7, fable5: 96, qwen38: 94.8, gpt56: 90, grok45: 88.1, minimax: 88, glm52: null },
+    'aesthetic': { opus5: 91.2, gpt56: 90.3, fable5: 87.8, k3: 82.3, grok45: 81.2, qwen38: 80.2, glm52: 75.7, minimax: 71.2 },
+  }
+  for (const [taskId, scores] of Object.entries(expectedScores)) {
+    for (const [modelId, score] of Object.entries(scores)) {
+      if (current.tasks[taskId].models[modelId].score !== score) {
+        errors.push(`Frozen current score mismatch: ${taskId}/${modelId}`)
+      }
+    }
+  }
+
+  for (const row of current.summary.overall) {
+    const scores = expectedTaskOrder
+      .map((taskId) => current.tasks[taskId].models[row.model].score)
+      .filter((score) => typeof score === 'number')
+    const average = Number((scores.reduce((sum, score) => sum + score, 0) / scores.length).toFixed(1))
+    if (average !== row.score || scores.length !== row.tasksCount) {
+      errors.push(`Current overall average mismatch: ${row.model}`)
+    }
+  }
 }
 
 async function checkPromptEvidence() {
-  const promptCases = {
+  const legacyPromptCases = {
     '2d': { minLines: 70, minCharacters: 2200, marker: 'window.__SLINGSHOT_TEST__' },
     '3d': { minLines: 90, minCharacters: 3900, marker: 'window.__BREACH_TEST__' },
     'promo': { minLines: 90, minCharacters: 4000, marker: 'window.__ONEKICK_TEST__' },
     'vision': { minLines: 50, minCharacters: 14500, marker: '"id":"V050"' },
   }
 
-  for (const [task, expectation] of Object.entries(promptCases)) {
+  for (const [task, expectation] of Object.entries(legacyPromptCases)) {
     const publicPath = `evidence/prompts/${task}.txt`
     const content = (await readFile(join(PUBLIC, publicPath), 'utf8')).trimEnd()
     const lineCount = content.split('\n').length
@@ -412,11 +491,29 @@ async function checkPromptEvidence() {
       errors.push(`Prompt evidence is missing marker ${expectation.marker}: ${publicPath}`)
     }
 
-    const pageName = task === '2d' ? 'Lab2D' : task === '3d' ? 'Lab3D' : task === 'promo' ? 'LabPromo' : 'LabVision'
-    const pageSource = await readFile(join(SRC, 'pages', `${pageName}.tsx`), 'utf8')
-    if (!pageSource.includes(`promptPath="/${publicPath}"`)) {
-      errors.push(`${pageName}.tsx does not expose the complete ${task} prompt`)
+  }
+
+  const current = JSON.parse(await readFile(join(PUBLIC, 'data/benchmarks-20260725.json'), 'utf8'))
+  const currentPromptCases = {
+    '2d': { minLines: 70, minCharacters: 2200, marker: 'Sling Siege' },
+    '3d': { minLines: 90, minCharacters: 3900, marker: 'Breach Point' },
+    'aesthetic': { minLines: 40, minCharacters: 1600, marker: '声律 75' },
+    'vision': { minLines: 50, minCharacters: 14500, marker: '"id":"V050"' },
+  }
+  for (const [taskId, expectation] of Object.entries(currentPromptCases)) {
+    const publicPath = current.tasks[taskId].promptPath.replace(/^\//, '')
+    const content = (await readFile(join(PUBLIC, publicPath), 'utf8')).trimEnd()
+    if (content.split('\n').length < expectation.minLines) {
+      errors.push(`Current prompt evidence is truncated: ${publicPath}`)
     }
+    if (content.length < expectation.minCharacters || !content.includes(expectation.marker)) {
+      errors.push(`Current prompt evidence is incomplete: ${publicPath}`)
+    }
+  }
+
+  const taskPageSource = await readFile(join(SRC, 'components/CurrentTaskLabPage.tsx'), 'utf8')
+  if (!taskPageSource.includes('promptPath={task.promptPath}')) {
+    errors.push('CurrentTaskLabPage.tsx does not expose the current complete prompt')
   }
 
   const labSource = await readFile(join(SRC, 'pages/Lab.tsx'), 'utf8')

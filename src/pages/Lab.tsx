@@ -1,103 +1,120 @@
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
-import { useBenchmarks } from '../hooks/useBenchmarks'
-import ScoreTable from '../components/ScoreTable'
-import BenchmarkViz from '../components/BenchmarkViz'
-import BenchmarkEfficiency from '../components/BenchmarkEfficiency'
+import CurrentBenchmarkOverview from '../components/CurrentBenchmarkOverview'
+import CurrentBenchmarkEfficiency from '../components/CurrentBenchmarkEfficiency'
+import { localizeText, useCurrentBenchmarks } from '../hooks/useCurrentBenchmarks'
 import { useLocale } from '../hooks/useLocale'
 
-const taskCardsZh = [
-  {
-    slug: '2d',
-    title: '2D 小游戏',
-    project: '弹弓攻城',
-    date: '2026-07-17',
-    image: '/assets/images/lab-card-2d.webp',
-    imageAlt: 'Codex 版《弹弓攻城》发射中的实机画面',
-    summary: 'Codex 96.0，操作最稳。K3 80.5，第二、三关会自己漂；MiniMax M3 54.5，正常操作过不了第一关。',
-  },
-  {
-    slug: '3d',
-    title: '3D 小游戏',
-    project: '破门点',
-    date: '2026-07-18',
-    image: '/assets/images/lab-card-3d.webp',
-    imageAlt: 'Kimi K3 版《破门点》持枪交火的实机画面',
-    summary: '三套都能玩完：K3 91.0，画面和手感最好；Codex 89.2，流程最顺；MiniMax M3 83.6。',
-  },
-  {
-    slug: 'promo',
-    title: '宣传页 HTML',
-    project: '一脚晋级宣传页',
-    date: '2026-07-18',
-    image: '/assets/images/lab-card-promo.webp',
-    imageAlt: 'Codex 版《一脚晋级》宣传页三步破门画面',
-    summary: 'Codex 95.0，把品牌和可玩挑战做得最完整；K3 91.0，首屏有些挤；MiniMax M3 85.0，交付最快。',
-  },
-  {
-    slug: 'vision',
-    title: '图片识别',
-    project: '50 图视觉识别',
-    date: '2026-07-18',
-    image: '/assets/images/lab-card-vision.webp',
-    imageAlt: '50 图识别题集中的生活、文字和文档类题目总览',
-    summary: 'K3 答对 49/50，得分 96.7；Codex 90.0；MiniMax M3 88.0。速度另算。',
-  },
-]
-
-const taskCardsEn = [
-  { slug: '2d', title: '2D Web Game', project: 'Sling Siege', date: '2026-07-17', image: '/assets/images/lab-card-2d.webp', imageAlt: 'Codex build of Sling Siege during a launch', summary: 'Codex scored 96.0 and felt the most reliable. K3 scored 80.5 with drifting later levels. MiniMax M3 scored 54.5 and could not clear level one through normal play.' },
-  { slug: '3d', title: '3D Web Game', project: 'Breach Point', date: '2026-07-18', image: '/assets/images/lab-card-3d.webp', imageAlt: 'Kimi K3 build of Breach Point during combat', summary: 'All three can be finished. K3 scored 91.0 with the best feel, Codex scored 89.2 with the smoothest flow, and MiniMax M3 scored 83.6.' },
-  { slug: 'promo', title: 'Promotion Page', project: 'One Kick', date: '2026-07-18', image: '/assets/images/lab-card-promo.webp', imageAlt: 'Codex promotion page after completing the three-move challenge', summary: 'Codex scored 95.0 and tied the brand and playable challenge together best. K3 scored 91.0 with a crowded opening. MiniMax M3 scored 85.0 and shipped fastest.' },
-  { slug: 'vision', title: 'Image Recognition', project: '50-image test', date: '2026-07-18', image: '/assets/images/lab-card-vision.webp', imageAlt: 'Overview of everyday, text, and document items in the 50-image set', summary: 'K3 answered 49/50 and scored 96.7. Codex scored 90.0 and MiniMax M3 scored 88.0. Speed is listed separately.' },
-]
-
 export default function Lab() {
-  const { data, loading, error } = useBenchmarks()
+  const { data, loading, error } = useCurrentBenchmarks()
   const { isEnglish, path } = useLocale()
-  const taskCards = isEnglish ? taskCardsEn : taskCardsZh
 
   return (
     <>
       <SEOHead
-        title={isEnglish ? 'Four AI Tests' : '四项 AI 实测'}
-        description={isEnglish ? 'Play the submitted 2D and 3D games, view the promotion pages, and inspect all 50 image-recognition answers.' : '直接玩三家提交的 2D、3D 小游戏，查看宣传页和全部 50 题识图结果。'}
+        title={isEnglish ? 'Eight-model hands-on Lab' : '八模型四项实测'}
+        description={isEnglish
+          ? 'Compare frozen quality scores, time, token usage, and submitted builds across Opus 5, GPT-5.6 Sol, K3, Fable 5, Qwen 3.8, Grok 4.5, GLM 5.2, and MiniMax M3.'
+          : '查看 Opus 5、GPT-5.6 Sol、K3、Fable 5、Qwen 3.8、Grok 4.5、GLM 5.2、MiniMax M3 的冻结分数、用时、Token 与网页原作。'}
       />
       <section className="pt-24 pb-20 md:pb-28">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6">
-          <div className="max-w-2xl mb-16">
-            <span className="text-xs uppercase tracking-widest text-pitch-500 mb-2 block">Lab</span>
-            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-white mb-4">
-              {isEnglish ? 'Four AI tests' : '四项 AI 实测'}
+        <div className="mx-auto max-w-[1400px] px-4 md:px-6">
+          <div className="mb-14 max-w-3xl">
+            <span className="mb-2 block text-xs uppercase tracking-widest text-pitch-500">Lab · 2026.07.25</span>
+            <h1 className="mb-4 text-4xl font-semibold tracking-tight text-white md:text-5xl">
+              {isEnglish ? 'Eight models, four hands-on tests' : '八个模型，四项真人实测'}
             </h1>
-            <p className="text-graphite-200 leading-relaxed">
+            <p className="leading-relaxed text-graphite-200">
               {isEnglish
-                ? 'I ran these four tests on July 17 and 18, 2026. For each task, all three systems received the same brief and inputs on the same computer. The image test used the same 50 pictures. I tried every build in Chrome and recorded the runs. Speed is listed separately from quality.'
-                : '这四项测试都在 2026 年 7 月 17 至 18 日完成。每一项里，三家拿到同样的要求和素材，也都在同一台电脑上完成；识图用的是同一批 50 张图。我用 Chrome 逐个试玩并录屏，质量和速度分开算。'}
+                ? 'This is the evidence page for the Opus 5 public-account review. Open the submitted 2D and 3D games, scroll through all eight product pages, and inspect the frozen image-test scores. Quality, time, and tokens are kept separate.'
+                : '这是 Opus 5 公众号评测对应的证据页。2D、3D 和八个产品发布页都可以直接打开，识图分数与评分拆分也完整保留；质量、时间和 Token 分开呈现。'}
             </p>
           </div>
 
-          {loading && <p className="text-graphite-400" role="status" aria-live="polite">{isEnglish ? 'Loading evaluation results…' : '评测结果加载中…'}</p>}
-          {error && <p className="text-red-400" role="alert">{isEnglish ? 'Unable to load data' : '数据加载失败'}：{error}</p>}
-
-          {data && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-              <BenchmarkViz data={data} />
-              <ScoreTable data={data} />
+          {loading && (
+            <div className="mb-16 rounded-2xl border border-white/5 bg-graphite-900/30 p-8 text-graphite-400" role="status" aria-live="polite">
+              {isEnglish ? 'Loading the frozen benchmark…' : '正在加载冻结评测数据…'}
+            </div>
+          )}
+          {error && (
+            <div className="mb-16 rounded-2xl border border-red-500/20 bg-red-500/5 p-8 text-red-300" role="alert">
+              {isEnglish ? 'Unable to load Lab data' : '实验室数据加载失败'}：{error}
             </div>
           )}
 
           {data && (
-            <p className="text-xs text-graphite-500 mb-16 -mt-8">{data.metadata.scoringNote}</p>
-          )}
+            <>
+              <CurrentBenchmarkOverview data={data} />
 
-          {data && <BenchmarkEfficiency data={data} />}
+              <section className="mb-20" aria-labelledby="task-links-title">
+                <div className="mb-6 max-w-3xl">
+                  <span className="text-xs uppercase tracking-widest text-pitch-500">
+                    {isEnglish ? 'Evidence links' : '证据入口'}
+                  </span>
+                  <h2 id="task-links-title" className="mt-2 text-2xl font-semibold tracking-tight text-white md:text-3xl">
+                    {isEnglish ? 'Scores and originals, task by task' : '逐项看分数和原作'}
+                  </h2>
+                </div>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {data.metadata.taskOrder.map((taskId) => {
+                    const task = data.tasks[taskId]
+                    const topResult = [...data.metadata.models]
+                      .map((model) => ({ model, result: task.models[model.id] }))
+                      .filter(({ result }) => result.score !== null)
+                      .sort((left, right) => Number(right.result.score) - Number(left.result.score))[0]
+                    return (
+                      <Link
+                        key={taskId}
+                        to={path(`/lab/${taskId}`)}
+                        className="group overflow-hidden rounded-2xl border border-white/5 bg-graphite-900/30 transition-colors hover:border-pitch-500/30 active:scale-[0.99]"
+                      >
+                        <div className="aspect-[16/9] overflow-hidden border-b border-white/5 bg-graphite-950/60">
+                          <img
+                            src={task.image}
+                            alt={`${localizeText(task.project, isEnglish)} ${isEnglish ? 'score chart' : '分数图'}`}
+                            loading="lazy"
+                            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
+                          />
+                        </div>
+                        <div className="p-5 md:p-6">
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <span className="text-xs text-graphite-400">{localizeText(task.project, isEnglish)}</span>
+                            <span className="shrink-0 text-xs text-graphite-500">{task.date}</span>
+                          </div>
+                          <h3 className="text-xl font-semibold text-white transition-colors group-hover:text-pitch-500">
+                            {localizeText(task.name, isEnglish)}
+                          </h3>
+                          <p className="mt-2 text-sm leading-relaxed text-graphite-300">
+                            {topResult
+                              ? `${topResult.model.shortLabel} ${topResult.result.score?.toFixed(1)} · ${localizeText(task.conclusion, isEnglish)}`
+                              : localizeText(task.conclusion, isEnglish)}
+                          </p>
+                          <span className="mt-4 inline-flex items-center text-sm text-pitch-500 transition-colors group-hover:text-pitch-400">
+                            {isEnglish ? 'Open evidence' : '查看分数与原作'} <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
+                          </span>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </section>
+
+              <CurrentBenchmarkEfficiency data={data} />
+
+              <p className="mb-8 text-xs leading-relaxed text-graphite-500">
+                {localizeText(data.metadata.methodNote, isEnglish)}
+              </p>
+              <p className="mb-16 text-xs leading-relaxed text-graphite-500">
+                {localizeText(data.metadata.publicDataNote, isEnglish)}
+              </p>
+            </>
+          )}
 
           <Link
             to={path('/lab/model-price-benchmark')}
             className="group mb-8 block overflow-hidden rounded-2xl border border-[#b8d9ff] bg-paper p-5 text-[#1d1d1f] transition-[border-color,transform] hover:border-[#0071e3] active:scale-[0.99] md:p-7"
           >
-            <span className="mb-2 block text-xs font-semibold uppercase tracking-widest text-[#0071e3]">API price · real agent mix</span>
+            <span className="mb-2 block text-xs font-semibold uppercase tracking-widest text-[#0071e3]">API price · official sources</span>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h2 className="text-2xl font-semibold tracking-tight text-[#1d1d1f]">
@@ -105,8 +122,8 @@ export default function Lab() {
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#6e6e73]">
                   {isEnglish
-                    ? 'Compare six model prices using a 94.7% cache-hit agent workload, then review the official benchmark claims published by each provider.'
-                    : '按 94.7% 缓存命中的 Agent 用量比较六个模型价格，再查看六家厂商各自公开的官方评测与排名。'}
+                    ? 'Compare official API prices and provider-published benchmark claims without mixing incompatible test harnesses.'
+                    : '比较官方 API 定价与厂商公开评测，保留各自测试口径，不把不同 harness 的分数硬合成总榜。'}
                 </p>
               </div>
               <span className="shrink-0 text-sm font-medium text-[#0066cc] transition-transform group-hover:translate-x-1">
@@ -115,38 +132,10 @@ export default function Lab() {
             </div>
           </Link>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {taskCards.map((card) => (
-              <Link
-                key={card.slug}
-                to={path(`/lab/${card.slug}`)}
-                className="group overflow-hidden rounded-2xl border border-white/5 bg-graphite-900/30 transition-colors hover:border-pitch-500/30 active:scale-[0.99]"
-              >
-                <div className="aspect-video overflow-hidden border-b border-white/5 bg-graphite-950/70">
-                  <img
-                    src={card.image}
-                    alt={card.imageAlt}
-                    loading="lazy"
-                    width="960"
-                    height={card.slug === 'vision' ? '1088' : '540'}
-                    className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.015]"
-                  />
-                </div>
-                <div className="p-5 md:p-6">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <span className="text-xs text-graphite-400">{card.project}</span>
-                    <span className="shrink-0 text-xs text-graphite-500">{card.date}</span>
-                  </div>
-                  <h2 className="mb-2 text-xl font-semibold text-white transition-colors group-hover:text-pitch-500">
-                    {card.title}
-                  </h2>
-                  <p className="text-sm leading-relaxed text-graphite-300">{card.summary}</p>
-                  <span className="mt-4 inline-flex items-center text-sm text-pitch-500 transition-colors group-hover:text-pitch-400">
-                    {isEnglish ? 'Open test' : '查看详情'} <span className="ml-1 transition-transform group-hover:translate-x-1">→</span>
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <div className="text-right">
+            <Link to={path('/lab/promo')} className="text-xs text-graphite-500 transition-colors hover:text-graphite-300">
+              {isEnglish ? 'Prior round: One Kick promotion page →' : '上一轮《一脚晋级》宣传页归档 →'}
+            </Link>
           </div>
         </div>
       </section>

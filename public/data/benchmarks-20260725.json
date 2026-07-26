@@ -1,0 +1,710 @@
+{
+  "metadata": {
+    "roundId": "20260725-opus5-eight-models",
+    "title": {
+      "zh": "Opus 5 等八模型四项实测",
+      "en": "Four hands-on tests across eight AI models"
+    },
+    "dateRange": "2026-07-25—2026-07-26",
+    "taskOrder": ["2d", "3d", "vision", "aesthetic"],
+    "scoringNote": {
+      "zh": "四项均按 100 分计，只比较成品质量；速度和 Token 单独列，不进入质量分。GLM 5.2 的识图通道不支持图片输入，因此总均分按其完成的三项计算。",
+      "en": "Each task is scored out of 100 for output quality only. Time and token usage are reported separately. GLM 5.2 could not receive images through the tested connection, so its average covers the three tasks it completed."
+    },
+    "methodNote": {
+      "zh": "五个本周新模型使用同题、同素材和各自 CLI 的最高可用推理档。游戏与网页遮住模型名后实际试玩并按固定维度评分；识图按预先冻结的答案程序判分。GPT-5.6 Sol、Kimi K3 和 MiniMax M3 的部分成绩沿用上一轮公开记录，产品发布页则由八家本期全部重跑。",
+      "en": "The five newly tested models received the same briefs and inputs through their respective CLIs at the highest available reasoning setting. Games and pages were reviewed blind against fixed dimensions; image answers were scored against a frozen key. Some GPT-5.6 Sol, Kimi K3, and MiniMax M3 results come from the prior published round, while all eight product pages were rerun in this round."
+    },
+    "publicDataNote": {
+      "zh": "公开页提供冻结分数、评分拆分、完成时间、Token 记录与网页原作；不公开账号凭证和原始运行日志。",
+      "en": "The public Lab includes frozen scores, score breakdowns, completion times, token records, and submitted web builds. Credentials and raw execution logs remain private."
+    },
+    "models": [
+      {
+        "id": "opus5",
+        "label": "Claude Opus 5",
+        "shortLabel": "Opus 5",
+        "color": "#D97757"
+      },
+      {
+        "id": "gpt56",
+        "label": "GPT-5.6 Sol",
+        "shortLabel": "GPT-5.6",
+        "color": "#10A37F"
+      },
+      {
+        "id": "k3",
+        "label": "Kimi K3",
+        "shortLabel": "K3",
+        "color": "#8B6EDB"
+      },
+      {
+        "id": "fable5",
+        "label": "Claude Fable 5",
+        "shortLabel": "Fable 5",
+        "color": "#E8A27D"
+      },
+      {
+        "id": "qwen38",
+        "label": "Qwen 3.8 Max",
+        "shortLabel": "Qwen 3.8",
+        "color": "#7C76F2"
+      },
+      {
+        "id": "grok45",
+        "label": "Grok 4.5",
+        "shortLabel": "Grok 4.5",
+        "color": "#B8C0CC"
+      },
+      {
+        "id": "glm52",
+        "label": "GLM 5.2",
+        "shortLabel": "GLM 5.2",
+        "color": "#6E8BFF"
+      },
+      {
+        "id": "minimax",
+        "label": "MiniMax M3",
+        "shortLabel": "M3",
+        "color": "#FF6B5F"
+      }
+    ]
+  },
+  "summary": {
+    "overall": [
+      {
+        "model": "opus5",
+        "score": 94.4,
+        "tasksCount": 4
+      },
+      {
+        "model": "gpt56",
+        "score": 90.9,
+        "tasksCount": 4
+      },
+      {
+        "model": "k3",
+        "score": 89.6,
+        "tasksCount": 4
+      },
+      {
+        "model": "fable5",
+        "score": 88.0,
+        "tasksCount": 4
+      },
+      {
+        "model": "qwen38",
+        "score": 85.8,
+        "tasksCount": 4
+      },
+      {
+        "model": "grok45",
+        "score": 82.4,
+        "tasksCount": 4
+      },
+      {
+        "model": "glm52",
+        "score": 70.8,
+        "tasksCount": 3
+      },
+      {
+        "model": "minimax",
+        "score": 70.4,
+        "tasksCount": 4
+      }
+    ],
+    "speedTable": [
+      {
+        "task": "2d",
+        "values": {
+          "opus5": "55.2 分钟",
+          "gpt56": "14.7 分钟",
+          "k3": "92.3 分钟",
+          "fable5": "13.2 分钟",
+          "qwen38": "31.6 分钟",
+          "grok45": "17.9 分钟",
+          "glm52": "32.8 分钟",
+          "minimax": "36.9 分钟"
+        }
+      },
+      {
+        "task": "3d",
+        "values": {
+          "opus5": "60.6 分钟",
+          "gpt56": "23.0 分钟",
+          "k3": "76.9 分钟",
+          "fable5": "33.8 分钟",
+          "qwen38": "69.0 分钟",
+          "grok45": "17.9 分钟",
+          "glm52": "35.0 分钟",
+          "minimax": "44.1 分钟"
+        }
+      },
+      {
+        "task": "aesthetic",
+        "values": {
+          "opus5": "60.1 分钟",
+          "gpt56": "13.3 分钟",
+          "k3": "69.3 分钟",
+          "fable5": "30.0 分钟",
+          "qwen38": "45.0 分钟（截止）",
+          "grok45": "24.1 分钟",
+          "glm52": "45.0 分钟（截止）",
+          "minimax": "12.9 分钟"
+        }
+      }
+    ],
+    "tokenUsage": {
+      "unit": "千 Token",
+      "formula": {
+        "zh": "新增 Token＝非缓存输入＋输出；缓存输入单列，不与新增 Token 相加。",
+        "en": "New tokens equal non-cached input plus output. Cached input is reported separately."
+      },
+      "table": [
+        {
+          "task": "2d",
+          "values": {
+            "opus5": {"new": 487.2, "cache": 18050.3},
+            "gpt56": {"new": 218.5, "cache": 1795.7},
+            "k3": {"new": 355.0, "cache": 15922.4},
+            "fable5": {"new": 143.5, "cache": 1383.9},
+            "qwen38": {"new": 192.0, "cache": 637.2},
+            "grok45": {"new": 103.6, "cache": 552.4},
+            "glm52": {"new": 355.5, "cache": 2711.4},
+            "minimax": {"new": 244.1, "cache": 2166.6}
+          }
+        },
+        {
+          "task": "3d",
+          "values": {
+            "opus5": {"new": 582.4, "cache": 11123.2},
+            "gpt56": {"new": 223.1, "cache": 2000.8},
+            "k3": {"new": 220.4, "cache": 5593.7},
+            "fable5": {"new": 287.9, "cache": 6254.0},
+            "qwen38": {"new": 755.5, "cache": 3914.3},
+            "grok45": {"new": 137.6, "cache": 783.9},
+            "glm52": {"new": 255.8, "cache": 2739.6},
+            "minimax": {"new": 480.0, "cache": 28763.6}
+          }
+        },
+        {
+          "task": "aesthetic",
+          "values": {
+            "opus5": {"new": 362.1, "cache": 9535.3},
+            "gpt56": {"new": 155.2, "cache": 2431.2},
+            "k3": {"new": 224.2, "cache": 7184.8},
+            "fable5": {"new": 226.1, "cache": 3128.0},
+            "qwen38": {"new": 412.7, "cache": 2172.5},
+            "grok45": {"new": 135.7, "cache": 2120.3},
+            "glm52": {"new": 501.2, "cache": 673.7},
+            "minimax": {"new": 83.6, "cache": 2643.5}
+          }
+        }
+      ]
+    }
+  },
+  "tasks": {
+    "2d": {
+      "name": {
+        "zh": "2D 小游戏",
+        "en": "2D web game"
+      },
+      "project": {
+        "zh": "《弹弓攻城》",
+        "en": "Sling Siege"
+      },
+      "date": "2026-07-25",
+      "image": "/assets/lab-20260725/v2-2d-total.png",
+      "detailImage": "/assets/lab-20260725/v2-2d-detail.png",
+      "promptPath": "/evidence/prompts/2d-20260725.txt",
+      "dimensions": [
+        {"zh": "任务完成度", "en": "Task completion"},
+        {"zh": "视觉与 UI", "en": "Visuals and UI"},
+        {"zh": "操作体感", "en": "Control feel"},
+        {"zh": "稳定与适配", "en": "Stability and adaptation"}
+      ],
+      "dimensionMax": [20, 30, 30, 20],
+      "conclusion": {
+        "zh": "Opus 5 以 95.0 排第一，GPT-5.6 Sol 为 94.0。K3 撤掉时限后完整跑完，得到 88.3。",
+        "en": "Opus 5 placed first at 95.0, followed by GPT-5.6 Sol at 94.0. K3 completed the uncapped rerun and scored 88.3."
+      },
+      "models": {
+        "opus5": {
+          "score": 95.0,
+          "breakdown": [20, 26.5, 28.5, 20],
+          "time": "55.2 分钟",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "note": {
+            "zh": "俯冲、爆震和三裂三种能力会改变打法，建筑还能连锁倒塌；质量最高，等待也接近一小时。",
+            "en": "Dive, blast, and split abilities change how each shot plays, with chain collapses across the fort. It produced the best build and also took nearly an hour."
+          },
+          "playHref": "/bundles/2d/opus5/"
+        },
+        "gpt56": {
+          "score": 94.0,
+          "breakdown": [20, 28.5, 27.5, 18],
+          "time": "14.7 分钟",
+          "round": "previous",
+          "tool": "Codex CLI · gpt-5.6-sol · xhigh",
+          "note": {
+            "zh": "上期公开成绩。操作和反馈稳定，但球飞出后皮筋仍会黏在球上。",
+            "en": "Published in the prior round. Controls and feedback are reliable, although the sling remains attached after launch."
+          },
+          "playHref": "/bundles/2d/codex/"
+        },
+        "k3": {
+          "score": 88.3,
+          "breakdown": [20, 24.8, 23.5, 20],
+          "time": "92.3 分钟",
+          "round": "current",
+          "tool": "Kimi Code 0.26.0 · K3 · max",
+          "note": {
+            "zh": "本轮撤掉 40 分钟上限后复测，三关均可通关；定点引爆需要真人把握触发时机。",
+            "en": "Rerun without the previous 40-minute cap. All three levels are clearable, but the timed detonation requires deliberate player input."
+          },
+          "playHref": "/bundles/2d/k3-retest/"
+        },
+        "fable5": {
+          "score": 84.8,
+          "breakdown": [20, 22.3, 24.5, 18],
+          "time": "13.2 分钟",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "note": {
+            "zh": "本轮最快交付，核心玩法完整，但层次和稳定细节少于 Opus 5。",
+            "en": "The fastest build in this task. The core loop works, with less depth and polish than Opus 5."
+          },
+          "playHref": "/bundles/2d/fable5/"
+        },
+        "qwen38": {
+          "score": 80.5,
+          "breakdown": [18, 23.8, 23.7, 15],
+          "time": "31.6 分钟",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · Preview",
+          "note": {
+            "zh": "视觉和基本交互齐全，但首关结构可能在玩家发射前自行坍塌。",
+            "en": "The visuals and basic interactions are present, but the first fort can collapse before the player fires."
+          },
+          "playHref": "/bundles/2d/qwen38/"
+        },
+        "grok45": {
+          "score": 87.0,
+          "breakdown": [20, 23.3, 23.7, 20],
+          "time": "17.9 分钟",
+          "round": "current",
+          "tool": "Grok Build CLI 0.2.112 · high",
+          "note": {
+            "zh": "交付很快，任务闭环和稳定性完整，视觉与操作细节处在中上档。",
+            "en": "A fast delivery with a complete loop and solid stability, landing in the upper middle for visuals and feel."
+          },
+          "playHref": "/bundles/2d/grok45/"
+        },
+        "glm52": {
+          "score": 74.0,
+          "breakdown": [20, 17.7, 16.3, 20],
+          "time": "32.8 分钟",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · GLM 5.2 thinking",
+          "note": {
+            "zh": "画面基本完整，但游戏内时间推进会被截断，影响玩法底子。",
+            "en": "The presentation is mostly complete, but the in-game time progression is cut short and weakens the play loop."
+          },
+          "playHref": "/bundles/2d/glm52/"
+        },
+        "minimax": {
+          "score": 54.5,
+          "breakdown": [14, 24.5, 8, 8],
+          "time": "36.9 分钟",
+          "round": "previous",
+          "tool": "OpenCode · MiniMax M3 thinking",
+          "note": {
+            "zh": "上期公开成绩。首屏和 HUD 完整，但上下瞄准反向，正常操作无法通过第一关。",
+            "en": "Published in the prior round. The opening and HUD are complete, but vertical aiming is reversed and normal play cannot clear level one."
+          },
+          "playHref": "/bundles/2d/minimax-m3/"
+        }
+      }
+    },
+    "3d": {
+      "name": {
+        "zh": "3D 小游戏",
+        "en": "3D web game"
+      },
+      "project": {
+        "zh": "《破门点》",
+        "en": "Breach Point"
+      },
+      "date": "2026-07-25",
+      "image": "/assets/lab-20260725/v2-3d-total.png",
+      "detailImage": "/assets/lab-20260725/v2-3d-detail.png",
+      "promptPath": "/evidence/prompts/3d-20260725.txt",
+      "dimensions": [
+        {"zh": "任务闭环", "en": "Task completion"},
+        {"zh": "3D 与 UI", "en": "3D and UI"},
+        {"zh": "操作体感", "en": "Control feel"},
+        {"zh": "稳定与适配", "en": "Stability and adaptation"}
+      ],
+      "dimensionMax": [20, 30, 30, 20],
+      "conclusion": {
+        "zh": "Opus 5 以 91.3 排第一，只比上期 K3 高 0.3 分；Qwen 3.8 以 87.8 成为本题黑马。",
+        "en": "Opus 5 placed first at 91.3, only 0.3 above the prior K3 result. Qwen 3.8 was the surprise at 87.8."
+      },
+      "models": {
+        "opus5": {
+          "score": 91.3,
+          "breakdown": [20, 25.5, 25.8, 20],
+          "time": "60.6 分钟",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "note": {
+            "zh": "UI 分区和枪感是本轮最好的一份；跑动时货箱表面会轻微闪动。",
+            "en": "The strongest HUD hierarchy and shooting feel in this round. Crate surfaces flicker slightly while moving."
+          },
+          "playHref": "/bundles/3d/opus5/"
+        },
+        "gpt56": {
+          "score": 89.2,
+          "breakdown": [20, 23.7, 25.5, 20],
+          "time": "23.0 分钟",
+          "round": "previous",
+          "tool": "Codex CLI · gpt-5.6-sol · xhigh",
+          "note": {
+            "zh": "上期公开成绩。交火、换弹、受击、拆除和结算都能顺利完成。",
+            "en": "Published in the prior round. Combat, reload, damage, defusal, and results all work smoothly."
+          },
+          "playHref": "/bundles/3d/codex/"
+        },
+        "k3": {
+          "score": 91.0,
+          "breakdown": [20, 25, 26, 20],
+          "time": "76.9 分钟",
+          "round": "previous",
+          "tool": "Kimi Code · K3 · max",
+          "note": {
+            "zh": "上期公开成绩。港口场景、路线提示、拆除反馈和手机操作都很好懂。",
+            "en": "Published in the prior round. The harbor scene, route hints, defusal feedback, and mobile controls are easy to understand."
+          },
+          "playHref": "/bundles/3d/kimi/"
+        },
+        "fable5": {
+          "score": 83.3,
+          "breakdown": [20, 20.3, 23, 20],
+          "time": "33.8 分钟",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "note": {
+            "zh": "开枪和受击反馈完整，但移动时货箱贴图闪动比 Opus 5 更明显。",
+            "en": "Firing and hit feedback are complete, but crate texture flicker is more visible than in the Opus 5 build."
+          },
+          "playHref": "/bundles/3d/fable5/"
+        },
+        "qwen38": {
+          "score": 87.8,
+          "breakdown": [20, 23.5, 24.3, 20],
+          "time": "69.0 分钟",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · Preview",
+          "note": {
+            "zh": "枪口、命中、倒地、受击红边和换弹反馈都到位；靠近平台时人物高度会异常抬升。",
+            "en": "Muzzle, hit, takedown, damage, and reload feedback are all present. Player height rises incorrectly near the platform."
+          },
+          "playHref": "/bundles/3d/qwen38/"
+        },
+        "grok45": {
+          "score": 73.2,
+          "breakdown": [20, 16.2, 17, 20],
+          "time": "17.9 分钟",
+          "round": "current",
+          "tool": "Grok Build CLI 0.2.112 · high",
+          "note": {
+            "zh": "本轮最快完成 3D 题，闭环和稳定性齐全，但视觉与枪感明显落后第一档。",
+            "en": "The fastest 3D completion in this round, with a complete and stable loop but weaker visuals and shooting feel."
+          },
+          "playHref": "/bundles/3d/grok45/"
+        },
+        "glm52": {
+          "score": 62.8,
+          "breakdown": [20, 14.2, 12.7, 16],
+          "time": "35.0 分钟",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · GLM 5.2 thinking",
+          "note": {
+            "zh": "任务主流程存在，但 3D 表现、操作反馈和稳定细节处在本题末位。",
+            "en": "The main task flow exists, but 3D presentation, control feedback, and stability details place it last in this task."
+          },
+          "playHref": "/bundles/3d/glm52/"
+        },
+        "minimax": {
+          "score": 68.0,
+          "breakdown": [16, 17, 19, 16],
+          "time": "44.1 分钟",
+          "round": "previous",
+          "tool": "OpenCode · MiniMax M3 thinking",
+          "note": {
+            "zh": "上期原始版成绩，页面保留的是与 68.0 分对应的修复前原作。",
+            "en": "The prior round's original score. This link preserves the pre-repair build that corresponds to 68.0."
+          },
+          "playHref": "/bundles/3d/minimax-m3-original/"
+        }
+      }
+    },
+    "vision": {
+      "name": {
+        "zh": "图片识别",
+        "en": "Image recognition"
+      },
+      "project": {
+        "zh": "50 图视觉识别",
+        "en": "50-image test"
+      },
+      "date": "2026-07-25",
+      "image": "/assets/lab-20260725/v2-vision-total.png",
+      "detailImage": "/assets/lab-20260725/v2-vision-detail.png",
+      "promptPath": "/evidence/prompts/vision.txt",
+      "dimensions": [
+        {"zh": "日常、文字与文档", "en": "Everyday, text, and documents"},
+        {"zh": "计数与空间", "en": "Counting and spatial"},
+        {"zh": "图表、专业图与界面", "en": "Charts, technical images, and UI"},
+        {"zh": "难题三跑稳定性", "en": "Three-run hard-item stability"}
+      ],
+      "dimensionMax": [30, 20, 30, 20],
+      "conclusion": {
+        "zh": "Opus 5 五十题全对，拿到 100；K3、Fable 5 和 Qwen 3.8 紧随其后。GLM 5.2 因接入通道不支持图片输入而技术性缺席。",
+        "en": "Opus 5 answered all 50 items correctly for a score of 100. K3, Fable 5, and Qwen 3.8 followed. GLM 5.2 is a technical absence because the tested connection did not accept images."
+      },
+      "models": {
+        "opus5": {
+          "score": 100.0,
+          "breakdown": [30, 20, 30, 20],
+          "time": "12.58 秒／题中位",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "accuracy": "50/50",
+          "stability": "15/15",
+          "note": {
+            "zh": "五十题全对，15 道难题各跑三次也全部保持同一答案。",
+            "en": "All 50 answers were correct, and all 15 hard items kept the same answer across three runs."
+          }
+        },
+        "gpt56": {
+          "score": 90.0,
+          "breakdown": [30, 14, 30, 16],
+          "time": "8.84 秒／题中位",
+          "round": "previous",
+          "tool": "Codex CLI · gpt-5.6-sol · xhigh",
+          "accuracy": "47/50",
+          "stability": "12/15",
+          "note": {
+            "zh": "上期公开成绩，主要失分来自密集计数和远处的小箭头。",
+            "en": "Published in the prior round, with most misses in dense counting and a tiny distant arrow."
+          }
+        },
+        "k3": {
+          "score": 96.7,
+          "breakdown": [30, 18, 30, 18.7],
+          "time": "28.93 秒／题中位",
+          "round": "previous",
+          "tool": "Kimi Code · K3 · max",
+          "accuracy": "49/50",
+          "stability": "14/15",
+          "note": {
+            "zh": "上期公开成绩，唯一明显短板是密集计数。",
+            "en": "Published in the prior round. Dense counting was the only clear weakness."
+          }
+        },
+        "fable5": {
+          "score": 96.0,
+          "breakdown": [28, 18, 30, 20],
+          "time": "13.66 秒／题中位",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "accuracy": "48/50",
+          "stability": "15/15",
+          "note": {
+            "zh": "首轮错 2 题，15 道难题三跑答案全部一致。",
+            "en": "Two misses in the first pass, with full three-run agreement across all 15 hard items."
+          }
+        },
+        "qwen38": {
+          "score": 94.8,
+          "breakdown": [28, 18, 28.8, 20],
+          "time": "25.73 秒／题中位",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · Preview",
+          "accuracy": "47/50",
+          "stability": "15/15",
+          "note": {
+            "zh": "离 Fable 5 很近，但这批游戏与界面图片里的实测顺序仍是 Fable 在前。",
+            "en": "Close to Fable 5, but Fable still leads on this set of game and interface images."
+          }
+        },
+        "grok45": {
+          "score": 88.1,
+          "breakdown": [28, 14, 28.8, 17.3],
+          "time": "9.95 秒／题中位",
+          "round": "current",
+          "tool": "Grok Build CLI 0.2.112 · high",
+          "accuracy": "45/50",
+          "stability": "13/15",
+          "note": {
+            "zh": "单题中位速度最快，但错了 5 题，其中 3 题属于计数。",
+            "en": "The fastest median per item, but with five misses, three of them counting questions."
+          }
+        },
+        "glm52": {
+          "score": null,
+          "breakdown": null,
+          "time": "两次尝试共 30 分钟",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · GLM 5.2 thinking",
+          "status": {
+            "zh": "技术性缺席",
+            "en": "Technical absence"
+          },
+          "note": {
+            "zh": "当前接入通道不支持图片输入。它只说明这条调用链受限，不能据此判断模型本身的识图能力。",
+            "en": "The tested connection did not support image input. This is a limitation of the tool path, not a judgment of the model's vision capability."
+          }
+        },
+        "minimax": {
+          "score": 88.0,
+          "breakdown": [28, 14, 30, 16],
+          "time": "8.61 秒／题中位",
+          "round": "previous",
+          "tool": "OpenCode · MiniMax M3 thinking",
+          "accuracy": "46/50",
+          "stability": "12/15",
+          "note": {
+            "zh": "上期公开成绩，密集计数、极小方向标记和无语义字符串 OCR 更容易错。",
+            "en": "Published in the prior round. Dense counting, tiny direction markers, and context-free OCR caused more errors."
+          }
+        }
+      }
+    },
+    "aesthetic": {
+      "name": {
+        "zh": "产品发布页",
+        "en": "Product launch page"
+      },
+      "project": {
+        "zh": "虚构机械键盘「声律 75」",
+        "en": "Fictional Soundrhythm 75 keyboard"
+      },
+      "date": "2026-07-26",
+      "image": "/assets/lab-20260725/v2-aesthetic-total.png",
+      "detailImage": "/assets/lab-20260725/v2-aesthetic-detail.png",
+      "promptPath": "/evidence/prompts/aesthetic-20260725.txt",
+      "dimensions": [
+        {"zh": "视觉与排版", "en": "Visuals and typography"},
+        {"zh": "造物质感", "en": "Product rendering"},
+        {"zh": "动感表达", "en": "Motion"},
+        {"zh": "稳定适配", "en": "Stability and adaptation"}
+      ],
+      "dimensionMax": [45, 20, 15, 20],
+      "conclusion": {
+        "zh": "八家本期全部重跑。Opus 5 用程序化 3D 键盘和完整转场拿到 91.2，GPT-5.6 Sol 以 90.3 紧随其后。",
+        "en": "All eight systems were rerun. Opus 5 scored 91.2 with a procedural 3D keyboard and cohesive transitions, followed by GPT-5.6 Sol at 90.3."
+      },
+      "models": {
+        "opus5": {
+          "score": 91.2,
+          "breakdown": [39.7, 18.5, 13, 20],
+          "time": "60.1 分钟",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "note": {
+            "zh": "程序化 3D 主体、五色联动和杂志式转场形成最完整的一套产品叙事。",
+            "en": "A procedural 3D hero, five linked colorways, and editorial transitions create the most cohesive product story."
+          },
+          "playHref": "/bundles/aesthetic/opus5/"
+        },
+        "gpt56": {
+          "score": 90.3,
+          "breakdown": [39.5, 17.5, 13.3, 20],
+          "time": "13.3 分钟",
+          "round": "current",
+          "tool": "Codex CLI · gpt-5.6-sol · xhigh",
+          "note": {
+            "zh": "整体稳定、节奏顺，质量仅落后 Opus 5 0.9 分，用时明显更短。",
+            "en": "Stable and well paced, only 0.9 behind Opus 5 while finishing much faster."
+          },
+          "playHref": "/bundles/aesthetic/codex/"
+        },
+        "k3": {
+          "score": 82.3,
+          "breakdown": [35.2, 15.5, 11.7, 20],
+          "time": "69.3 分钟",
+          "round": "current",
+          "tool": "Kimi Code 0.26.0 · K3 · max",
+          "note": {
+            "zh": "页面完整且稳定，视觉质感和动效层级不及前三。",
+            "en": "Complete and stable, with weaker visual material and motion hierarchy than the top three."
+          },
+          "playHref": "/bundles/aesthetic/kimi/"
+        },
+        "fable5": {
+          "score": 87.8,
+          "breakdown": [38.2, 17.2, 12.5, 20],
+          "time": "30.0 分钟",
+          "round": "current",
+          "tool": "Claude Code 2.1.220 · max · 1M",
+          "note": {
+            "zh": "金属反光、金色重点键和星空粒子都服务于质感，30 分钟交出第三名。",
+            "en": "Metal reflections, gold accent keys, and a star-field backdrop all support the material feel, placing third in 30 minutes."
+          },
+          "playHref": "/bundles/aesthetic/fable5/"
+        },
+        "qwen38": {
+          "score": 80.2,
+          "breakdown": [35, 13.8, 11.3, 20],
+          "time": "45.0 分钟（截止）",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · Preview",
+          "note": {
+            "zh": "在 45 分钟截止点保留提交版本，页面可查看，但完成度与质感仍有缺口。",
+            "en": "The submitted state at the 45-minute cutoff is preserved. It is viewable, with gaps in completion and material polish."
+          },
+          "playHref": "/bundles/aesthetic/qwen38/"
+        },
+        "grok45": {
+          "score": 81.2,
+          "breakdown": [36, 14.5, 10.7, 20],
+          "time": "24.1 分钟",
+          "round": "current",
+          "tool": "Grok Build CLI 0.2.112 · high",
+          "note": {
+            "zh": "最像可直接卖货的商业页面，参数带和定价信息清楚，造物质感仍不在第一档。",
+            "en": "The most commerce-ready page, with clear specs and pricing, though product rendering remains below the top tier."
+          },
+          "playHref": "/bundles/aesthetic/grok45/"
+        },
+        "glm52": {
+          "score": 75.7,
+          "breakdown": [31.2, 14, 10.5, 20],
+          "time": "45.0 分钟（截止）",
+          "round": "current",
+          "tool": "Qwen Code 0.21.0 · GLM 5.2 thinking",
+          "note": {
+            "zh": "在 45 分钟截止点提交，基础结构稳定，视觉与动效表现排在后段。",
+            "en": "Submitted at the 45-minute cutoff. The structure is stable, with visuals and motion in the lower tier."
+          },
+          "playHref": "/bundles/aesthetic/glm52/"
+        },
+        "minimax": {
+          "score": 71.2,
+          "breakdown": [30.8, 10.8, 9.5, 20],
+          "time": "12.9 分钟",
+          "round": "current",
+          "tool": "mmx · MiniMax M3",
+          "note": {
+            "zh": "八家里完成最快，也得到最低质量分；结构可用，质感和动效不足。",
+            "en": "The fastest of all eight and also the lowest quality score. The structure works, with limited material feel and motion."
+          },
+          "playHref": "/bundles/aesthetic/minimax-m3/"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0D0D10">
+<title>声律 75 · SOUNDRHYTHM</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav" role="banner">
+  <a class="nav__brand" href="#hero" data-nav aria-label="声律首页">
+    <span class="nav__mark" aria-hidden="true"></span>
+    <span class="nav__name">SOUNDRHYTHM</span>
+  </a>
+  <nav class="nav__links" aria-label="页内导航">
+    <a href="#hero" data-nav data-nav-id="hero">概览</a>
+    <a href="#features" data-nav data-nav-id="features">工程</a>
+    <a href="#colors" data-nav data-nav-id="colors">配色</a>
+    <a href="#buy" data-nav data-nav-id="buy">预定</a>
+  </nav>
+  <div class="nav__meta" aria-hidden="true">
+    <span class="dot"></span><span>2026.08.08</span>
+  </div>
+</header>
+
+<main>
+  <section id="hero" class="hero" data-section>
+    <div class="hero__stage">
+      <canvas id="heroCanvas" class="hero__canvas" aria-hidden="true"></canvas>
+      <div class="hero__halo" aria-hidden="true"></div>
+      <div class="hero__grid" aria-hidden="true"></div>
+    </div>
+
+    <div class="hero__copy" data-reveal>
+      <p class="hero__eyebrow">
+        <span class="kicker">75%</span>
+        <span class="kicker">机械键盘</span>
+        <span class="kicker">三模</span>
+      </p>
+      <h1 class="hero__title">
+        <span class="hero__title-row"><span class="hero__title-cn">声律</span></span>
+        <span class="hero__title-row"><span class="hero__title-num">75</span><span class="hero__title-tag">/ 2026</span></span>
+      </h1>
+      <p class="hero__sub"><span class="hero__sub-line">一敲，一段声律。</span></p>
+      <p class="hero__lede">Gasket 五层消音棉 · CNC 一体铝合金 · 三模 30 天续航<br>75% 配列，把桌面还给双手。</p>
+    </div>
+
+    <aside class="hero__data" aria-label="产品速览" data-reveal>
+      <dl>
+        <div><dt>发布</dt><dd>2026.08.08</dd></div>
+        <div><dt>售价</dt><dd>¥1,299</dd></div>
+        <div><dt>配列</dt><dd>75% / 81 键</dd></div>
+      </dl>
+      <a href="#buy" class="hero__cta" data-nav>
+        <span>预定</span>
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </aside>
+
+    <div class="hero__scroll" aria-hidden="true">
+      <span>SCROLL</span>
+      <span class="hero__scroll-line"></span>
+    </div>
+  </section>
+
+  <section id="features" class="features" data-section>
+    <header class="section-head" data-reveal>
+      <p class="section-head__index"><span>02</span><span class="section-head__slash">/</span><span>03</span></p>
+      <h2 class="section-head__title">三道工程<span>Three Engineering Notes</span></h2>
+      <p class="section-head__lede">不靠堆料，靠克制。把每一层结构、每一道工艺，做到刚刚好。</p>
+    </header>
+
+    <div class="features__grid">
+      <article class="feature" data-feature="sound" data-reveal>
+        <div class="feature__index">01</div>
+        <div class="feature__icon" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none">
+            <rect class="l l1" x="6" y="30" width="68" height="2"/>
+            <rect class="l l2" x="6" y="38" width="56" height="2"/>
+            <rect class="l l3" x="6" y="46" width="44" height="2"/>
+            <rect class="l l4" x="6" y="54" width="32" height="2"/>
+            <rect class="l l5" x="6" y="62" width="20" height="2"/>
+            <circle class="l l6" cx="40" cy="30" r="3"/>
+          </svg>
+        </div>
+        <h3 class="feature__title">Gasket 五层消音棉</h3>
+        <p class="feature__desc">硅胶垫圈吸收冲击，五层 Poron + IXPE + 底棉堆叠，让每一次落键都沉入干净的尾音。</p>
+        <ul class="feature__list">
+          <li>硅胶垫圈 · Gasket Mount</li>
+          <li>Poron · IXPE · 底棉</li>
+          <li>无螺丝应力传导</li>
+        </ul>
+      </article>
+
+      <article class="feature" data-feature="cnc" data-reveal>
+        <div class="feature__index">02</div>
+        <div class="feature__icon" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none">
+            <path class="l l1" d="M10 60 L10 24 L40 12 L70 24 L70 60 Z"/>
+            <path class="l l2" d="M10 24 L40 36 L70 24"/>
+            <line class="l l3" x1="40" y1="36" x2="40" y2="68"/>
+            <line class="l l4" x1="20" y1="42" x2="60" y2="42"/>
+          </svg>
+        </div>
+        <h3 class="feature__title">CNC 一体铝合金</h3>
+        <p class="feature__desc">6063 铝合金一体切削，五种阳极氧化配色：暮山紫、月白、黛青、胭脂、玄墨。</p>
+        <ul class="feature__list">
+          <li>6063 一体切削</li>
+          <li>阳极氧化着色</li>
+          <li>五色随选随换</li>
+        </ul>
+      </article>
+
+      <article class="feature" data-feature="tri" data-reveal>
+        <div class="feature__index">03</div>
+        <div class="feature__icon" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none">
+            <path class="l l1" d="M16 28 Q16 14 30 14 Q44 14 44 28"/>
+            <line class="l l2" x1="30" y1="14" x2="30" y2="6"/>
+            <line class="l l3" x1="14" y1="48" x2="66" y2="48"/>
+            <line class="l l4" x1="6" y1="48" x2="2" y2="48"/>
+            <rect class="l l5" x="14" y="56" width="52" height="10" rx="2"/>
+            <circle class="l l6" cx="22" cy="61" r="2"/>
+          </svg>
+        </div>
+        <h3 class="feature__title">三模 30 天续航</h3>
+        <p class="feature__desc">有线 USB-C、2.4G 接收器、蓝牙 5.3 同时在线。4000mAh 满电续航 30 天。</p>
+        <ul class="feature__list">
+          <li>USB-C 有线</li>
+          <li>2.4G 接收器</li>
+          <li>蓝牙 5.3</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="colors" class="colors" data-section>
+    <header class="section-head section-head--split" data-reveal>
+      <div>
+        <p class="section-head__index"><span>03</span><span class="section-head__slash">/</span><span>03</span></p>
+        <h2 class="section-head__title">五色<span>Five Finishes</span></h2>
+      </div>
+      <p class="section-head__lede">五种阳极氧化配色。<br>选中一块，机身与键帽同时换装。</p>
+    </header>
+
+    <div class="colors__stage">
+      <canvas id="colorCanvas" class="colors__canvas" aria-hidden="true"></canvas>
+      <div class="colors__info" aria-live="polite">
+        <p class="colors__name" id="colorName">玄墨</p>
+        <p class="colors__pinyin" id="colorPinyin">XUANMO · #1A1A1F</p>
+        <p class="colors__desc" id="colorDesc">极夜黑铝，深邃冷静，是夜深人静时的默认色。</p>
+      </div>
+      <div class="colors__axis" aria-hidden="true">
+        <span>5</span>
+        <span>0</span>
+        <span>·</span>
+        <span>FINISH</span>
+      </div>
+    </div>
+
+    <div class="colors__swatches" role="radiogroup" aria-label="配色选择">
+      <button class="swatch is-active" type="button" data-color="xuanmo" role="radio" aria-checked="true" style="--c:#1A1A1F;--c2:#2A2A30">
+        <span class="swatch__chip" aria-hidden="true"><span></span></span>
+        <span class="swatch__body"><span class="swatch__name">玄墨</span><span class="swatch__meta">XUANMO</span></span>
+        <span class="swatch__hex">#1A1A1F</span>
+      </button>
+      <button class="swatch" type="button" data-color="mushan" role="radio" aria-checked="false" style="--c:#6B5F7A;--c2:#4A4054">
+        <span class="swatch__chip" aria-hidden="true"><span></span></span>
+        <span class="swatch__body"><span class="swatch__name">暮山紫</span><span class="swatch__meta">MUSHAN</span></span>
+        <span class="swatch__hex">#6B5F7A</span>
+      </button>
+      <button class="swatch" type="button" data-color="yuebai" role="radio" aria-checked="false" style="--c:#ECE6DA;--c2:#C7B8A5">
+        <span class="swatch__chip" aria-hidden="true"><span></span></span>
+        <span class="swatch__body"><span class="swatch__name">月白</span><span class="swatch__meta">YUEBAI</span></span>
+        <span class="swatch__hex">#ECE6DA</span>
+      </button>
+      <button class="swatch" type="button" data-color="daiqing" role="radio" aria-checked="false" style="--c:#3C5862;--c2:#1F3537">
+        <span class="swatch__chip" aria-hidden="true"><span></span></span>
+        <span class="swatch__body"><span class="swatch__name">黛青</span><span class="swatch__meta">DAIQING</span></span>
+        <span class="swatch__hex">#3C5862</span>
+      </button>
+      <button class="swatch" type="button" data-color="yanzhi" role="radio" aria-checked="false" style="--c:#B5565C;--c2:#5A1F26">
+        <span class="swatch__chip" aria-hidden="true"><span></span></span>
+        <span class="swatch__body"><span class="swatch__name">胭脂</span><span class="swatch__meta">YANZHI</span></span>
+        <span class="swatch__hex">#B5565C</span>
+      </button>
+    </div>
+  </section>
+
+  <section id="buy" class="buy" data-section>
+    <div class="buy__bg" aria-hidden="true">
+      <canvas id="buyCanvas" class="buy__canvas"></canvas>
+      <div class="buy__rings" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="buy__inner" data-reveal>
+      <p class="buy__eyebrow"><span class="dot"></span>预定 · 2026.08.08 全球同步首发</p>
+      <h2 class="buy__title">
+        <span>声律</span>
+        <span class="buy__title-num">75</span>
+      </h2>
+      <p class="buy__price">
+        <span class="buy__price-currency">¥</span>
+        <span class="buy__price-num">1,299</span>
+        <span class="buy__price-meta">含税 · 顺丰配送</span>
+      </p>
+      <div class="buy__actions">
+        <button id="reserveBtn" class="btn btn--primary" type="button" aria-pressed="false">
+          <span class="btn__label">加入待购</span>
+          <span class="btn__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </button>
+        <button class="btn btn--ghost" type="button" data-action="spec">查看规格</button>
+      </div>
+      <p class="buy__notes" id="buyNotes">预定后将于 2026.08.08 起按订单顺序发货。</p>
+      <dl class="buy__spec">
+        <div><dt>配列</dt><dd>75% / 81 键</dd></div>
+        <div><dt>结构</dt><dd>Gasket · 五层消音</dd></div>
+        <div><dt>机身材质</dt><dd>CNC 6063 铝合金</dd></div>
+        <div><dt>连接</dt><dd>USB-C · 2.4G · 蓝牙 5.3</dd></div>
+        <div><dt>续航</dt><dd>4000mAh · 约 30 天</dd></div>
+        <div><dt>重量</dt><dd>约 1.85 kg</dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<footer class="foot" role="contentinfo">
+  <div class="foot__brand">
+    <span class="foot__mark" aria-hidden="true"></span>
+    <span>SOUNDRHYTHM</span>
+  </div>
+  <p class="foot__copy">本页所有产品参数为虚构演示，不构成任何商业承诺。</p>
+  <p class="foot__meta">MADE WITH WEBGL · NO EXTERNAL ASSETS</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="vendor/three.min.js"></script>
+<script src="app.js"></script>
+  <script src="/bundles/i18n.js"></script>
+</body>
+</html>

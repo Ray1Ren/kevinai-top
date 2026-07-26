@@ -22,7 +22,7 @@ const base = `http://127.0.0.1:${address.port}`
 await Promise.all([mkdir(GIFS, { recursive: true }), mkdir(ARTICLE, { recursive: true })])
 
 const recordings = [
-  { name: '2d-k3', path: '/bundles/2d/kimi/index.html?lang=en', seconds: 6.4, fps: 10, output: join(GIFS, '2d-k3.gif'), action: (page) => play2d(page, '#btn-start') },
+  { name: '2d-k3', path: '/bundles/2d/k3-retest/index.html?lang=en', seconds: 6.4, fps: 10, output: join(GIFS, '2d-k3.gif'), action: (page) => play2d(page, '#btn-start') },
   { name: '2d-codex', path: '/bundles/2d/codex/index.html?lang=en', seconds: 6.4, fps: 10, output: join(GIFS, '2d-codex.gif'), action: (page) => play2d(page, '#startButton') },
   { name: '2d-m3', path: '/bundles/2d/minimax-m3/index.html?lang=en', seconds: 6.4, fps: 10, output: join(GIFS, '2d-m3.gif'), action: (page) => play2d(page, '#btn-start') },
   { name: '3d-k3', path: '/bundles/3d/kimi/index.html?lang=en', seconds: 6.8, fps: 10, output: join(GIFS, '3d-k3.gif'), action: (page) => play3d(page, '#btn-start') },
@@ -31,7 +31,6 @@ const recordings = [
   { name: 'promo-k3', path: '/bundles/promo/kimi/index.html?lang=en', seconds: 9, fps: 10, output: join(GIFS, 'promo-k3.gif'), action: (page) => playPromo(page, '[data-dir]') },
   { name: 'promo-codex', path: '/bundles/promo/codex/index.html?lang=en', seconds: 9, fps: 10, output: join(GIFS, 'promo-codex.gif'), action: (page) => playPromo(page, '[data-direction]') },
   { name: 'promo-m3', path: '/bundles/promo/minimax-m3/index.html?lang=en', seconds: 9, fps: 10, output: join(GIFS, 'promo-m3.gif'), action: (page) => playPromo(page, '[data-dir]') },
-  { name: '2d-k3-physics-fail', path: '/bundles/2d/kimi/index.html?lang=en', seconds: 9.3, fps: 10, output: join(ARTICLE, '2d-k3-physics-fail.gif'), action: recordKimiPhysicsBug },
   { name: '3d-m3-hidden-enemies', path: '/bundles/3d/minimax-m3/index.html?lang=en', seconds: 8, fps: 12, output: join(ARTICLE, '3d-m3-hidden-enemies.gif'), action: recordM3HiddenEnemies },
 ]
 
@@ -130,11 +129,6 @@ async function playPromo(page, selector) {
   }
   await page.waitForTimeout(800)
   await page.evaluate(() => window.scrollTo({ top: Math.min(window.innerHeight * 0.75, document.body.scrollHeight - window.innerHeight), behavior: 'smooth' }))
-}
-
-async function recordKimiPhysicsBug(page) {
-  await page.waitForTimeout(1_000)
-  await page.evaluate(() => window.__SLINGSHOT_TEST__.loadLevel(2))
 }
 
 async function recordM3HiddenEnemies(page) {
