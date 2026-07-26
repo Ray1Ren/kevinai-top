@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
+import { localizeText, useCurrentBenchmarks } from '../hooks/useCurrentBenchmarks'
 import { useLocale } from '../hooks/useLocale'
 
 const priceRows = [
@@ -198,14 +199,218 @@ function OfficialBenchmarkList({ isEnglish }: { isEnglish: boolean }) {
   )
 }
 
+const currentLabRoutes: Record<string, string> = {
+  '2d': '/lab/2d',
+  '3d': '/lab/3d',
+  vision: '/lab/vision',
+  aesthetic: '/lab/aesthetic',
+}
+
+function CurrentLabResults({
+  isEnglish,
+  path,
+  bundlePath,
+}: {
+  isEnglish: boolean
+  path: (target: string) => string
+  bundlePath: (target: string) => string
+}) {
+  const { data, loading, error } = useCurrentBenchmarks()
+
+  if (loading) {
+    return (
+      <section
+        className="border-t border-[#d2d2d7] py-16 md:py-20"
+        aria-labelledby="current-lab-heading"
+        aria-busy="true"
+        data-current-lab-results
+      >
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">02 · Current Lab</p>
+        <h2 id="current-lab-heading" className="text-3xl font-semibold tracking-[-0.025em] text-[#1d1d1f] md:text-4xl">
+          {isEnglish ? 'Loading the latest hands-on results…' : '正在读取最新实测结果…'}
+        </h2>
+        <div className="mt-10 divide-y divide-[#e5e5e7] border-y border-[#e5e5e7]">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div key={index} className="grid animate-pulse grid-cols-[2.25rem_minmax(0,1fr)_3.5rem] items-center gap-3 py-5">
+              <span className="h-3 rounded bg-[#e8e8ed]" />
+              <span className="h-4 max-w-44 rounded bg-[#e8e8ed]" />
+              <span className="h-5 rounded bg-[#e8e8ed]" />
+            </div>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section
+        className="border-t border-[#d2d2d7] py-16 md:py-20"
+        aria-labelledby="current-lab-heading"
+        data-current-lab-results
+      >
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">02 · Current Lab</p>
+        <h2 id="current-lab-heading" className="text-3xl font-semibold tracking-[-0.025em] text-[#1d1d1f] md:text-4xl">
+          {isEnglish ? 'The latest results could not be loaded.' : '最新实测数据暂时没有加载成功。'}
+        </h2>
+        <p className="mt-4 max-w-[62ch] text-sm leading-relaxed text-[#6e6e73]">
+          {isEnglish
+            ? 'The API pricing and official-source sections remain available. Open the Lab for the current score pages and submitted builds.'
+            : 'API 价格与厂商官方来源仍可正常查看；当前分数页和原作请先从实验室进入。'}
+        </p>
+        <Link
+          to={path('/lab')}
+          className="mt-6 inline-flex text-sm font-medium text-[#0066cc] underline decoration-[#b8d9ff] underline-offset-4 hover:text-[#004f9e]"
+        >
+          {isEnglish ? 'Open the current Lab' : '打开当前实验室'} →
+        </Link>
+      </section>
+    )
+  }
+
+  if (!data || data.summary.overall.length === 0) {
+    return (
+      <section
+        className="border-t border-[#d2d2d7] py-16 md:py-20"
+        aria-labelledby="current-lab-heading"
+        data-current-lab-results
+      >
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">02 · Current Lab</p>
+        <h2 id="current-lab-heading" className="text-3xl font-semibold tracking-[-0.025em] text-[#1d1d1f] md:text-4xl">
+          {isEnglish ? 'No frozen results are available yet.' : '当前还没有可公开的冻结结果。'}
+        </h2>
+      </section>
+    )
+  }
+
+  const modelsById = new Map(data.metadata.models.map((model) => [model.id, model]))
+  const k3Build = data.tasks['2d']?.models.k3?.playHref
+
+  return (
+    <section
+      className="border-t border-[#d2d2d7] py-16 md:py-20"
+      aria-labelledby="current-lab-heading"
+      data-current-lab-results
+    >
+      <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">02 · Current Lab</p>
+          <h2 id="current-lab-heading" className="text-3xl font-semibold tracking-[-0.025em] text-[#1d1d1f] md:text-4xl">
+            {isEnglish ? 'Eight models, four hands-on tests' : '八模型四项实测'}
+          </h2>
+        </div>
+        <p className="max-w-md text-sm leading-relaxed text-[#6e6e73] md:text-right">
+          {isEnglish
+            ? `Frozen ${data.metadata.dateRange}. Quality scores only; time and tokens stay separate.`
+            : `冻结于 ${data.metadata.dateRange}。这里只排成品质量分，时间与 Token 继续单列。`}
+        </p>
+      </div>
+
+      <div
+        className="mt-10 divide-y divide-[#e5e5e7] border-y border-[#d2d2d7]"
+        role="list"
+        aria-label={isEnglish ? 'Current hands-on quality ranking across eight models' : '当前八模型实测质量排名'}
+      >
+        {data.summary.overall.map((row, index) => {
+          const model = modelsById.get(row.model)
+          if (!model) return null
+          return (
+            <article
+              key={row.model}
+              data-current-lab-model={row.model}
+              className="grid grid-cols-[2.25rem_minmax(0,1fr)_3.5rem] items-center gap-x-3 gap-y-2 py-4 sm:grid-cols-[2.25rem_minmax(9rem,0.7fr)_minmax(8rem,1fr)_3.5rem] sm:gap-x-5"
+              role="listitem"
+            >
+              <span className="text-xs tabular-nums text-[#86868b]">#{index + 1}</span>
+              <div className="min-w-0">
+                <h3 className="truncate text-[15px] font-semibold text-[#1d1d1f]">{model.label}</h3>
+                <p className="mt-0.5 text-[11px] text-[#86868b]">
+                  {row.tasksCount === 4
+                    ? (isEnglish ? '4 tasks' : '4 项')
+                    : (isEnglish ? '3 completed tasks' : '完成 3 项')}
+                </p>
+              </div>
+              <div className="col-span-2 col-start-2 h-2 overflow-hidden rounded-full bg-[#e8e8ed] sm:col-span-1 sm:col-start-auto" aria-hidden="true">
+                <span className="block h-full rounded-full" style={{ width: `${row.score}%`, backgroundColor: model.color }} />
+              </div>
+              <strong className="col-start-3 row-start-1 text-right text-lg font-semibold tabular-nums text-[#1d1d1f] sm:col-start-auto sm:row-start-auto">
+                {row.score.toFixed(1)}
+              </strong>
+            </article>
+          )
+        })}
+      </div>
+
+      <div className="mt-12">
+        <h3 className="text-xl font-semibold tracking-[-0.015em] text-[#1d1d1f]">
+          {isEnglish ? 'Score pages, prompts, and submitted builds' : '分数、Prompt 与原作入口'}
+        </h3>
+        <div className="mt-5 divide-y divide-[#e5e5e7] border-y border-[#d2d2d7]">
+          {data.metadata.taskOrder.map((taskId) => {
+            const task = data.tasks[taskId]
+            const route = currentLabRoutes[taskId]
+            if (!task || !route) return null
+            const topResult = data.metadata.models
+              .map((model) => ({ model, score: task.models[model.id]?.score }))
+              .filter((item): item is { model: typeof item.model; score: number } => item.score !== null && item.score !== undefined)
+              .sort((left, right) => right.score - left.score)[0]
+            return (
+              <Link
+                key={taskId}
+                to={path(route)}
+                data-current-task-link={taskId}
+                className="group grid gap-2 py-5 transition-colors hover:text-[#004f9e] active:scale-[0.99] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6"
+              >
+                <div>
+                  <span className="text-xs text-[#86868b]">{localizeText(task.project, isEnglish)}</span>
+                  <h4 className="mt-1 text-[17px] font-semibold text-[#1d1d1f] group-hover:text-[#004f9e]">
+                    {localizeText(task.name, isEnglish)}
+                  </h4>
+                </div>
+                <span className="text-sm font-medium text-[#0066cc]">
+                  {topResult ? `${topResult.model.shortLabel} ${topResult.score.toFixed(1)} · ` : ''}
+                  {isEnglish ? 'Open evidence' : '打开实测'} →
+                </span>
+              </Link>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="mt-8 flex flex-col gap-4 border-l-2 border-[#8b6edb] bg-[#f7f5fb] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm leading-relaxed text-[#515154]">
+          {isEnglish
+            ? 'Kimi K3’s 2D score is 88.3. The Lab now points to the uncapped retest build.'
+            : 'Kimi K3 的 2D 得分为 88.3，实验室已切换到撤掉时限后的复测最新版。'}
+        </p>
+        {k3Build && (
+          <a
+            href={bundlePath(k3Build)}
+            data-k3-latest-build
+            className="shrink-0 text-sm font-medium text-[#0066cc] underline decoration-[#b8d9ff] underline-offset-4 hover:text-[#004f9e] active:scale-[0.98]"
+          >
+            {isEnglish ? 'Open latest K3 build' : '打开 K3 最新原作'} ↗
+          </a>
+        )}
+      </div>
+
+      <p className="mt-6 text-xs leading-relaxed text-[#86868b]">
+        {isEnglish
+          ? 'These are Kevin AI Lab hands-on results from the same-task workflow. The provider-reported claims below use different test sets and remain a separate evidence layer.'
+          : '以上是 Kevin AI Lab 的同题实测；下方厂商自报来自不同测试集，继续作为独立证据层呈现，不与本轮实测混成一个总榜。'}
+      </p>
+    </section>
+  )
+}
+
 export default function ModelPriceBenchmark() {
-  const { isEnglish, path } = useLocale()
+  const { isEnglish, path, bundlePath } = useLocale()
 
   return (
     <>
       <SEOHead
         title={isEnglish ? 'API Price & Official Benchmarks' : '模型 API 价格与官方评测'}
-        description={isEnglish ? 'Compare six model API costs using a real agent token mix, then review each provider’s official benchmark claims and source.' : '按真实 Agent Token 构成比较六个模型的 API 成本，并查看各厂商公开的官方评测、排名与原始来源。'}
+        description={isEnglish ? 'Compare six model API costs, review the latest four hands-on tests across eight models, and verify provider-reported benchmark claims at their official sources.' : '比较六个模型的 API 成本，同步查看八模型四项最新实测，并回查各厂商公开评测与原始来源。'}
       />
       <section className="min-h-[100dvh] bg-[#ffffff] pb-24 pt-28 text-[#1d1d1f] md:pb-32 md:pt-32" data-model-price-benchmark>
         <div className="mx-auto max-w-[1200px] px-4 md:px-6">
@@ -263,10 +468,12 @@ export default function ModelPriceBenchmark() {
             </details>
           </section>
 
+          <CurrentLabResults isEnglish={isEnglish} path={path} bundlePath={bundlePath} />
+
           <section className="border-t border-[#d2d2d7] py-16 md:py-20" aria-labelledby="benchmark-heading">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">02 · Official benchmark claims</p>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-[#0071e3]">03 · Official benchmark claims</p>
                 <h2 id="benchmark-heading" className="text-3xl font-semibold tracking-[-0.025em] text-[#1d1d1f] md:text-4xl">
                   {isEnglish ? 'Official benchmarks and rankings' : '官方公开评测与排名'}
                 </h2>
