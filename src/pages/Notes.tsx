@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
+import { WECHAT_ARTICLES, WechatArticle } from '../data/wechatArticles'
 import { useLocale } from '../hooks/useLocale'
-import { FIRST_ARTICLE_PATH, useFirstArticleRelease } from '../lib/article-release'
+import { FIRST_ARTICLE_PATH, isArticleReleased, useFirstArticleRelease } from '../lib/article-release'
 
 const INTRO_ARTICLE_PATH = '/notes/ai-game-24-days'
 
@@ -10,6 +11,12 @@ export default function Notes() {
   const released = useFirstArticleRelease()
   const reviewPath = isEnglish ? '/en/articles/kimi-k3-review' : FIRST_ARTICLE_PATH
   const introPath = isEnglish ? '/en/articles/ai-game-24-days' : INTRO_ARTICLE_PATH
+  const locale = isEnglish ? 'en' : 'zh'
+  const releasedImportedArticles = WECHAT_ARTICLES.filter((article) =>
+    isArticleReleased(article.publishedTime),
+  )
+  const opusArticle = releasedImportedArticles.find((article) => article.id === 'opus-5-eight-models')
+  const earlierArticles = releasedImportedArticles.filter((article) => article.id !== 'opus-5-eight-models')
 
   return (
     <>
@@ -42,8 +49,10 @@ export default function Notes() {
             </div>
 
             <div className="lg:col-span-7 lg:pt-8">
+              {opusArticle && <ImportedArticleCard article={opusArticle} locale={locale} featured />}
+
               {released ? (
-                <article className="overflow-hidden rounded-2xl border border-white/10 bg-graphite-900/35">
+                <article className="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-graphite-900/35">
                   <Link to={reviewPath} className="group block">
                     <div className="relative overflow-hidden border-b border-white/10 bg-graphite-950 p-5 md:p-7">
                       <div className="absolute -right-12 -top-20 h-56 w-56 rounded-full border border-pitch-500/15 transition-transform duration-500 group-hover:scale-105" aria-hidden="true" />
@@ -103,6 +112,10 @@ export default function Notes() {
                 </div>
               )}
 
+              {earlierArticles.map((article) => (
+                <ImportedArticleCard key={article.id} article={article} locale={locale} />
+              ))}
+
               <article className="mt-8 border-y border-white/10 py-7 md:py-9">
                 <Link to={introPath} className="group grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
                   <div>
@@ -148,5 +161,49 @@ export default function Notes() {
         </div>
       </section>
     </>
+  )
+}
+
+function ImportedArticleCard({
+  article,
+  locale,
+  featured = false,
+}: {
+  article: WechatArticle
+  locale: 'en' | 'zh'
+  featured?: boolean
+}) {
+  const isEnglish = locale === 'en'
+
+  return (
+    <article className={`${featured ? '' : 'mt-8'} border-y border-white/10 py-7 md:py-9`}>
+      <Link to={article.path[locale]} className="group grid gap-7 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+        <div>
+          <div className="mb-4 flex flex-wrap gap-x-4 gap-y-2 text-xs uppercase tracking-[0.16em] text-graphite-500">
+            <span className="text-pitch-500">{article.category[locale]}</span>
+            <span>{article.date[locale]}</span>
+            <span>{article.readingTime[locale]}</span>
+          </div>
+          <h2 className={`${featured ? 'md:text-4xl' : 'md:text-3xl'} max-w-3xl text-2xl font-semibold leading-tight tracking-tight text-white transition-colors group-hover:text-pitch-300`}>
+            {article.title[locale]}
+          </h2>
+          <p className="mt-4 max-w-[62ch] text-sm leading-relaxed text-graphite-300 md:text-base">
+            {article.description[locale]}
+          </p>
+          <span className="mt-6 inline-flex text-sm font-medium text-pitch-400">
+            {isEnglish ? 'Read the article' : '阅读全文'}
+            <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+          </span>
+        </div>
+        <dl className="grid min-w-[12rem] grid-cols-3 gap-4 text-right md:grid-cols-1 md:text-left">
+          {article.facts.map((fact) => (
+            <div key={fact.label.en} className="border-t border-white/10 pt-3">
+              <dt className="text-[10px] uppercase tracking-widest text-graphite-500">{fact.label[locale]}</dt>
+              <dd className="mt-1 text-xl font-semibold tabular-nums text-white">{fact.value[locale]}</dd>
+            </div>
+          ))}
+        </dl>
+      </Link>
+    </article>
   )
 }

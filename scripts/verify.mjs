@@ -169,8 +169,19 @@ const BUNDLE_MODELS = {
 const RETIRED_BUNDLES = ['2d/kimi']
 
 const SHARED_BASE_ROUTES = ['/', '/lab', '/lab/2d', '/lab/3d', '/lab/aesthetic', '/lab/promo', '/lab/vision', '/lab/vision/review', '/lab/model-price-benchmark', '/links']
-const CHINESE_ARTICLE_ROUTES = ['/notes', '/notes/kimi-k3-subscription-review', '/notes/ai-game-24-days']
-const ENGLISH_ARTICLE_ROUTES = ['/en/articles', '/en/articles/kimi-k3-review', '/en/articles/ai-game-24-days']
+const WECHAT_ARTICLE_SLUGS = ['opus-5-eight-models', 'k3-930k-token-test', 'ai-tools-500-levels']
+const CHINESE_ARTICLE_ROUTES = [
+  '/notes',
+  '/notes/kimi-k3-subscription-review',
+  '/notes/ai-game-24-days',
+  ...WECHAT_ARTICLE_SLUGS.map((slug) => `/notes/${slug}`),
+]
+const ENGLISH_ARTICLE_ROUTES = [
+  '/en/articles',
+  '/en/articles/kimi-k3-review',
+  '/en/articles/ai-game-24-days',
+  ...WECHAT_ARTICLE_SLUGS.map((slug) => `/en/articles/${slug}`),
+]
 const LEGACY_ENGLISH_ARTICLE_ROUTES = ['/en/notes', '/en/notes/kimi-k3-subscription-review']
 const SITEMAP_ROUTES = [
   ...SHARED_BASE_ROUTES,
@@ -388,6 +399,92 @@ async function checkRouteManifest() {
   for (const route of SITEMAP_ROUTES) {
     const url = `https://kevinai.top${route === '/' ? '/' : route}`
     if (!sitemap.includes(`<loc>${url}</loc>`)) errors.push(`Route ${route} missing from sitemap.xml`)
+  }
+}
+
+function articleStructure(markdown) {
+  return markdown
+    .split('\n')
+    .map((line) => {
+      if (/^## /.test(line)) return 'h2'
+      if (/^### /.test(line)) return 'h3'
+      if (/^<figure(?:\s|>)/.test(line)) return 'figure'
+      if (/^\s*<img /.test(line)) return 'img'
+      if (/^\s*<figcaption>/.test(line)) return 'figcaption'
+      if (/^```/.test(line)) return 'fence'
+      if (/^\|/.test(line)) return 'table-row'
+      if (/^(?:-|\d+\.) /.test(line)) return 'list-item'
+      if (/^> /.test(line)) return 'blockquote'
+      if (line.trim()) return 'paragraph'
+      return ''
+    })
+    .filter(Boolean)
+}
+
+function articleImageSources(markdown) {
+  return Array.from(markdown.matchAll(/<img\s+[^>]*src="([^"]+)"/g), (match) => match[1])
+}
+
+function normalizedArticleImageName(source) {
+  return basename(source).replace(/-en(?=\.[^.]+$)/, '')
+}
+
+async function checkWechatArticles() {
+  const contentDir = join(SRC, 'content/wechat')
+
+  for (const slug of WECHAT_ARTICLE_SLUGS) {
+    const localized = {}
+    for (const locale of ['zh', 'en']) {
+      const path = join(contentDir, `${slug}.${locale}.md`)
+      if (!(await fileExists(path))) {
+        errors.push(`Missing imported WeChat article: ${slug}.${locale}.md`)
+        continue
+      }
+
+      const markdown = await readFile(path, 'utf8')
+      localized[locale] = markdown
+      if (/<script[\s>]/i.test(markdown)) {
+        errors.push(`Imported article contains a script: ${slug}.${locale}.md`)
+      }
+      for (const forbidden of ['后台发布字段', '/Users/', 'file://', 'tempkey', 'AppSecret', 'access_token']) {
+        if (markdown.includes(forbidden)) {
+          errors.push(`Imported article exposes "${forbidden}": ${slug}.${locale}.md`)
+        }
+      }
+      if (locale === 'en' && /\p{Script=Han}/u.test(markdown)) {
+        errors.push(`English imported article still contains Chinese text: ${slug}.en.md`)
+      }
+
+      const sources = articleImageSources(markdown)
+      const figureCount = (markdown.match(/^<figure(?:\s|>)/gm) ?? []).length
+      const captionCount = (markdown.match(/^\s*<figcaption>/gm) ?? []).length
+      if (!sources.length || sources.length !== figureCount || sources.length !== captionCount) {
+        errors.push(`Imported article media structure mismatch: ${slug}.${locale}.md`)
+      }
+      for (const source of sources) {
+        const expectedPrefix = `/assets/wechat/${slug}/`
+        if (!source.startsWith(expectedPrefix)) {
+          errors.push(`Imported article uses an unexpected asset path: ${slug}.${locale}.md -> ${source}`)
+          continue
+        }
+        if (!(await fileExists(join(PUBLIC, source.slice(1))))) {
+          errors.push(`Imported article asset is missing: ${source}`)
+        }
+      }
+    }
+
+    if (!localized.zh || !localized.en) continue
+    const zhStructure = articleStructure(localized.zh)
+    const enStructure = articleStructure(localized.en)
+    if (JSON.stringify(zhStructure) !== JSON.stringify(enStructure)) {
+      errors.push(`Chinese and English imported article structures differ: ${slug}`)
+    }
+
+    const zhImages = articleImageSources(localized.zh).map(normalizedArticleImageName)
+    const enImages = articleImageSources(localized.en).map(normalizedArticleImageName)
+    if (JSON.stringify(zhImages) !== JSON.stringify(enImages)) {
+      errors.push(`Chinese and English imported article image order differs: ${slug}`)
+    }
   }
 }
 
@@ -699,6 +796,7 @@ async function main() {
   await checkCandidateFiles()
   await checkDistributionContent()
   await checkRouteManifest()
+  await checkWechatArticles()
   await checkBilingualBenchmarks()
   await checkPromptEvidence()
   await checkOfficialModelBenchmarks()

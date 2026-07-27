@@ -10,19 +10,29 @@ function isLocalArticlePreview() {
   return localHost && new URLSearchParams(window.location.search).get('preview') === 'article'
 }
 
-export function isFirstArticleReleased() {
-  return Date.now() >= FIRST_ARTICLE_RELEASE_AT || isLocalArticlePreview()
+export function isArticleReleased(releaseAt: number | string) {
+  const timestamp = typeof releaseAt === 'number' ? releaseAt : Date.parse(releaseAt)
+  return Date.now() >= timestamp || isLocalArticlePreview()
 }
 
-export function useFirstArticleRelease() {
-  const [released, setReleased] = useState(isFirstArticleReleased)
+export function isFirstArticleReleased() {
+  return isArticleReleased(FIRST_ARTICLE_RELEASE_AT)
+}
+
+export function useArticleRelease(releaseAt: number | string) {
+  const timestamp = typeof releaseAt === 'number' ? releaseAt : Date.parse(releaseAt)
+  const [released, setReleased] = useState(() => isArticleReleased(timestamp))
 
   useEffect(() => {
     if (released) return
-    const wait = Math.max(0, FIRST_ARTICLE_RELEASE_AT - Date.now())
+    const wait = Math.max(0, timestamp - Date.now())
     const timer = window.setTimeout(() => setReleased(true), wait + 50)
     return () => window.clearTimeout(timer)
-  }, [released])
+  }, [released, timestamp])
 
   return released
+}
+
+export function useFirstArticleRelease() {
+  return useArticleRelease(FIRST_ARTICLE_RELEASE_AT)
 }

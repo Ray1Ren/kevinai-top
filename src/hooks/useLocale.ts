@@ -62,6 +62,12 @@ function getAlternatePath(pathname: string, locale: Locale) {
     '/en/articles/kimi-k3-review': '/notes/kimi-k3-subscription-review',
     '/notes/ai-game-24-days': '/en/articles/ai-game-24-days',
     '/en/articles/ai-game-24-days': '/notes/ai-game-24-days',
+    '/notes/opus-5-eight-models': '/en/articles/opus-5-eight-models',
+    '/en/articles/opus-5-eight-models': '/notes/opus-5-eight-models',
+    '/notes/k3-930k-token-test': '/en/articles/k3-930k-token-test',
+    '/en/articles/k3-930k-token-test': '/notes/k3-930k-token-test',
+    '/notes/ai-tools-500-levels': '/en/articles/ai-tools-500-levels',
+    '/en/articles/ai-tools-500-levels': '/notes/ai-tools-500-levels',
     '/en/notes': '/notes',
     '/en/notes/kimi-k3-subscription-review': '/notes/kimi-k3-subscription-review',
   }

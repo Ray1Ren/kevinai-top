@@ -122,6 +122,9 @@ async function testStaticDeepLinks(browser, base) {
     ['/notes', '文章与动态'],
     ['/notes/kimi-k3-subscription-review', 'Kimi K3 到底值不值得订阅'],
     ['/notes/ai-game-24-days', 'AI 做小游戏'],
+    ['/notes/opus-5-eight-models', '牙膏挤爆'],
+    ['/notes/k3-930k-token-test', 'K3 今天刚发'],
+    ['/notes/ai-tools-500-levels', '一个小游戏做到 500 关'],
     ['/en/lab/2d', '2D web game'],
     ['/en/lab/3d', '3D web game'],
     ['/en/lab/aesthetic', 'Product launch page'],
@@ -129,10 +132,13 @@ async function testStaticDeepLinks(browser, base) {
     ['/en/articles', 'Notes & Updates'],
     ['/en/articles/kimi-k3-review', 'Is Kimi K3'],
     ['/en/articles/ai-game-24-days', 'AI made my first game playable'],
+    ['/en/articles/opus-5-eight-models', 'Opus 5 Steps Up'],
+    ['/en/articles/k3-930k-token-test', 'K3 Launched Today'],
+    ['/en/articles/ai-tools-500-levels', 'How I Use Claude'],
   ]
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
   await context.addInitScript(() => {
-    Date.now = () => Date.parse('2026-07-19T00:01:00Z')
+    Date.now = () => Date.parse('2026-07-27T00:01:00Z')
   })
   for (const [path, title] of cases) {
     const page = await context.newPage()
@@ -156,12 +162,16 @@ async function testStaticDeepLinks(browser, base) {
 }
 
 async function loadLazyArticleMedia(page) {
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = 'auto'
+    document.body.style.scrollBehavior = 'auto'
+  })
   let previousHeight = 0
   for (let pass = 0; pass < 8; pass += 1) {
     const height = await page.evaluate(() => document.documentElement.scrollHeight)
     for (let y = 0; y <= height; y += 720) {
-      await page.evaluate((top) => window.scrollTo(0, top), y)
-      await page.waitForTimeout(70)
+      await page.evaluate((top) => window.scrollTo({ top, behavior: 'instant' }), y)
+      await page.waitForTimeout(35)
     }
     await page.waitForLoadState('networkidle')
     if (height === previousHeight) break
@@ -172,7 +182,7 @@ async function loadLazyArticleMedia(page) {
     undefined,
     { timeout: 15000 },
   )
-  await page.evaluate(() => window.scrollTo(0, 0))
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }))
   await page.waitForTimeout(250)
 }
 
@@ -223,6 +233,12 @@ function assertMirrorSnapshots(chinese, english, label) {
   }
 }
 
+function assertImportedArticleMirrorSnapshots(chinese, english, label) {
+  for (const key of ['sectionIds', 'figureCount', 'imageCount', 'gifCount', 'audioCount', 'textCounts', 'imageOrder', 'figureOrder', 'mediaOrder', 'gridLayouts']) {
+    assert.deepEqual(english[key], chinese[key], `${label} must mirror Chinese ${key}`)
+  }
+}
+
 async function testArticleLightbox(page, label) {
   const articleImages = page.locator('.article-body img:not([data-no-lightbox])')
   const imageCount = await articleImages.count()
@@ -253,7 +269,10 @@ async function testArticleReleaseGate(browser, base) {
 
   await page.goto(`${base}/notes`, { waitUntil: 'networkidle' })
   assert.match(await page.locator('main').innerText(), /下一篇文章，早上 8 点见/)
-  assert.equal(await page.getByRole('link', { name: '阅读全文' }).count(), 0)
+  assert.equal(await page.locator('a[href="/notes/kimi-k3-subscription-review"]').count(), 0)
+  assert.match(await page.locator('main').innerText(), /K3 今天刚发/)
+  assert.match(await page.locator('main').innerText(), /一个小游戏做到 500 关/)
+  assert(!((await page.locator('main').innerText()).includes('牙膏挤爆')), 'July 26 article must stay hidden on July 18')
 
   await page.goto(`${base}/`, { waitUntil: 'networkidle' })
   assert.match(await page.locator('main').innerText(), /下一篇文章，早上 8 点见/)
@@ -386,6 +405,122 @@ async function testBuildStoryArticle(browser, base) {
   finishMonitoring()
   await context.close()
   log('AI game build story passed: bilingual facts, English infographics, audio, QR channel, SEO, and 390px layout')
+}
+
+async function testImportedWechatArticles(browser, base) {
+  const articlePairs = [
+    {
+      slug: 'opus-5-eight-models',
+      zh: '/notes/opus-5-eight-models',
+      en: '/en/articles/opus-5-eight-models',
+      zhTitle: '牙膏挤爆',
+      enTitle: 'Opus 5 Steps Up',
+      zhFacts: ['94.4', '八个模型', '四项'],
+      enFacts: ['94.4', 'Eight models', 'four'],
+      imageCount: 44,
+      englishEditorialImageCount: 23,
+    },
+    {
+      slug: 'k3-930k-token-test',
+      zh: '/notes/k3-930k-token-test',
+      en: '/en/articles/k3-930k-token-test',
+      zhTitle: 'K3 今天刚发',
+      enTitle: 'K3 Launched Today',
+      zhFacts: ['930386', '80/80', 'Kimi Code + K3'],
+      enFacts: ['930,386', '80/80', 'Kimi Code + K3'],
+      imageCount: 6,
+      englishEditorialImageCount: 6,
+    },
+    {
+      slug: 'ai-tools-500-levels',
+      zh: '/notes/ai-tools-500-levels',
+      en: '/en/articles/ai-tools-500-levels',
+      zhTitle: '一个小游戏做到 500 关',
+      enTitle: 'How I Use Claude',
+      zhFacts: ['1289', '2584', '500 关'],
+      enFacts: ['1,289', '2,584', '500 levels'],
+      imageCount: 4,
+      englishEditorialImageCount: 0,
+    },
+  ]
+
+  for (const viewport of [
+    { width: 390, height: 844, suffix: 'mobile' },
+    { width: 1440, height: 900, suffix: 'desktop' },
+  ]) {
+    const context = await browser.newContext({
+      viewport,
+      hasTouch: viewport.width === 390,
+      isMobile: viewport.width === 390,
+    })
+    await context.addInitScript(() => {
+      Date.now = () => Date.parse('2026-07-27T00:01:00Z')
+    })
+    const page = await context.newPage()
+    const finishMonitoring = monitorPage(page, `imported WeChat articles at ${viewport.width}px`, { allowDocument404: true })
+
+    for (const pair of articlePairs) {
+      const snapshots = {}
+      for (const locale of ['zh', 'en']) {
+        const path = pair[locale]
+        const title = locale === 'zh' ? pair.zhTitle : pair.enTitle
+        const requiredFacts = locale === 'zh' ? pair.zhFacts : pair.enFacts
+        await page.goto(`${base}${path}`, { waitUntil: 'networkidle' })
+        assert.match(await page.title(), new RegExp(title))
+        assert.equal(await page.locator('html').getAttribute('lang'), locale === 'zh' ? 'zh-CN' : 'en')
+        assert.equal(await page.locator('.article-body img').count(), pair.imageCount)
+        assert.equal(
+          await page.locator('link[rel="canonical"]').getAttribute('href'),
+          `https://kevinai.top${path}`,
+        )
+
+        const body = await page.locator('article').innerText()
+        for (const fact of requiredFacts) {
+          assert(body.includes(fact), `${path} must include ${fact}`)
+        }
+        if (locale === 'en') {
+          const articleBody = await page.locator('.article-body').innerText()
+          assert(!/\p{Script=Han}/u.test(articleBody), `${path} must not expose Chinese body text`)
+          const sources = await page.locator('.article-body img').evaluateAll((images) =>
+            images.map((image) => image.getAttribute('src') ?? ''),
+          )
+          assert.equal(
+            sources.filter((source) => /-en\.[^.]+$/i.test(source)).length,
+            pair.englishEditorialImageCount,
+            `${path} must use the reviewed English editorial assets`,
+          )
+        }
+
+        if (viewport.width === 390) {
+          await loadLazyArticleMedia(page)
+          await testArticleLightbox(page, `${locale} ${pair.slug}`)
+        }
+        const pageWidth = await page.evaluate(() =>
+          Math.max(document.body.scrollWidth, document.documentElement.scrollWidth),
+        )
+        assert(
+          pageWidth <= viewport.width + 2,
+          `${path} must not overflow a ${viewport.width}px viewport, got ${pageWidth}px`,
+        )
+        snapshots[locale] = await captureMirrorSnapshot(page)
+        await page.evaluate(() => window.scrollTo(0, 0))
+        await page.waitForTimeout(100)
+        await page.screenshot({
+          path: join(SCREENSHOTS, `wechat-${pair.slug}-${locale}-${viewport.suffix}.png`),
+        })
+      }
+      assertImportedArticleMirrorSnapshots(
+        snapshots.zh,
+        snapshots.en,
+        `${pair.slug} at ${viewport.width}px`,
+      )
+    }
+
+    finishMonitoring()
+    await context.close()
+  }
+
+  log('imported WeChat articles passed: six deep links, bilingual structure, reviewed images, lightbox, and responsive layout')
 }
 
 async function testBilingualMirrorLayouts(browser, base) {
@@ -1390,29 +1525,43 @@ async function main() {
 
   try {
     browser = await chromium.launch({ channel: 'chrome' })
-    await testPrimaryNavigation(browser, base)
-    await testStaticDeepLinks(browser, base)
-    await testArticleReleaseGate(browser, base)
-    await testFirstArticle(browser, base)
-    await testBuildStoryArticle(browser, base)
-    await testBilingualMirrorLayouts(browser, base)
-    await testBilingualHomepage(browser, base)
-    await testAutomaticLanguagePreference(browser, base)
-    await testBundleMimeAndLoad(browser, base)
-    await test2DInteraction(browser, base)
-    await test3DInteraction(browser, base)
-    await testM3DesktopShooting(browser, base)
-    await testM3MobileShooting(browser, base)
-    await testPromoInteraction(browser, base)
-    await testEnglishBundleLocalization(browser, base)
-    await testPublishedBenchmarkScores(browser, base)
-    await testFullPrompts(browser, base)
-    await testModelPriceBenchmark(browser, base)
-    await testVisionReview(browser, base)
-    await testEmbeddedPlayableBuilds(browser, base)
-    await testThemeModes(browser, base)
-    await testMotionModes(browser, base)
-    await testQrKeyboardAndLocale(browser, base)
+    const checks = [
+      ['navigation', testPrimaryNavigation],
+      ['deep-links', testStaticDeepLinks],
+      ['release-gate', testArticleReleaseGate],
+      ['first-article', testFirstArticle],
+      ['build-story', testBuildStoryArticle],
+      ['imported-articles', testImportedWechatArticles],
+      ['bilingual-layouts', testBilingualMirrorLayouts],
+      ['homepage', testBilingualHomepage],
+      ['language-preference', testAutomaticLanguagePreference],
+      ['bundle-load', testBundleMimeAndLoad],
+      ['2d-interaction', test2DInteraction],
+      ['3d-interaction', test3DInteraction],
+      ['m3-desktop', testM3DesktopShooting],
+      ['m3-mobile', testM3MobileShooting],
+      ['promo', testPromoInteraction],
+      ['bundle-localization', testEnglishBundleLocalization],
+      ['published-scores', testPublishedBenchmarkScores],
+      ['full-prompts', testFullPrompts],
+      ['model-price', testModelPriceBenchmark],
+      ['vision-review', testVisionReview],
+      ['embedded-builds', testEmbeddedPlayableBuilds],
+      ['themes', testThemeModes],
+      ['motion', testMotionModes],
+      ['qr-locale', testQrKeyboardAndLocale],
+    ]
+    const requestedCheck = process.env.ACCEPTANCE_ONLY
+    const selectedChecks = requestedCheck
+      ? checks.filter(([name]) => name === requestedCheck)
+      : checks
+    assert(
+      selectedChecks.length > 0,
+      `Unknown ACCEPTANCE_ONLY value: ${requestedCheck}`,
+    )
+    for (const [, check] of selectedChecks) {
+      await check(browser, base)
+    }
     log('all interactive acceptance checks passed')
   } finally {
     await browser?.close()
