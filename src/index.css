@@ -149,6 +149,89 @@ body[data-motion-paused] *::after {
     @apply text-pitch-400 underline decoration-pitch-500/30 underline-offset-4 hover:text-pitch-300;
   }
 
+  .markdown-article-body h2 {
+    @apply mt-14 border-t border-white/10 pt-11 md:mt-20 md:pt-14;
+    scroll-margin-top: 7rem;
+  }
+
+  .markdown-article-body h3 {
+    scroll-margin-top: 7rem;
+  }
+
+  .markdown-article-body ul,
+  .markdown-article-body ol {
+    @apply my-5 space-y-2 pl-6 text-[17px] leading-[1.8] text-graphite-200;
+  }
+
+  .markdown-article-body ul {
+    @apply list-disc;
+  }
+
+  .markdown-article-body ol {
+    @apply list-decimal;
+  }
+
+  .markdown-article-body li::marker {
+    @apply text-pitch-500;
+  }
+
+  .markdown-article-body blockquote {
+    @apply my-7 border-l-2 border-pitch-500/70 bg-graphite-900/35 px-5 py-4 text-graphite-200;
+  }
+
+  .markdown-article-body blockquote p {
+    @apply text-base leading-relaxed;
+  }
+
+  .markdown-article-body figure {
+    @apply my-8 md:my-10;
+  }
+
+  .markdown-article-body figure img {
+    @apply mx-auto block h-auto max-w-full rounded-xl border border-white/10 bg-graphite-900/45;
+  }
+
+  .markdown-article-body figcaption {
+    @apply px-1 pt-3 text-center text-[13px] leading-6 text-graphite-400;
+  }
+
+  .markdown-article-body strong {
+    @apply font-semibold text-white;
+  }
+
+  .markdown-article-body a {
+    @apply text-pitch-400 underline decoration-pitch-500/30 underline-offset-4 transition-colors hover:text-pitch-300;
+  }
+
+  .markdown-article-body code {
+    @apply rounded bg-graphite-900 px-1.5 py-0.5 font-mono text-[0.9em] text-pitch-300;
+  }
+
+  .markdown-article-body pre {
+    @apply my-7 overflow-x-auto rounded-xl border border-white/10 bg-graphite-950 p-4 text-sm leading-relaxed;
+  }
+
+  .markdown-article-body pre code {
+    @apply bg-transparent p-0 text-graphite-200;
+  }
+
+  .markdown-article-body table {
+    @apply my-8 block w-full overflow-x-auto border-collapse text-left text-sm text-graphite-200;
+  }
+
+  .markdown-article-body th,
+  .markdown-article-body td {
+    @apply min-w-[8rem] border-b border-white/10 px-3 py-3 align-top;
+  }
+
+  .markdown-article-body th {
+    @apply font-semibold text-white;
+  }
+
+  .markdown-article-body hr {
+    @apply my-10 border-white/10;
+  }
+
   .article-zoomable-image {
     @apply cursor-zoom-in transition-[filter,opacity] duration-200 hover:brightness-105;
   }

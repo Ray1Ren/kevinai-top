@@ -24,6 +24,7 @@ const ModelPriceBenchmark = lazy(() => import('./pages/ModelPriceBenchmark'))
 const KimiK3Review = lazy(() => import('./pages/KimiK3Review'))
 const AiGame24Days = lazy(() => import('./pages/AiGame24Days'))
 const AiGame24DaysEn = lazy(() => import('./pages/AiGame24DaysEn'))
+const WechatArticle = lazy(() => import('./pages/WechatArticle'))
 
 function App() {
   return (
@@ -67,6 +68,9 @@ function renderLocalizedRoutes(prefix: '' | '/en') {
       <Route key="/en/articles" path="/en/articles" element={<EnglishArticles />} />,
       <Route key="/en/articles/kimi-k3-review" path="/en/articles/kimi-k3-review" element={<Suspense fallback={<PageFallback />}><KimiK3Review /></Suspense>} />,
       <Route key="/en/articles/ai-game-24-days" path="/en/articles/ai-game-24-days" element={<Suspense fallback={<PageFallback />}><AiGame24DaysEn /></Suspense>} />,
+      <Route key="/en/articles/opus-5-eight-models" path="/en/articles/opus-5-eight-models" element={<Suspense fallback={<PageFallback />}><WechatArticle articleId="opus-5-eight-models" /></Suspense>} />,
+      <Route key="/en/articles/k3-930k-token-test" path="/en/articles/k3-930k-token-test" element={<Suspense fallback={<PageFallback />}><WechatArticle articleId="k3-930k-token-test" /></Suspense>} />,
+      <Route key="/en/articles/ai-tools-500-levels" path="/en/articles/ai-tools-500-levels" element={<Suspense fallback={<PageFallback />}><WechatArticle articleId="ai-tools-500-levels" /></Suspense>} />,
       <Route key="/en/notes" path="/en/notes" element={<Navigate to="/en/articles" replace />} />,
       <Route key="/en/notes/kimi-k3-subscription-review" path="/en/notes/kimi-k3-subscription-review" element={<Navigate to="/en/articles/kimi-k3-review" replace />} />,
     ]
@@ -77,6 +81,9 @@ function renderLocalizedRoutes(prefix: '' | '/en') {
     <Route key="/notes" path="/notes" element={<Notes />} />,
     <Route key="/notes/kimi-k3-subscription-review" path="/notes/kimi-k3-subscription-review" element={<Suspense fallback={<PageFallback />}><KimiK3Review /></Suspense>} />,
     <Route key="/notes/ai-game-24-days" path="/notes/ai-game-24-days" element={<Suspense fallback={<PageFallback />}><AiGame24Days /></Suspense>} />,
+    <Route key="/notes/opus-5-eight-models" path="/notes/opus-5-eight-models" element={<Suspense fallback={<PageFallback />}><WechatArticle articleId="opus-5-eight-models" /></Suspense>} />,
+    <Route key="/notes/k3-930k-token-test" path="/notes/k3-930k-token-test" element={<Suspense fallback={<PageFallback />}><WechatArticle articleId="k3-930k-token-test" /></Suspense>} />,
+    <Route key="/notes/ai-tools-500-levels" path="/notes/ai-tools-500-levels" element={<Suspense fallback={<PageFallback />}><WechatArticle articleId="ai-tools-500-levels" /></Suspense>} />,
   ]
 }
 

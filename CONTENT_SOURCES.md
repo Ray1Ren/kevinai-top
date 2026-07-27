@@ -65,6 +65,15 @@
 - 6 张真实游戏截图和 3 段早期试音只做本地复制，不改原文件。英文版保留真实中文游戏界面，并用英文图注说明当前 WeChat 正式版仍是中文界面。
 - 文章内小程序码使用独立渠道 `scene=ch=web_note1`，文件为 `public/assets/first-article/one-kick-code-ch_web_note1.png`；不要替换首页和链接页原有渠道码。
 
+### 公众号历史文章迁站
+
+- 2026-07-16 工具复盘：中文事实源为 `Kevin AI局_工具体验_20260716/03_公众号有人味改写稿.md`；网站路由为 `/notes/ai-tools-500-levels` 与 `/en/articles/ai-tools-500-levels`。
+- 2026-07-17 K3 长上下文实测：中文事实源为 `Kevin AI局_K3实测_20260717/01_公众号发布稿.md`；网站路由为 `/notes/k3-930k-token-test` 与 `/en/articles/k3-930k-token-test`。
+- 2026-07-26 Opus 5 八模型实测：中文事实源为 `公众号_三类实测_20260725/16_Opus5主线_公众号终稿.md`；网站路由为 `/notes/opus-5-eight-models` 与 `/en/articles/opus-5-eight-models`。
+- 迁站正文统一放在 `src/content/wechat/`，图片与 GIF 放在 `public/assets/wechat/`。后台发布字段、本机绝对路径、临时预览链接与密钥信息不进入网站。
+- 英文稿与中文稿保持相同的标题层级、段落结构、数字和图片顺序。官方网页、原始产品和媒体截图保留证据原图，只翻译图注；榜单、时间线、封面和反应图使用英文专属的确定性排版图，不用生图重画数字。
+- 三篇文章按各自 `publishedTime` 过滤列表与详情页；本地可用 `?preview=article` 预览未到发布时间的内容。
+
 ## 文案与数据来源
 
 - Kevin 公开自述：`Kevin AI局_首发_20260715/01_首篇发布稿.md`
